@@ -23,19 +23,7 @@
 
 <div class="row mt-3">
     <div class="col-lg-12">
-        <form action="{{route('room.search')}}" class="filter__form" method="GET">
-            {{-- <div class="filter__form__item filter__form__item--search">
-                <p>Location</p>
-                <div class="filter__form__select">
-                    <span class="icon_pin_alt"></span>
-                    <select>
-                        <option value="">Da Nang</option>
-                        <option value="">Hoi An</option>
-                        <option value="">Ho Chi Minh</option>
-                        <option value="">Ha Noi</option>
-                    </select>
-                </div>
-            </div> --}}
+        <form action="{{ route('rooms.search') }}" class="filter__form" method="get">
             <div class="filter__form__item">
                 <p>Check In</p>
                 <div class="filter__form__datepicker">
@@ -67,7 +55,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit">CHECK NOW</button>
+            <button type="submit" value="Submit">Check Available</button>
         </form>
     </div>
 </div>

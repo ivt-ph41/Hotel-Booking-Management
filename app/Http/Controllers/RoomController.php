@@ -31,14 +31,28 @@ class RoomController extends Controller
     public function show($id)
     {
         // Get room by id
-        $room = $this->roomRepository->with(['bed', 'images', 'type', 'comments.user', 'personRoom'])->find($id);
-
+        // \DB::enableQueryLog();
+        $room = $this->roomRepository->with(['bed', 'images', 'type', 'comments.user', 'personRoom', 'comments' => function ($query) {
+            return $query->orderBy('id', 'desc');
+        }])->find($id);
+        // dd(\DB::getQueryLog());
         // dd($room->toArray());
         return view('rooms.detail', compact('room'));
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        
+        // dd($request->all());
+        // $date_start = $request->input('date_start');
+        // $date_start = strtotime($date_start);
+        // $date_start = date('Y-m-d', $date_start);
+
+        // $date_end = $request->input('date_end');
+        // $date_end = strtotime($date_end);
+        // $date_end = date('Y-m-d', $date_end);
+        // $rooms = $this->model->with(['bookingDetails' => function ($query) use ($date_start, $date_end) {
+        //     return $query->where('date_start', '<', $date_start)
+        //         ->orWhere('date_end', '>', $date_end);
+        // }]);
     }
 }

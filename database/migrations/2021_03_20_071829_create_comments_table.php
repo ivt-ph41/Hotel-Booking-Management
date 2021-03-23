@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('room_id');
-            $table->string('content');
+            $table->text('content');
             $table->softDeletes();
             $table->timestamps();
         });

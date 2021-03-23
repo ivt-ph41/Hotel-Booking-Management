@@ -40,13 +40,17 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     */
     public function search(Request $request)
     {
+        dd($request->all());
         $date_start = $request->input('date_start');
         $date_start = strtotime($date_start);
         $date_start = date('Y-m-d', $date_start);
-        
+
         $date_end = $request->input('date_end');
         $date_end = strtotime($date_end);
         $date_end = date('Y-m-d', $date_end);
-        $this->model->with(['bookingDetails', 'personRoom']);
+        $rooms = $this->model->with(['bookingDetails' => function ($query) use ($date_start, $date_end) {
+            return $query->where('date_start', '<', $date_start)
+                ->orWhere('date_end', '>', $date_end);
+        }]);
     }
 }

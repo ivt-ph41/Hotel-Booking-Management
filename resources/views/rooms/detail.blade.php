@@ -65,9 +65,13 @@
                         <div class="col-lg-6">
                             <h3><i>Comment</i></h3>
                             @auth
-                            <form action="" method="post">
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
-                                <button type="submit">Submit comment</button>
+                            <form action="{{route('comments.store', ['id' => $room->id])}}" method="post"
+                                style="margin-bottom: 2%">
+                                @csrf
+                                <div>
+                                    <textarea name="content" id="" cols="50" rows="5"></textarea>
+                                </div>
+                                <button type="submit">Send your comment</button>
                             </form>
                             @endauth
                             @foreach ($room->comments as $comment)

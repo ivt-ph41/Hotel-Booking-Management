@@ -7,6 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\CommentRepository;
 use App\Entities\Comment;
 use App\Validators\CommentValidator;
+use Illuminate\Http\Request;
 
 /**
  * Class CommentRepositoryEloquent.
@@ -25,7 +26,7 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
         return Comment::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +35,15 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function storeComment($room_id, Request $request)
+    {
+        if (\Auth::check()) {
+            $user_id = \Auth::user()->id;
+            $data = $request->except('_token');
+            $data['user_id'] = $user_id;
+            $data['room_id'] = $room_id;
+            $this->model->create($data);
+        }
+    }
 }

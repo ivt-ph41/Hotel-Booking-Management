@@ -24,7 +24,7 @@ class Comment extends Model implements Transformable
     protected $fillable = [
         'user_id',
         'room_id',
-        'description'
+        'content'
     ];
 
     // RELATION SHIP

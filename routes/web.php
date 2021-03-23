@@ -24,12 +24,12 @@ Auth::routes();
 /**
  * List all rooms
  */
-Route::get('/rooms', 'RoomController@index')->name('rooms.index');
+Route::get('rooms', 'RoomController@index')->name('rooms.index');
 
 /**
  * Detail room
  */
-Route::get('/rooms/{id}', 'RoomController@show')->name('rooms.show');
+Route::get('rooms/{id}', 'RoomController@show')->name('rooms.show');
 
 /**
  * Guest
@@ -40,4 +40,7 @@ Route::get('rooms/{room_id}/booking', 'BookingController@create')->name('booking
 Route::post('rooms/{room_id}/booking', 'BookingController@store')->name('bookings.store');
 
 // Filter seach room available
-Route::get('/rooms/search', 'RoomController@search')->name('room.search');
+Route::get('rooms/search', 'RoomController@search')->name('rooms.search');
+
+// User send comment
+Route::post('rooms/{id}/comment', 'CommentController@store')->name('comments.store');

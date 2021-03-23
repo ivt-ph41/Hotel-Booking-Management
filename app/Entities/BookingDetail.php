@@ -25,7 +25,7 @@ class BookingDetail extends Model implements Transformable
         'room_id',
         'date_start',
         'date_end',
-        
+        'booking_id'
     ];
 
     /*

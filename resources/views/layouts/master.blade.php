@@ -91,9 +91,15 @@
                                     <li><a href="#">Contact</a></li>
                                 </ul>
                             </nav>
+                            @auth
+
+
+                            @endauth
+                            @guest
                             <div class="header__nav__widget">
                                 <a href="{{ route('rooms.index') }}">Book Now <span class="arrow_right"></span></a>
                             </div>
+                            @endguest
                         </div>
                     </div>
                 </div>
