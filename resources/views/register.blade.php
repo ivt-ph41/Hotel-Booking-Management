@@ -44,33 +44,49 @@
                     {{-- Email begin  --}}
                     <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
                         <span class="label-input100">Email</span>
-                        <input class="input100" type="text" name="email" placeholder="Type your email">
+                        <input class="input100" type="text" name="email" placeholder="Type your email"
+                            value="{{ old('email') }}">
                         <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
+                    @if($errors->has('email'))
+                    <p style="color: red;">{{ $errors->first('email') }}</p>
+                    @endif
                     {{-- Email end --}}
 
                     {{-- Name begin  --}}
-                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Name is reauired">
                         <span class="label-input100">Name</span>
-                        <input class="input100" type="text" name="name" placeholder="Type your name">
+                        <input class="input100" type="text" name="name" placeholder="Type your name"
+                            value="{{old('name')}}">
                         <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
+                    @if($errors->has('name'))
+                    <p style="color: red;">{{ $errors->first('name') }}</p>
+                    @endif
                     {{-- Name End --}}
 
                     {{-- Phone begin  --}}
-                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Phone number is reauired">
                         <span class="label-input100">Phone Number</span>
-                        <input class="input100" type="text" name="phone" placeholder="Type your phone">
+                        <input class="input100" type="text" name="phone" placeholder="Type your phone"
+                            value="{{old('phone')}}">
                         <span class="focus-input100" data-symbol="&#9742;"></span>
                     </div>
+                    @if($errors->has('phone'))
+                    <p style="color: red;">{{ $errors->first('phone') }}</p>
+                    @endif
                     {{-- Phone End --}}
 
                     {{-- Adress begin  --}}
-                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
-                        <span class="label-input100">Location</span>
-                        <input class="input100" type="text" name="address" placeholder="Type your address">
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Location is reauired">
+                        <span class="label-input100">Address</span>
+                        <input class="input100" type="text" name="address" placeholder="Type your address"
+                            value="{{old('address')}}">
                         <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
+                    @if($errors->has('address'))
+                    <p style="color: red;">{{ $errors->first('address') }}</p>
+                    @endif
                     {{-- Address End --}}
 
                     {{-- Password begin --}}
@@ -79,14 +95,21 @@
                         <input class="input100" type="password" name="password" placeholder="Type your password">
                         <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
+                    @if($errors->has('password'))
+                    <p style="color: red;">{{ $errors->first('password') }}</p>
+                    @endif
                     {{-- Password end --}}
 
                     {{-- Password confirmation begin --}}
-                    <div class="wrap-input100 validate-input m-b-23" data-validate="Password is required">
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Password confirm is required">
                         <span class="label-input100">Password Confirmation</span>
-                        <input class="input100" type="password" name="password" placeholder="Type your password again">
+                        <input class="input100" type="password" name="password_confirmation"
+                            placeholder="Type your password again">
                         <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
+                    @if($errors->has('password_confirmation'))
+                    <p style="color: red;">{{ $errors->first('password_confirmation') }}</p>
+                    @endif
                     {{-- Password confirmation end --}}
 
 

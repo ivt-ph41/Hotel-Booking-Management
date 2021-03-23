@@ -24,7 +24,7 @@ class Role extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name'];
 
     /**
      * ONE TO ONE: ROLE WITH USER

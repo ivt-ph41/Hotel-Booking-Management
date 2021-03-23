@@ -21,6 +21,13 @@ class Profile extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name', 'address', 'phone'];
 
+    /*
+    ONE TO ONE PROFILE BELONG TO USER
+    */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
