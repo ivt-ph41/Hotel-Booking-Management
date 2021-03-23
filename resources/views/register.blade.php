@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Hiroto | Login</title>
+    <title>Hiroto | Register</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -36,35 +36,66 @@
     <div class="limiter">
         <div class="container-login100" style="background-image: url('{{asset('Login/images/bg-01.jpg')}}');">
             <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-                <form class="login100-form validate-form" action="{{ route('login') }}" method="POST">
+                <form class="login100-form validate-form" action="{{ route('register') }}" method="POST">
                     @csrf
                     <span class="login100-form-title p-b-49">
-                        Login
+                        Register
                     </span>
-
+                    {{-- Email begin  --}}
                     <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
                         <span class="label-input100">Email</span>
                         <input class="input100" type="text" name="email" placeholder="Type your email">
                         <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
+                    {{-- Email end --}}
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    {{-- Name begin  --}}
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
+                        <span class="label-input100">Name</span>
+                        <input class="input100" type="text" name="name" placeholder="Type your name">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
+                    </div>
+                    {{-- Name End --}}
+
+                    {{-- Phone begin  --}}
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
+                        <span class="label-input100">Phone Number</span>
+                        <input class="input100" type="text" name="phone" placeholder="Type your phone">
+                        <span class="focus-input100" data-symbol="&#9742;"></span>
+                    </div>
+                    {{-- Phone End --}}
+
+                    {{-- Adress begin  --}}
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is reauired">
+                        <span class="label-input100">Location</span>
+                        <input class="input100" type="text" name="address" placeholder="Type your address">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
+                    </div>
+                    {{-- Address End --}}
+
+                    {{-- Password begin --}}
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Password is required">
                         <span class="label-input100">Password</span>
                         <input class="input100" type="password" name="password" placeholder="Type your password">
                         <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
+                    {{-- Password end --}}
 
-                    <div class="text-right p-t-8 p-b-31">
-                        <a href="#">
-                            Forgot password?
-                        </a>
+                    {{-- Password confirmation begin --}}
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Password is required">
+                        <span class="label-input100">Password Confirmation</span>
+                        <input class="input100" type="password" name="password" placeholder="Type your password again">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
+                    {{-- Password confirmation end --}}
+
+
 
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button class="login100-form-btn">
-                                Login
+                                Register
                             </button>
                         </div>
                         @if (session()->has('error'))
@@ -72,12 +103,6 @@
                             <p style="color: rgb(194, 11, 11)">{{session()->get('error')}}</p>
                         </div>
                         @endif
-                    </div>
-
-                    <div class="flex-col-c p-t-155">
-                        <a href="{{route('register')}}" class="txt2">
-                            Register
-                        </a>
                     </div>
                 </form>
             </div>
