@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\CommentRepository;
-use App\Entities\Comment;
 
 class CommentController extends Controller
 {
@@ -21,6 +20,6 @@ class CommentController extends Controller
     public function store($room_id, Request $request)
     {
         $this->commentRepository->storeComment($room_id, $request);
-        return 'Sucesss';
+        return redirect()->route('rooms.show', ['id' => $room_id]);
     }
 }
