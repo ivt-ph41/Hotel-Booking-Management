@@ -38,9 +38,10 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     /*
     * Filter room by date and a number person/room
     */
-    public function search(Request $request)
+    public function filterRoom(Request $request)
     {
-        dd($request->all());
+        $person_room_id = $request->input('person_room');
+
         $date_start = $request->input('date_start');
         $date_start = strtotime($date_start);
         $date_start = date('Y-m-d', $date_start);
@@ -48,9 +49,19 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
         $date_end = $request->input('date_end');
         $date_end = strtotime($date_end);
         $date_end = date('Y-m-d', $date_end);
-        $rooms = $this->model->with(['bookingDetails' => function ($query) use ($date_start, $date_end) {
-            return $query->where('date_start', '<', $date_start)
-                ->orWhere('date_end', '>', $date_end);
-        }]);
+
+        // \DB::enableQueryLog();
+        $rooms = $this->model->with([
+            'type',
+            'bed',
+            'bookingDetails' => function ($query) use ($date_start, $date_end) {
+                return $query->where('date_start', '<', $date_start)
+                    ->Where('date_end', '>', $date_end);
+            }
+        ])->where('person_room_id', '=', $person_room_id)->paginate(3);
+
+        return $rooms;
+
+        // dd(\DB::getQueryLog());
     }
 }

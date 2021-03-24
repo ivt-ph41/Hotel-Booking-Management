@@ -44,7 +44,7 @@
                 <p>Person</p>
                 <div class="filter__form__select">
                     <span class="icon_group"></span>
-                    <select>
+                    <select name="person_room">
                         @isset($person_room_list)
                         @foreach ($person_room_list as $item)
                         <option value="{{ $item->id }}">
@@ -55,7 +55,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" value="Submit">Check Available</button>
+            <button type="submit">Check Available</button>
         </form>
     </div>
 </div>
@@ -99,18 +99,22 @@
     </div>
 </section>
 <!-- Rooms Section End -->
-@endisset
 
 {{-- Paginate --}}
 <div class="row">
     <div class="col-lg-12">
-        <div class="pagination__number">
+        {{-- <div class="pagination__number">
             <a href="#">1</a>
             <a href="#">2</a>
             <a href="#">Next <span class="arrow_right"></span></a>
-            {{ $rooms->links() }}
-        </div>
+        </div> --}}
+        {{ $rooms->links() }}
     </div>
 </div>
+@endisset
 
+
+{{-- Filter Room start --}}
+
+{{-- Filter Room End --}}
 @endsection

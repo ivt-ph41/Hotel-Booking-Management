@@ -13,9 +13,9 @@ $factory->define(Room::class, function (Faker $faker) {
     $list_type_room_id = Type::pluck('id');
     $list_person_room_id = PersonRoom::pluck('id');
     return [
-        'name' => $faker->name,
-        'price' => rand(1,100),
-        'size' => rand(30,50),
+        'name' => $faker->numberBetween(1, 100),
+        'price' => rand(1, 100),
+        'size' => rand(30, 50),
         'description' => $faker->text,
         'bed_id' => $faker->randomElement($list_bed_id),
         'type_id' => $faker->randomElement($list_type_room_id),

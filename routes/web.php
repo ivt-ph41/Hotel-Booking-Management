@@ -11,6 +11,9 @@
 |
 */
 
+// Filter seach room available
+Route::get('rooms/filter', 'RoomController@filterRoom')->name('rooms.search');
+
 Route::get('/', function () {
     $rooms = \App\Entities\Room::with(['type', 'images'])->take(4)->get();
     // dd($rooms->toArray());
@@ -22,7 +25,7 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 
 /**
- * List all rooms
+ * List rooms
  */
 Route::get('rooms', 'RoomController@index')->name('rooms.index');
 
@@ -31,16 +34,16 @@ Route::get('rooms', 'RoomController@index')->name('rooms.index');
  */
 Route::get('rooms/{id}', 'RoomController@show')->name('rooms.show');
 
-/**
- * Guest
- */
 
-//Booking
+
+//Guest booking and user booking
 Route::get('rooms/{room_id}/booking', 'BookingController@create')->name('bookings.create');
 Route::post('rooms/{room_id}/booking', 'BookingController@store')->name('bookings.store');
 
-// Filter seach room available
-Route::get('rooms/search', 'RoomController@search')->name('rooms.search');
 
 // User send comment
 Route::post('rooms/{id}/comment', 'CommentController@store')->name('comments.store');
+
+
+// User Profile
+Route::get('users/profile', 'UserController@profile')->name('users.profile');

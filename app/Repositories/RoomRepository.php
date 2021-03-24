@@ -12,5 +12,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface RoomRepository extends RepositoryInterface
 {
-    public function search(Request $request);
+    public function filterRoom(Request $request);
 }

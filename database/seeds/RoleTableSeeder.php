@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Entities\Role;
+
 class RoleTableSeeder extends Seeder
 {
     /**
@@ -18,7 +19,7 @@ class RoleTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Nomal User',
+                'name' => 'User',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

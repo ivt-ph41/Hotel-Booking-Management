@@ -71,7 +71,7 @@
                                 <div>
                                     <textarea name="content" id="" cols="50" rows="5"></textarea>
                                 </div>
-                                <button type="submit">Send your comment</button>
+                                <button type="submit" class="btn btn-danger">Send your comment</button>
                             </form>
                             @endauth
                             @foreach ($room->comments as $comment)

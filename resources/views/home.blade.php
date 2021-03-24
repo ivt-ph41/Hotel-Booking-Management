@@ -113,9 +113,10 @@ dd($rooms->toArray());
                 <div class="home__room__item set-bg" data-setbg="{{ $room->images->first()->path}}">
                     <div class="home__room__title">
                         <h4>{{$room->type->name}}</h4>
+                        <small style="color: white">{{_('Room name: ' . $room->name)}}</small>
                         <h2><sup>$</sup>{{$room->price}}<span>/day</span></h2>
                     </div>
-                    <a href="#">Booking Now</a>
+                    <a href="{{route('rooms.show', $room->id)}}">Booking Now</a>
                 </div>
             </div>
             @endif

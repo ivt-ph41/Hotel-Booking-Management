@@ -12,6 +12,7 @@
     {{-- favicon --}}
     <link rel="shortcut icon" href="https://img.icons8.com/dusk/64/000000/3-star-hotel.png" type="image/x-icon">
 
+    @yield('css')
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('hiroto-master/css/bootstrap.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('hiroto-master/css/font-awesome.min.css')}}" type="text/css">
@@ -21,6 +22,9 @@
     <link rel="stylesheet" href="{{ asset('hiroto-master/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('hiroto-master/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('hiroto-master/css/style.css')}}" type="text/css">
+
+
+
 </head>
 
 <body>
@@ -47,11 +51,15 @@
                                 @auth
 
                                 <form action="{{ route('logout') }}" method="post">
+                                    <a href="{{route('users.profile')}}" style="font-size: 100%; color:black">
+                                        {{\Auth::user()->email}}
+                                    </a>
                                     @csrf
-                                    <b style="font-size: 100%;">{{\Auth::user()->email}}</b>
                                     <button style="border: solid #e9ad28; background-color: #e9ad28;"
                                         type="submit">Logout</button>
                                 </form>
+
+
                                 @endauth
                                 @guest
                                 <ul>
@@ -92,8 +100,9 @@
                                 </ul>
                             </nav>
                             @auth
-
-
+                            <div class="header__nav__widget">
+                                <a href="{{ route('rooms.index') }}">Your Booking <span class="arrow_right"></span></a>
+                            </div>
                             @endauth
                             @guest
                             <div class="header__nav__widget">
@@ -249,6 +258,7 @@
     <script src="{{ asset('hiroto-master/js/jquery.slicknav.js')}}"></script>
     <script src="{{ asset('hiroto-master/js/owl.carousel.min.js')}}"></script>
     <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
+
 </body>
 
 </html>
