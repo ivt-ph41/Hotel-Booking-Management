@@ -51,7 +51,8 @@
                                 @auth
 
                                 <form action="{{ route('logout') }}" method="post">
-                                    <a href="{{route('users.profile')}}" style="font-size: 100%; color:black">
+                                    <a href="{{route('users.profile')}}" title="Click to view your profile"
+                                        style="font-size: 100%; color:black">
                                         {{\Auth::user()->email}}
                                     </a>
                                     @csrf
@@ -101,7 +102,7 @@
                             </nav>
                             @auth
                             <div class="header__nav__widget">
-                                <a href="{{ route('rooms.index') }}">Your Booking <span class="arrow_right"></span></a>
+                                <a href="{{ route('users.booking') }}">My Booking <span class="arrow_right"></span></a>
                             </div>
                             @endauth
                             @guest
@@ -250,6 +251,7 @@
     </footer>
     <!-- Footer Section End -->
 
+    @yield('js')
     <!-- Js Plugins -->
     <script src="{{ asset('hiroto-master/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{ asset('hiroto-master/js/bootstrap.min.js')}}"></script>

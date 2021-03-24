@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\BookingRepository;
 use App\Repositories\RoomRepository;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -14,6 +15,7 @@ class BookingController extends Controller
     {
         $this->bookingRepository = $bookingRepository;
         $this->roomRepository = $roomRepository;
+        $this->middleware('auth')->only('show');
     }
 
     public function create($room_id)
@@ -31,9 +33,16 @@ class BookingController extends Controller
         return view('bookings.create', compact('room'));
     }
 
+    /**
+     * Store new booking in bookings table and booking_details table
+     */
     public function store($room_id, Request $request)
     {
         $this->bookingRepository->booking($room_id, $request);
-        return 'SUCCESS';
+        if (Auth::check()) {
+            return redirect()->route('users.booking');
+        }
+
+        return redirect()->back()->withInput()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
     }
 }

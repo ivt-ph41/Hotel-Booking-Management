@@ -18,7 +18,7 @@ class Booking extends Model implements Transformable
     use SoftDeletes;
 
     const PENDING_STATUS = 0;
-    const ARPROVE_STATUS = 1;
+    const APPROVE_STATUS = 1;
     const CANCEL_STATUS = 2;
 
     /**

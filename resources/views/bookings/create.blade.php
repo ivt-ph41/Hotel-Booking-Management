@@ -2,9 +2,11 @@
 @section('title','Booking')
 @section('content')
 <div style="margin-bottom: 2%">
-    {{-- @php
-    dd($room);
-    @endphp --}}
+    @if (session()->has('booking_success'))
+    <div>
+        <p style="color: rgb(194, 11, 11)">{{session()->get('booking_success')}}</p>
+    </div>
+    @endif
     <h1>Room: {{$room->name}}</h1>
     <h2>Price: <sup>$</sup>{{$room->price}}<span>/day</span></h2>
 </div>
@@ -50,6 +52,7 @@
 </form>
 @endauth
 @guest
+
 <form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form"
     style="border: solid #e9ad28; " method="post">
     @csrf

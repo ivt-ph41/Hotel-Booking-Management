@@ -11,6 +11,6 @@ class BookingDetailTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Entities\BookingDetail', 30)->create();
+        factory('App\Entities\BookingDetail', 200)->create();
     }
 }

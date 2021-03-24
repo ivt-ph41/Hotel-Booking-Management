@@ -24,8 +24,8 @@
             <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
                 <div class="container">
                     <h2>{{$user->profile->name}}</h2>
-                    <p>Change Profile</p>
-                    <p>Change Password</p>
+                    <p><a href="{{route('users.edit')}}">{{__('Change Profile')}}</a></p>
+                    <p><a href="">{{__('Change Password')}}</a></p>
                 </div>
                 <hr>
                 <ul class="container details">

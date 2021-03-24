@@ -2,6 +2,7 @@
 @section('title', 'Room-Detail')
 
 @section('content')
+
 <!-- Room Details Slider Begin -->
 <div class="room-details-slider">
     <div class="container">
