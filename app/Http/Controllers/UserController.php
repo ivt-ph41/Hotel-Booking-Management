@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\EditProfileRequest;
 use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\Guard;
 
 class UserController extends Controller
 {
@@ -15,7 +19,7 @@ class UserController extends Controller
     {
         $this->userRepository = $userRepository;
         $this->profileRepository = $profileRepository;
-        $this->middleware('auth')->only('edit', 'update');
+        $this->middleware('auth')->only('edit', 'update', 'changePassword', 'updatePassword');
     }
 
     /**
@@ -56,7 +60,23 @@ class UserController extends Controller
     public function userBooking()
     {
         $user = $this->userRepository->with('bookings.bookingDetails.room')->find(Auth::id());
-        // dd($user->toArray());
+
         return view('bookings.user-booking', compact('user'));
+    }
+
+    /**
+     * SHOW FORM CHANGE PASSWORD
+     */
+    public function changePassword()
+    {
+        return view('users.change-password');
+    }
+
+    /**
+     * Update password
+     */
+    public function updatePassword(ChangePasswordRequest $request)
+    {
+        return $this->userRepository->updatePassword($request);
     }
 }

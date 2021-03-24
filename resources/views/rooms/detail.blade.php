@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="room__details__title">
-                        <h2>{{ $room->type->name }}</h2>
+                        <h2>Name:{{$room->name}} <small>(Type:{{$room->type->name}})</small></h2>
                         <a href="{{ route('bookings.create', ['room_id' => $room->id ]) }}" class="primary-btn">Booking
                             Now</a>
                     </div>
@@ -66,13 +66,14 @@
                         <div class="col-lg-6">
                             <h3><i>Comment</i></h3>
                             @auth
-                            <form action="{{route('comments.store', ['id' => $room->id])}}" method="post"
-                                style="margin-bottom: 2%">
+                            <form id="frm-commnent" action="{{route('comments.store', ['id' => $room->id])}}"
+                                method="post" style="margin-bottom: 2%">
                                 @csrf
                                 <div>
-                                    <textarea name="content" id="" cols="50" rows="5"></textarea>
+                                    <textarea style="background-color: #e9ad28;color:#FFF" name="content" id=""
+                                        cols="50" rows="5"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-danger">Send your comment</button>
+                                <button type=" submit" class="btn btn-danger">Send your comment</button>
                             </form>
                             @endauth
                             @foreach ($room->comments as $comment)
@@ -175,5 +176,17 @@
             </div>
         </div>
     </div>
+    {{-- <script>
+        $(document).ready(() => {
+            $('#frm-commnent').on('submit', () => {
+                return false;
+            });
+        });
+        $('#frm-commnent').keypress((e) => {
+            if (e.which === 13) {
+                $('#frm-commnent').submit();
+            }
+        })
+    </script> --}}
 </section>
 @endsection

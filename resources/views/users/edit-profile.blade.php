@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Hiroto | Login</title>
+    <title>Hiroto | Edit Profile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -40,7 +40,7 @@
                     @csrf
                     @method('PUT')
                     <span class="login100-form-title p-b-49">
-                        Change Your Profile Information
+                        Change Profile
                     </span>
 
                     <div class="wrap-input100 validate-input m-b-23" data-validate="Name is reauired">

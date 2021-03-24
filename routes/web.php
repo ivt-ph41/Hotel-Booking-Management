@@ -52,6 +52,11 @@ Route::post('rooms/{id}/comment', 'CommentController@store')->name('comments.sto
 Route::get('users/profile', 'UserController@profile')->name('users.profile');
 
 // Edit User Profile
-Route::get('users/edit', 'UserController@edit')->name('users.edit');
+Route::get('users/edit/profile', 'UserController@edit')->name('users.edit');
 
 Route::put('users/change/profile', 'UserController@update')->name('users.update');
+
+// Edit User password
+Route::get('users/change/password', 'UserController@changePassword')->name('users.change-password');
+
+Route::put('users/change/password', 'UserController@updatePassword')->name('users.update-password');

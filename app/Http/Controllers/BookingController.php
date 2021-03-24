@@ -21,7 +21,7 @@ class BookingController extends Controller
     public function create($room_id)
     {
         // if  current user loggin in system
-        if (\Auth::check()) {
+        if (Auth::check()) {
             $user = \Auth::user();
             $profile = $user->profile()->get();
             // dd($profile->toArray());

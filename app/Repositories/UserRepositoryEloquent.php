@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\RegisterUserRequest;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -9,6 +10,8 @@ use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Validators\UserValidator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserRepositoryEloquent.
@@ -43,6 +46,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function register(RegisterUserRequest $request)
     {
         $data = $request->only('email', 'password');
+        $data['password'] = Hash::make($data['password']);
+
         // Get User's role = 2
         $data['role_id'] = \App\Entities\Role::USER_ROLE;
 
@@ -68,5 +73,17 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         }
 
         return $user;
+    }
+
+    public function updatePassword(ChangePasswordRequest $request)
+    {
+        if (Hash::check($request->input('current_password'), Auth::user()->password)) {
+            // Update new password
+            $this->model->where('id', Auth::id())->update([
+                'password' => Hash::make($request->input('new_password'))
+            ]);
+            return redirect()->back()->with(['success' => 'Your current password is update']);
+        }
+        return redirect()->back()->with(['error' => 'Your current password is not correct!']);
     }
 }
