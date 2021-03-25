@@ -4,7 +4,7 @@
 <div style="margin-bottom: 2%">
     @if (session()->has('booking_success'))
     <div>
-        <p style="color: rgb(194, 11, 11)">{{session()->get('booking_success')}}</p>
+        <p style="color: lawngreen">{{session()->get('booking_success')}}</p>
     </div>
     @endif
     <h1>Room: {{$room->name}}</h1>

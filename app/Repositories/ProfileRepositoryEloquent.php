@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\EditProfileRequest;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\ProfileRepository;
+use Illuminate\Support\Facades\Auth;
 use App\Entities\Profile;
 use App\Validators\ProfileValidator;
 
@@ -25,7 +26,7 @@ class ProfileRepositoryEloquent extends BaseRepository implements ProfileReposit
         return Profile::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +35,14 @@ class ProfileRepositoryEloquent extends BaseRepository implements ProfileReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    /**
+     * Update profile user
+     */
+    public function updateProfile(EditProfileRequest $request)
+    {
+        // TODO: Implement updateProfile() method.
+        return  $this->model->where('user_id', Auth::id())->update($request->except('_token', '_method'));
+    }
+
 }

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\LoginController;
+
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\EditProfileRequest;
 use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Auth\Guard;
 
 class UserController extends Controller
 {
@@ -19,7 +17,7 @@ class UserController extends Controller
     {
         $this->userRepository = $userRepository;
         $this->profileRepository = $profileRepository;
-        $this->middleware('auth')->only('edit', 'update', 'changePassword', 'updatePassword');
+        $this->middleware('auth')->only('editΩ', 'update', 'changePassword', 'updatePassword');
     }
 
     /**
@@ -48,8 +46,7 @@ class UserController extends Controller
      */
     public function update(EditProfileRequest $request)
     {
-        $this->profileRepository->where('user_id', Auth::id())->update($request->except('_token', '_method'));
-
+        $this->profileRepository->updateProfile($request);
         // Return view profile with user
         return $this->profile();
     }
