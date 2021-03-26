@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', function () {
@@ -60,3 +62,6 @@ Route::put('users/change/profile', 'UserController@update')->name('users.update'
 Route::get('users/change/password', 'UserController@changePassword')->name('users.change-password');
 
 Route::put('users/change/password', 'UserController@updatePassword')->name('users.update-password');
+
+
+

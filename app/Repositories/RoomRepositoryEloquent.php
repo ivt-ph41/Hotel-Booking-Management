@@ -58,7 +58,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
                 return $query->where('date_start', '<', $date_start)
                     ->Where('date_end', '>', $date_end);
             }
-        ])->where('person_room_id', '=', $person_room_id)->paginate(3);
+        ])->where('person_room_id', '=', $person_room_id)->get();
 
         return $rooms;
 
