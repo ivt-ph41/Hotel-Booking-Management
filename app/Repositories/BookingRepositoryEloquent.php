@@ -38,6 +38,9 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    /**
+     * Store booking of user or guest
+     */
     public function booking($room_id, Request $request)
     {
         $date_start = $request->input('date_start');
@@ -54,39 +57,45 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
             'date_end' => $date_end
         ];
         //  Booking success if current booking of user not exist in system
+        //checking current booking of user vs in system
         $check_booking = BookingDetail::where('room_id', '=', $room_id)
             ->where('date_start', '=', $date_start)
             ->where('date_end', '=', $date_end)
             ->get();
-        //        dd($check_booking->toArray());
-        $x = 5;
-        if ($x == 5) { // if not booking in system, user can booking this room
-            // dd('ok');
-            if (Auth::check()) { // if user authentication
-                $user_id = Auth::user()->id;
+        // dd($check_booking);
+        // if date_end <= date_start then redirect back with error
+        if ($date_end > $date_start) {
 
-                $data = $request->except('date_start', 'date_end', '_token');
-                $data['user_id'] = $user_id;
+            if (count($check_booking) == 0) { // if not have this booking in system, user can booking this room
 
-                // Create new resource to bookings table
-                $booking = $this->model->create($data);
+                if (Auth::check()) { // if user authentication
+                    $user_id = Auth::user()->id;
 
-                // Create booking detail
-                $booking->bookingDetails()->create($booking_detail);
+                    $data = $request->except('date_start', 'date_end', '_token');
+                    $data['user_id'] = $user_id;
 
-                // if success
-                return redirect()->route('users.booking');
-            } else { // if guest
-                // Create new resource to bookings table
-                $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
+                    // Create new resource to bookings table
+                    $booking = $this->model->create($data);
 
-                // Create booking detail
-                $booking->bookingDetails()->create($booking_detail);
-                //if success
-                return redirect()->back()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
+                    // Create booking detail
+                    $booking->bookingDetails()->create($booking_detail);
+
+                    // if success
+                    return redirect()->route('users.booking');
+                } else { // if guest
+                    // Create new resource to bookings table
+                    $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
+
+                    // Create booking detail
+                    $booking->bookingDetails()->create($booking_detail);
+                    //if success
+                    return redirect()->back()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
+                }
+            } else {
+                return redirect()->back()->with(['booking_fail' => 'This room have been booking by other user, please try another room or change another day!']);
             }
         } else {
-            return redirect()->back()->with(['booking_fail' => 'This room have been booking by other user, please try another room or change another day!']);
+            return redirect()->back()->with(['booking_fail' => 'Something wrong, date end can not less than date start!']);
         }
     }
 }

@@ -87,47 +87,5 @@ dd($rooms->toArray());
 </section>
 <!-- Services Section End -->
 
-<!-- Home Room Section Begin -->
-<section class="home-room spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h5>OUR ROOM</h5>
-                    <h2>Explore Our Hotel</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            {{-- Get 4 rooms in system begin --}}
-
-            @isset($rooms)
-            @foreach ($rooms as $room)
-            {{-- @php
-                dd($rooms->toArray());
-            @endphp --}}
-            @if (!empty($room->images->first()))
-            <div class="col-lg-3 col-md-6 col-sm-6 p-0">
-                <div class="home__room__item set-bg" data-setbg="{{ $room->images->first()->path}}">
-                    <div class="home__room__title">
-                        <h4>{{$room->type->name}}</h4>
-                        <small style="color: white">{{_('Room name: ' . $room->name)}}</small>
-                        <h2><sup>$</sup>{{$room->price}}<span>/day</span></h2>
-                    </div>
-                    <a href="{{route('rooms.show', $room->id)}}">Booking Now</a>
-                </div>
-            </div>
-            @endif
-
-            @endforeach
-            @endisset
-
-            {{-- Get 4 rooms end --}}
-        </div>
-    </div>
-</section>
-<!-- Home Room Section End -->
 
 @endsection

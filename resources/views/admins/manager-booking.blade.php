@@ -56,13 +56,19 @@
                                         @method('PUT')
                                         <div class="form-check">
                                             <select name="status" class="form-control">
-                                                <option value="{{\App\Entities\Booking::PENDING_STATUS}}">
+                                                <option
+                                                    {{\App\Entities\Booking::PENDING_STATUS == $booking_detail->booking->status? 'selected' : null}}
+                                                    value="{{\App\Entities\Booking::PENDING_STATUS}}">
                                                     {{__('Pending')}}
                                                 </option>
-                                                <option value="{{\App\Entities\Booking::APPROVE_STATUS}}">
+                                                <option
+                                                    {{\App\Entities\Booking::APPROVE_STATUS == $booking_detail->booking->status? 'selected' : null}}
+                                                    value="{{\App\Entities\Booking::APPROVE_STATUS}}">
                                                     {{__('Approve')}}
                                                 </option>
-                                                <option value="{{\App\Entities\Booking::CANCEL_STATUS}}">
+                                                <option
+                                                    {{\App\Entities\Booking::CANCEL_STATUS == $booking_detail->booking->status? 'selected' : null}}
+                                                    value="{{\App\Entities\Booking::CANCEL_STATUS}}">
                                                     {{__('Cancel')}}
                                                 </option>
                                             </select>

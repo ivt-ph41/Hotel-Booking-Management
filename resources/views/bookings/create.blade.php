@@ -64,19 +64,19 @@
     <div class="filter__form__item">
         <p>Username</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="name">
+            <input style="padding: 0px" type="text" name="name">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Address</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="address">
+            <input style="padding: 0px" type="text" name="address">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Phone</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="phone">
+            <input style="padding: 0px" type="text" name="phone">
         </div>
     </div>
     <div class="filter__form__item">

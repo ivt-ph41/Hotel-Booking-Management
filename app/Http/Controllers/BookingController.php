@@ -25,6 +25,10 @@ class BookingController extends Controller
     {
         // if  current user loggin in system
         if (Auth::check()) {
+            //if user is admin, redirect back
+            if (Auth::user()->role_id == \App\Entities\Role::ADMIN_ROLE) {
+                return redirect()->back();
+            }
             $user = Auth::user();
             $profile = $user->profile()->get();
             // dd($profile->toArray());

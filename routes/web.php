@@ -10,14 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use Illuminate\Support\Facades\Route;
 
 
 
 Route::get('/', function () {
-    $rooms = \App\Entities\Room::with(['type', 'images'])->take(4)->get();
-
-    return view('home', compact('rooms'));
+    return view('home');
 })->name('/');
 
 Auth::routes();
@@ -62,6 +61,3 @@ Route::put('users/change/profile', 'UserController@update')->name('users.update'
 Route::get('users/change/password', 'UserController@changePassword')->name('users.change-password');
 
 Route::put('users/change/password', 'UserController@updatePassword')->name('users.update-password');
-
-
-
