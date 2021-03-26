@@ -18,11 +18,14 @@ class BookingController extends Controller
         $this->middleware('auth')->only('show');
     }
 
+    /**
+     * return view booking form with room_id
+     */
     public function create($room_id)
     {
         // if  current user loggin in system
         if (Auth::check()) {
-            $user = \Auth::user();
+            $user = Auth::user();
             $profile = $user->profile()->get();
             // dd($profile->toArray());
             $room = $this->roomRepository->find($room_id);
@@ -38,11 +41,6 @@ class BookingController extends Controller
      */
     public function store($room_id, Request $request)
     {
-        $this->bookingRepository->booking($room_id, $request);
-        if (Auth::check()) {
-            return redirect()->route('users.booking');
-        }
-
-        return redirect()->back()->withInput()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
+        return $this->bookingRepository->booking($room_id, $request);
     }
 }

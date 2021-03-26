@@ -2,30 +2,33 @@
 @section('title', 'Manager booking')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-gradient-orange">
-                        <h3 class="card-title">Manager booking of users</h3>
+<div class="container">
+    @if (session()->has('success'))
+    <p class="text-success">{{session()->get('success')}}</p>
+    @endif
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-gradient-orange">
+                    <h3 class="card-title">Manager booking of users</h3>
 
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right"
-                                       placeholder="Search">
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control float-right"
+                                placeholder="Search">
 
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0" style="height: 300px;">
-                        <table class="table table-head-fixed text-nowrap">
-                            <thead>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0" style="height: 300px;">
+                    <table class="table table-head-fixed text-nowrap">
+                        <thead>
                             <tr>
                                 <th>User</th>
                                 <th>Room</th>
@@ -34,48 +37,53 @@
                                 <th>Date end</th>
                                 <th>Status</th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             @isset($booking_details)
-                                @foreach($booking_details as $booking_detail)
-                                    <tr>
-                                        <td>{{$booking_detail->booking->user->email}}</td>
-                                        <td>{{$booking_detail->room->name}}</td>
-                                        <td>
-                                            {{$booking_detail->room->price}}
-                                        </td>
-                                        <td>{{$booking_detail->date_start}}</td>
-                                        <td>{{$booking_detail->date_end}}</td>
-                                        <td>
-                                            <form class="form-inline">
-                                                <div class="form-check">
-                                                    <select class="form-control">
-                                                        <option value="{{\App\Entities\Booking::PENDING_STATUS}}">
-                                                            {{__('Pending')}}
-                                                        </option>
-                                                        <option  value="{{\App\Entities\Booking::APPROVE_STATUS}}">
-                                                            {{__('Approve')}}
-                                                        </option>
-                                                        <option value="{{\App\Entities\Booking::CANCEL_STATUS}}">
-                                                            {{__('Cancel')}}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-check ml-5">
-                                                    <button class="btn btn-success">Confirm</button>
-                                                </div>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            @endisset
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
+                            @foreach($booking_details as $booking_detail)
+                            <tr>
+                                <td>{{$booking_detail->booking->name}}</td>
+                                <td>{{$booking_detail->room->name}}</td>
+                                <td>
+                                    {{$booking_detail->room->price}}
+                                </td>
+                                <td>{{$booking_detail->date_start}}</td>
+                                <td>{{$booking_detail->date_end}}</td>
+                                <td>
+                                    <form class="form-inline" method="POST"
+                                        action="{{route('admins.update.status-booking', ['id' => $booking_detail->booking->id])}}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="form-check">
+                                            <select name="status" class="form-control">
+                                                <option value="{{\App\Entities\Booking::PENDING_STATUS}}">
+                                                    {{__('Pending')}}
+                                                </option>
+                                                <option value="{{\App\Entities\Booking::APPROVE_STATUS}}">
+                                                    {{__('Approve')}}
+                                                </option>
+                                                <option value="{{\App\Entities\Booking::CANCEL_STATUS}}">
+                                                    {{__('Cancel')}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="date_start" value="{{$booking_detail->date_start}}">
+                                        <input type="hidden" name="date_end" value="{{$booking_detail->date_end}}">
+                                        <div class="form-check ml-5">
+                                            <button class="btn btn-success">Confirm</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        @endisset
+                    </table>
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
+            <!-- /.card -->
         </div>
     </div>
+</div>
 @endsection

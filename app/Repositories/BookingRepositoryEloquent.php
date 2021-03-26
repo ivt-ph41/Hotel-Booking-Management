@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\BookingRepository;
 use App\Entities\Booking;
 use App\Validators\BookingValidator;
 use Illuminate\Http\Request;
+use App\Entities\BookingDetail;
+
 
 /**
  * Class BookingRepositoryEloquent.
@@ -51,23 +53,40 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
             'date_start' => $date_start,
             'date_end' => $date_end
         ];
-        if (Auth::check()) {
-            $user_id = Auth::user()->id;
+        //  Booking success if current booking of user not exist in system
+        $check_booking = BookingDetail::where('room_id', '=', $room_id)
+            ->where('date_start', '=', $date_start)
+            ->where('date_end', '=', $date_end)
+            ->get();
+        //        dd($check_booking->toArray());
+        $x = 5;
+        if ($x == 5) { // if not booking in system, user can booking this room
+            // dd('ok');
+            if (Auth::check()) { // if user authentication
+                $user_id = Auth::user()->id;
 
-            $data = $request->except('date_start', 'date_end', '_token');
-            $data['user_id'] = $user_id;
+                $data = $request->except('date_start', 'date_end', '_token');
+                $data['user_id'] = $user_id;
 
-            // Create new resource to bookings table
-            $booking = $this->model->create($data);
+                // Create new resource to bookings table
+                $booking = $this->model->create($data);
 
-            // Create booking detail
-            $booking->bookingDetails()->create($booking_detail);
+                // Create booking detail
+                $booking->bookingDetails()->create($booking_detail);
+
+                // if success
+                return redirect()->route('users.booking');
+            } else { // if guest
+                // Create new resource to bookings table
+                $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
+
+                // Create booking detail
+                $booking->bookingDetails()->create($booking_detail);
+                //if success
+                return redirect()->back()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
+            }
         } else {
-            // Create new resource to bookings table
-            $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
-
-            // Create booking detail
-            $booking->bookingDetails()->create($booking_detail);
+            return redirect()->back()->with(['booking_fail' => 'This room have been booking by other user, please try another room or change another day!']);
         }
     }
 }
