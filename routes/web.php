@@ -11,11 +11,12 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
-    $rooms = \App\Entities\Room::with(['type', 'images'])->take(4)->get();
-
-    return view('home', compact('rooms'));
+    return view('home');
 })->name('/');
 
 Auth::routes();

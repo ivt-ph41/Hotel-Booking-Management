@@ -4,7 +4,12 @@
 <div style="margin-bottom: 2%">
     @if (session()->has('booking_success'))
     <div>
-        <p style="color: lawngreen">{{session()->get('booking_success')}}</p>
+        <p style="color: green">{{session()->get('booking_success')}}</p>
+    </div>
+    @endif
+    @if (session()->has('booking_fail'))
+    <div>
+        <p style="color: red">{{session()->get('booking_fail')}}</p>
     </div>
     @endif
     <h1>Room: {{$room->name}}</h1>
@@ -17,19 +22,19 @@
     <div class="filter__form__item">
         <p>Username</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="name" value="{{$profile->first()->name}}">
+            <input style="padding-left: 0px" type="text" name="name" value="{{$profile->first()->name}}">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Address</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="address" value="{{$profile->first()->address}}">
+            <input style="padding-left:0px" type="text" name="address" value="{{$profile->first()->address}}">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Phone</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="phone" value="{{$profile->first()->phone}}">
+            <input style="padding-left: 0px;" type="text" name="phone" value="{{$profile->first()->phone}}">
         </div>
     </div>
     <div class="filter__form__item">
@@ -59,19 +64,19 @@
     <div class="filter__form__item">
         <p>Username</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="name">
+            <input style="padding: 0px" type="text" name="name">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Address</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="address">
+            <input style="padding: 0px" type="text" name="address">
         </div>
     </div>
     <div class="filter__form__item">
         <p>Phone</p>
         <div class="filter__form__datepicker">
-            <input type="text" name="phone">
+            <input style="padding: 0px" type="text" name="phone">
         </div>
     </div>
     <div class="filter__form__item">
