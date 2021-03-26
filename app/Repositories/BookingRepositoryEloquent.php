@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Auth;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\BookingRepository;
@@ -27,7 +28,6 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     }
 
 
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -51,17 +51,21 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
             'date_start' => $date_start,
             'date_end' => $date_end
         ];
-        if (\Auth::check()) {
-            $user_id = \Auth::user()->id;
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
 
             $data = $request->except('date_start', 'date_end', '_token');
             $data['user_id'] = $user_id;
 
+            // Create new resource to bookings table
             $booking = $this->model->create($data);
+
             // Create booking detail
             $booking->bookingDetails()->create($booking_detail);
         } else {
+            // Create new resource to bookings table
             $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
+
             // Create booking detail
             $booking->bookingDetails()->create($booking_detail);
         }

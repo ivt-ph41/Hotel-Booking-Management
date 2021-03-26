@@ -13,11 +13,14 @@ class UserController extends Controller
 {
     protected $userRepository;
     protected $profileRepository;
+
     public function __construct(UserRepository $userRepository, ProfileRepository $profileRepository)
     {
         $this->userRepository = $userRepository;
+
         $this->profileRepository = $profileRepository;
-        $this->middleware('auth')->only('editΩ', 'update', 'changePassword', 'updatePassword');
+
+        $this->middleware('auth')->only('edit', 'update', 'changePassword', 'updatePassword');
     }
 
     /**
@@ -52,12 +55,12 @@ class UserController extends Controller
     }
 
     /**
-     * View user bookings
+     * View booking with user authentication
      */
     public function userBooking()
     {
         $user = $this->userRepository->with('bookings.bookingDetails.room')->find(Auth::id());
-
+//        dd($user->toArray());
         return view('bookings.user-booking', compact('user'));
     }
 
@@ -70,7 +73,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update password
+     * Update password from form change password
      */
     public function updatePassword(ChangePasswordRequest $request)
     {

@@ -50,9 +50,7 @@
 
                         @elseif ($booking->status == \App\Entities\Booking::CANCEL_STATUS)
                             <b class="text-danger">Cancel</b>
-
                         @endif
-
                     </td>
                 </tr>
 
