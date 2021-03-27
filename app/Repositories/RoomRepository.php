@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\CreateRoomRequest;
 use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -13,4 +14,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface RoomRepository extends RepositoryInterface
 {
     public function filterRoom(Request $request);
+    public function storeRoom(CreateRoomRequest $request);
 }

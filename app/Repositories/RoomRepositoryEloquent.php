@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\CreateRoomRequest;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RoomRepository;
 use App\Entities\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class RoomRepositoryEloquent.
@@ -24,7 +26,6 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     {
         return Room::class;
     }
-
 
 
     /**
@@ -63,5 +64,37 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
         return $rooms;
 
         // dd(\DB::getQueryLog());
+    }
+
+    /**
+     * Create new room
+     */
+    public function storeRoom(CreateRoomRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $room = $this->model->create($request->only('name', 'price', 'description', 'size', 'bed_id', 'type_id', 'person_room_id'));
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $key => $image) {
+                    $imageName = $image->getClientOriginalname();
+                    $target_dir = 'images/rooms';
+                    $image->move($target_dir, $imageName);
+                    $array[$key]['path'] = $imageName;
+                    $array[$key]['created_at'] = now();
+                    $array[$key]['updated_at'] = now();
+                    $array[$key]['room_id'] = $room->id;
+                }
+            }
+            $room->images()->insert($array);
+
+            DB::commit();
+            // all good
+            return redirect()->back()->with(['success' => 'Success']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->back()->with(['error' => 'Something went wrong, please try again!']);
+        }
+
     }
 }

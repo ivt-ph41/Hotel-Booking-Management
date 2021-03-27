@@ -27,6 +27,11 @@ class Room extends Model implements Transformable
     protected $fillable = [
         'name',
         'price',
+        'size',
+        'description',
+        'bed_id',
+        'type_id',
+        'person_room_id'
     ];
 
     /**
