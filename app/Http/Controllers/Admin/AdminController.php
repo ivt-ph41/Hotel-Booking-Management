@@ -24,8 +24,15 @@ class AdminController extends Controller
     protected $typeRepo;
     protected $personRoomRepo;
 
-    public function __construct(UserRepository $userRepository, BookingDetailRepository $bookingDetailRepository,
-                                BookingRepository $bookingRepository, RoomRepository $roomRepository, BedRepository $bedRepo, TypeRepository $typeRepo, PersonRoomRepository $personRoomRepo)
+    public function __construct(
+        UserRepository $userRepository,
+        BookingDetailRepository $bookingDetailRepository,
+        BookingRepository $bookingRepository,
+        RoomRepository $roomRepository,
+        BedRepository $bedRepo,
+        TypeRepository $typeRepo,
+        PersonRoomRepository $personRoomRepo
+    )
     {
         $this->userRepository = $userRepository;
         $this->bookingDetailRepository = $bookingDetailRepository;
@@ -80,7 +87,7 @@ class AdminController extends Controller
      */
     public function showFormCreateRoom()
     {
-//      Get all bed and type of room
+        //      Get all bed and type of room
         $beds = $this->bedRepo->orderBy('name')->all();
         $types = $this->typeRepo->orderBy('name')->all();
         $person_rooms = $this->personRoomRepo->orderBy('name')->all();
@@ -93,5 +100,13 @@ class AdminController extends Controller
     public function storeRoom(CreateRoomRequest $request)
     {
         return $this->roomRepository->storeRoom($request);
+    }
+
+    /**
+     * Return view table manager rooms
+     */
+    public function managerRoom(Request $request)
+    {
+        return $this->roomRepository->showViewManagerRoom($request);
     }
 }

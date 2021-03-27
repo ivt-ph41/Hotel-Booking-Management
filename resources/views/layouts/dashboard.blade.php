@@ -289,9 +289,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="pages/tables/data.html" class="nav-link">
+                                    <a href="{{route('admins.room.manager')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>DataTables</p>
+                                        <p>Manage rooms</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

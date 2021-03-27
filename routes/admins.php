@@ -20,5 +20,9 @@ Route::group(
         Route::get('dashboards/forms/room', 'AdminController@showFormCreateRoom')->name('room.create');
         // create room from form create room
         Route::post('dashboards/forms/room', 'AdminController@storeRoom')->name('room.store');
+
+        // Return view table manager rooms
+        Route::get('dashboards/rooms', 'AdminController@managerRoom')->name('room.manager');
+        
     }
 );
