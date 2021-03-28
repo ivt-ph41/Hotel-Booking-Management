@@ -57,11 +57,26 @@
                                         <td>{{$room->size . ' feet'}}</td>
                                         <td>{{$room->price . '$'}}</td>
                                         <td>
-                                            <form action="{{route('admins.room.destroy', $room->id)}}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <input type="submit" value="Delete" class="btn btn-danger">
-                                            </form>
+                                            <!-- Split dropright button -->
+                                            <div class="btn-group dropright">
+                                                <button type="button" class="btn btn-secondary">
+                                                    Action
+                                                </button>
+                                                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropright</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a href="{{route('admins.room.edit', $room->id)}}"
+                                                       class="btn">Edit</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <form action="{{route('admins.room.destroy', $room->id)}}" method="post">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <input type="submit" value="Delete" class="btn">
+                                                    </form>
+                                                </div>
+                                            </div>
+
                                         </td>
                                     </tr>
                                 @endforeach

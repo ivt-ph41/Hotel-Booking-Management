@@ -116,10 +116,31 @@ class AdminController extends Controller
     }
 
     /**
+     * Show form edit room
+     */
+    public function editRoom($id)
+    {
+        //Find room
+        $room =  $this->roomRepository->find($id);
+        // Get all bed and type of room
+        $beds = $this->bedRepo->orderBy('name')->all();
+        $types = $this->typeRepo->orderBy('name')->all();
+        $person_rooms = $this->personRoomRepo->orderBy('name')->all();
+        return view('admins.edit-room', compact('room','beds', 'types', 'person_rooms'));
+    }
+    /**
+     * Update room from form edit room
+     */
+    public  function updateRoom($id)
+    {
+
+    }
+
+    /**
      * Delete room in resources
      */
     public function deleteRoom($id)
     {
-      return $this->roomRepository->destroyRoom($id);
+        return $this->roomRepository->destroyRoom($id);
     }
 }
