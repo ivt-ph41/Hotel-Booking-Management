@@ -21,9 +21,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Manager room table</h3>
-
-
-
                         <div class="card-tools">
 
                             <form action="{{route('admins.room.manager')}}" method="get">
@@ -54,27 +51,17 @@
                             </thead>
                             <tbody>
                             @isset($rooms)
-                                @foreach($rooms as  $room)
+                                @foreach($rooms as $room)
                                     <tr>
                                         <td>{{$room->name}}</td>
                                         <td>{{$room->size . ' feet'}}</td>
                                         <td>{{$room->price . '$'}}</td>
                                         <td>
-                                            <!-- Example split danger button -->
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-danger">Action</button>
-                                                <button type="button"
-                                                        class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item text-warning" href="#">Edit</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item text-danger" href="#">Delete</a>
-                                                </div>
-                                            </div>
+                                            <form action="{{route('admins.room.destroy', $room->id)}}" method="post">
+                                                @csrf
+                                                @method("DELETE")
+                                                <input type="submit" value="Delete" class="btn btn-danger">
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

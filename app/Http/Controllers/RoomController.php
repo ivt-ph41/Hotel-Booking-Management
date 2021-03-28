@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\RoomRepository;
 use App\Repositories\PersonRoomRepository;
+use PhpParser\Node\Expr\FuncCall;
 
 class RoomController extends Controller
 {
@@ -36,7 +37,7 @@ class RoomController extends Controller
         }])->find($id);
         // dd($room->toArray());
         // dd(\DB::getQueryLog());
-        
+
         // dd($room->toArray());
         return view('rooms.detail', compact('room'));
     }
@@ -50,5 +51,11 @@ class RoomController extends Controller
         $roomFilter = $this->roomRepository->filterRoom($request);
 
         return view('rooms.index', compact('roomFilter', 'person_room_list'));
+    }
+
+
+    public function deleteRoom($id)
+    {
+      dd('OK');
     }
 }

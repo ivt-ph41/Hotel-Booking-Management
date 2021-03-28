@@ -8,10 +8,12 @@ use App\Http\Requests\CreateRoomRequest;
 use App\Repositories\BedRepository;
 use App\Repositories\BookingDetailRepository;
 use App\Repositories\BookingRepository;
+use App\Repositories\ImageRepository;
 use App\Repositories\PersonRoomRepository;
 use App\Repositories\RoomRepository;
 use App\Repositories\TypeRepository;
 use App\Repositories\UserRepository;
+use App\RepositoriesImageRepository;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -23,6 +25,7 @@ class AdminController extends Controller
     protected $bedRepo;
     protected $typeRepo;
     protected $personRoomRepo;
+    protected $imageRepo;
 
     public function __construct(
         UserRepository $userRepository,
@@ -31,7 +34,8 @@ class AdminController extends Controller
         RoomRepository $roomRepository,
         BedRepository $bedRepo,
         TypeRepository $typeRepo,
-        PersonRoomRepository $personRoomRepo
+        PersonRoomRepository $personRoomRepo,
+        ImageRepository $imageRepo
     )
     {
         $this->userRepository = $userRepository;
@@ -41,6 +45,7 @@ class AdminController extends Controller
         $this->bedRepo = $bedRepo;
         $this->typeRepo = $typeRepo;
         $this->personRoomRepo = $personRoomRepo;
+        $this->imageRepo = $imageRepo;
     }
 
     /**
@@ -108,5 +113,13 @@ class AdminController extends Controller
     public function managerRoom(Request $request)
     {
         return $this->roomRepository->showViewManagerRoom($request);
+    }
+
+    /**
+     * Delete room in resources
+     */
+    public function deleteRoom($id)
+    {
+      return $this->roomRepository->destroyRoom($id);
     }
 }
