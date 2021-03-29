@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\CreateBookingRequest;
 use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -12,5 +13,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface BookingRepository extends RepositoryInterface
 {
-    public function booking($room_id, Request $request);
+  public function booking($room_id, CreateBookingRequest $request);
 }

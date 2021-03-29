@@ -3,10 +3,12 @@
 namespace App\Repositories;
 
 use App\Http\Requests\CreateRoomRequest;
+use App\Http\Requests\EditRoomRequest;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RoomRepository;
 use App\Entities\Room;
+use App\Entities\Image;
 use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,8 +40,8 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   }
 
   /*
-    * Filter room by date and a number person/room
-    */
+      * Filter room by date and a number person/room
+      */
   public function filterRoom(Request $request)
   {
     $person_room_id = $request->input('person_room');
@@ -105,19 +107,42 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   {
     // If have search action from user
     if ($request->has('search') && !empty($request->input('search') > 0)) {
-      $rooms = $this->model->where('name', 'LIKE', '%' . $request->input('search') . '%')->orWhere(
-        'price',
-        'LIKE',
-        '%' . $request->input('search') . '%'
-      )->orWhere('size', 'LIKE', '%' . $request->input('search') .
-        '%')->paginate(5);
-
+      $rooms = $this->model->where('name', 'LIKE', '%' . $request->input('search') . '%')
+        ->orWhere('price', 'LIKE', '%' . $request->input('search') . '%')
+        ->orWhere('size', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);
       $rooms->appends(['search' => $request->input('search')]);
       return view('admins.manager-rooms', compact('rooms'));
     }
     // Default: get all room paginate
-    $rooms = $this->model->paginate(5);
+    $rooms = $this->model->orderBy('name')->paginate(5);
     return view('admins.manager-rooms', compact('rooms'));
+  }
+
+  /**
+   * Update room
+   */
+  public function updateRoom($id, EditRoomRequest $request)
+  {
+    // dd($request->file('files'));
+    // Update room
+    $this->model->where('id', $id)->update($request->except('images', '_token', '_method'));
+    // Get current images with room id
+    $room = $this->model->with('images')->find($id);
+    dd($room);
+
+    if ($request->hasFile('files')) {
+      foreach ($request->file('files') as $key =>  $file) {
+        $imageName = $file->getClientOriginalname();
+        // dd($imageName);
+        $target_dir = 'images/rooms';
+        $file->move($target_dir, $imageName);
+        $array[$key]['path'] = $imageName;
+      }
+    }
+    foreach ($room->images as $key => $image) {
+      Image::where('id', $image->id)->where('room_id', $id)->update(['path' => $array[$key]['path']]);
+    }
+    return 'Success';
   }
 
   /**

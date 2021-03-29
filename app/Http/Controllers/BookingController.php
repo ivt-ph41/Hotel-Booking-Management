@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBookingRequest;
 use Illuminate\Http\Request;
 use App\Repositories\BookingRepository;
 use App\Repositories\RoomRepository;
@@ -43,7 +44,7 @@ class BookingController extends Controller
     /**
      * Store new booking in bookings table and booking_details table
      */
-    public function store($room_id, Request $request)
+    public function store($room_id, CreateBookingRequest $request)
     {
         return $this->bookingRepository->booking($room_id, $request);
     }

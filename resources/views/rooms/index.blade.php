@@ -71,12 +71,9 @@
         <div class="room__pic__slider owl-carousel">
           @if (!empty($room->images))
           @foreach ($room->images as $image)
-
           <div class="room__pic__item set-bg" data-setbg="{{ asset('images/rooms/' . $image->path) }}"></div>
-
           @endforeach
           @endif
-
         </div>
       </div>
       <div class="col-lg-6 p-0 order-lg-4 order-md-4 col-md-6">

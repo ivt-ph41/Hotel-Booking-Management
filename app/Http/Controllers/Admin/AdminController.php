@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRoomRequest;
+use App\Http\Requests\EditRoomRequest;
 use App\Repositories\BedRepository;
 use App\Repositories\BookingDetailRepository;
 use App\Repositories\BookingRepository;
@@ -131,9 +132,9 @@ class AdminController extends Controller
     /**
      * Update room from form edit room
      */
-    public  function updateRoom($id)
+    public  function updateRoom($id, EditRoomRequest $request)
     {
-
+    return $this->roomRepository->updateRoom($id, $request);
     }
 
     /**

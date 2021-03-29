@@ -75,6 +75,9 @@
             <div class="col-lg-6">
               <h3><i>Comment</i></h3>
               @auth
+              @if ($errors->has('content'))
+              <p style="color: red">{{$errors->first('content')}}</p>
+              @endif
               <form id="frm-commnent" action="{{route('comments.store', ['id' => $room->id])}}" method="post"
                 style="margin-bottom: 2%">
                 @csrf
