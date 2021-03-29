@@ -151,7 +151,6 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   public function destroyRoom($id)
   {
     DB::beginTransaction();
-
     try {
       \App\Entities\Image::where('room_id', $id)->delete();
       $this->model->where('id', $id)->delete();
