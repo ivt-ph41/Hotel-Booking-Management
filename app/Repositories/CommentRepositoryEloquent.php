@@ -8,6 +8,7 @@ use App\Repositories\CommentRepository;
 use App\Entities\Comment;
 use App\Validators\CommentValidator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class CommentRepositoryEloquent.
@@ -38,8 +39,11 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
 
     public function storeComment($room_id, Request $request)
     {
-        if (\Auth::check()) {
-            $user_id = \Auth::user()->id;
+      $request->validate([
+        'content' => 'required'
+      ]);
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
             $data = $request->except('_token');
             $data['user_id'] = $user_id;
             $data['room_id'] = $room_id;

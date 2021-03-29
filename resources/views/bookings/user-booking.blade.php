@@ -42,14 +42,27 @@
                     <td>{{$bookingDetail->date_start}}</td>
                     <td>{{$bookingDetail->date_end}}</td>
                     <td>
+                            {{--Pending--}}
                         @if ($booking->status == \App\Entities\Booking::PENDING_STATUS)
-                            <b class="text-warning">Pending</b>
-
+                            @if(strtotime($bookingDetail->date_end) < time() )
+                                <b class="text-dark">Finished</b>
+                            @else
+                                <b class="text-warning">Pending</b>
+                            @endif
+                            {{--Appprove--}}
                         @elseif ($booking->status == \App\Entities\Booking::APPROVE_STATUS)
-                            <b class="text-success">Approve</b>
-
+                            @if(strtotime($bookingDetail->date_end) < time() )
+                                <b class="text-dark">Finished</b>
+                            @else
+                                <b class="text-warning">Approve</b>
+                            @endif
+                            {{-- Cancel--}}
                         @elseif ($booking->status == \App\Entities\Booking::CANCEL_STATUS)
-                            <b class="text-danger">Cancel</b>
+                            @if(strtotime($bookingDetail->date_end) < time() )
+                                <b class="text-dark">Finished</b>
+                            @else
+                                <b class="text-warning">Cancel</b>
+                            @endif
                         @endif
                     </td>
                 </tr>
