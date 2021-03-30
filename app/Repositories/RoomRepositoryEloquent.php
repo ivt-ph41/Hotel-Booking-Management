@@ -106,7 +106,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   public function showViewManagerRoom(Request $request)
   {
     // If have search action from user
-    if ($request->has('search') && !empty($request->input('search') > 0)) {
+    if ($request->has('search') && !empty($request->input('search'))) {
       $rooms = $this->model->where('name', 'LIKE', '%' . $request->input('search') . '%')
         ->orWhere('price', 'LIKE', '%' . $request->input('search') . '%')
         ->orWhere('size', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);

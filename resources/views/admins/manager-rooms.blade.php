@@ -20,7 +20,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Manager room table</h3>
+                        <h3 class="card-title">{{__('Manager room table')}}</h3>
                         <div class="card-tools">
 
                             <form action="{{route('admins.room.manager')}}" method="get">
@@ -43,7 +43,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Room Number</th>
+                                <th>{{{__('Room')}}}</th>
                                 <th>{{__('Size')}}</th>
                                 <th>{{__('Price')}}</th>
                                 <th></th>

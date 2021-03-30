@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\ChangePasswordRequest;
+use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -22,4 +23,6 @@ interface UserRepository extends RepositoryInterface
      * Change password for user authenticated
      */
     public function updatePassword(ChangePasswordRequest $request);
+
+    public function showViewManagerUser(Request $request);
 }

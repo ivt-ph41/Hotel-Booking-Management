@@ -144,4 +144,20 @@ class AdminController extends Controller
     {
         return $this->roomRepository->destroyRoom($id);
     }
+
+  /**
+   * Return view table manager users
+   */
+  public function managerUser(Request $request)
+  {
+    return $this->userRepository->showViewManagerUser($request);
+  }
+
+  /**
+   * Delete user
+   */
+  public function deleteUser($id)
+  {
+    return $this->userRepository->deleteUser($id);
+  }
 }
