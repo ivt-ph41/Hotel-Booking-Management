@@ -1,2 +1,1 @@
-@extends('layouts.dashboard');
-
+@extends('layouts.dashboard')
