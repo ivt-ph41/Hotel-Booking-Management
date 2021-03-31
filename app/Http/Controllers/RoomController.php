@@ -19,7 +19,7 @@ class RoomController extends Controller
 
   public function index()
   {
-    // Get list person/room in resource
+    // Get list person/room in resource for filter function
     $person_room_list = $this->personRoomRepository->all();
 
     // Get all rooms

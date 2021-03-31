@@ -69,7 +69,7 @@
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
                     <div class="dropdown-menu">
-                      <a href="{{route('admins.user.edit', $user->id)}}" class="btn">Edit</a>
+                      {{-- <a href="{{route('admins.user.edit', $user->id)}}" class="btn">Edit</a> --}}
                       <div class="dropdown-divider"></div>
                       <form action="{{route('admins.user.destroy', $user->id)}}" method="post">
                         @csrf
