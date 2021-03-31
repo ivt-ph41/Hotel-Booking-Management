@@ -63,8 +63,8 @@ class AdminController extends Controller
     public function booking()
     {
         // GET USER WITH BOOKING
-        $booking_details = $this->bookingDetailRepository->with(['room', 'booking'])->get();
-
+        $booking_details = $this->bookingDetailRepository->with(['room', 'booking.user.profile', ])->paginate(5);
+     
         return view('admins.manager-booking', compact('booking_details'));
     }
 

@@ -14,6 +14,7 @@ use App\Validators\UserValidator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Entities\Role;
+use App\Entities\Booking;
 
 /**
  * Class UserRepositoryEloquent.
@@ -117,21 +118,28 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
    */
   public function deleteUser($id)
   {
+    // IF USER HAVE BOOKING STATUS IS PENDING OR APPROVE, CAN'T DELETE
+    $booking = Booking::where('user_id', $id)
+      ->whereIn('status', [Booking::APPROVE_STATUS, Booking::PENDING_STATUS])
+      ->get();
+    if ($booking->count() == 0) {
+      DB::beginTransaction();
+      try {
+        //Delete profile first with user_id = $id
+        \App\Entities\Profile::where('user_id', $id)->destroy();
 
-    DB::beginTransaction();
-    try {
-      //Delete profile first with user_id = $id
-      \App\Entities\Profile::where('user_id', $id)->destroy();
+        // Then delete user with $id
+        $this->model->destroy($id);
 
-      // Then delete user with $id
-      $this->model->destroy($id);
-
-      //commit
-      DB::commit();
-      return redirect()->back()->with(['status' => 'Delete success!']);
-    } catch (\Exception $e) {
-      DB::rollBack();
-      return redirect()->back()->with(['status' => 'Delete fail!']);
+        //commit
+        DB::commit();
+        return redirect()->back()->with(['status' => 'Delete success!']);
+      } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with(['status' => 'Delete fail!']);
+      }
+    } else {
+      return redirect()->back()->with(['status' => 'Delete fail!(May be user have booking in system!)']);
     }
   }
 }
