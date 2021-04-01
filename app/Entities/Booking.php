@@ -14,40 +14,53 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Booking extends Model implements Transformable
 {
-    use TransformableTrait;
-    use SoftDeletes;
+  use TransformableTrait;
+  use SoftDeletes;
 
-    const PENDING_STATUS = 0;
-    const APPROVE_STATUS = 1;
-    const CANCEL_STATUS = 2;
+  const PENDING_STATUS = 0;
+  const APPROVE_STATUS = 1;
+  const CANCEL_STATUS = 2;
+  const FINISH_STATUS = 3;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'user_id',
-        'name',
-        'address',
-        'phone',
-        'status'
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = [
+    'user_id',
+    'name',
+    'address',
+    'phone',
+    'status'
+  ];
 
-    // Relation ship
-    /*
+  // Relation ship
+  /*
     ONE TO MANY: USER WITH MANY BOOKING
     */
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
 
-    /* ONE TO ONE
+  public function profile()
+  {
+  }
+  /* ONE TO ONE
     BOOKING WITH BOOKING DETAIL
      */
-    public function bookingDetails()
-    {
-        return $this->hasMany('App\Entities\BookingDetail');
-    }
+  public function bookingDetails()
+  {
+    return $this->hasMany('App\Entities\BookingDetail');
+  }
+
+/**
+ * HAS ONE THOURHGT PROFILE
+ *
+ */
+  // public function userProfile()
+  // {
+  //   return $this->hasOneThrough('App\Entities\Profile', 'App\User');
+  // }
 }

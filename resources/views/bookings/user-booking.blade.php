@@ -16,6 +16,13 @@
 </script>
 
 @section('content')
+{{-- @php
+dd(\Carbon::now('Asia/Ho_Chi_Minh'));
+if (\Carbon::now('Asia/Ho_Chi_Minh')) {
+# code...
+}
+@endphp --}}
+
 <table class="table table-bordered">
   <caption>My bookings</caption>
   <thead>
@@ -43,23 +50,23 @@
       <td>
         {{--Pending--}}
         @if ($booking->status == \App\Entities\Booking::PENDING_STATUS)
-        @if(strtotime($bookingDetail->date_end) < time() ) <b class="text-dark">Finished</b>
-          @else
-          <b class="text-warning">Pending</b>
-          @endif
-          {{--Appprove--}}
-          @elseif ($booking->status == \App\Entities\Booking::APPROVE_STATUS)
-          @if(strtotime($bookingDetail->date_end) < time() ) <b class="text-dark">Finished</b>
-            @else
-            <b class="text-sucess">Approve</b>
-            @endif
-            {{-- Cancel--}}
-            @elseif ($booking->status == \App\Entities\Booking::CANCEL_STATUS)
-            @if(strtotime($bookingDetail->date_end) < time() ) <b class="text-dark">Finished</b>
-              @else
-              <b class="text-danger">Cancel</b>
-              @endif
-              @endif
+        <b class="text-warning">Pending
+          {{-- @php
+
+          if (\Carbon::now('Asia/Ho_Chi_Minh')->sub) {
+          # code...
+          }
+          @endphp --}}
+        </b>
+        {{--Appprove--}}
+        @elseif ($booking->status == \App\Entities\Booking::APPROVE_STATUS)
+        <b class="text-success">Approve</b>
+        {{-- Cancel--}}
+        @elseif ($booking->status == \App\Entities\Booking::CANCEL_STATUS)
+        <b class="text-danger">Cancel</b>
+        @elseif ($booking->status == \App\Entities\Booking::FINISH_STATUS)
+        <b class="text-dark">{{__('Finish')}}</b>
+        @endif
       </td>
     </tr>
 

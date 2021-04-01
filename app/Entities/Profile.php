@@ -30,4 +30,5 @@ class Profile extends Model implements Transformable
     {
         return $this->belongsTo('App\User');
     }
+
 }

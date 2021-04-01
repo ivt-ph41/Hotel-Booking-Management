@@ -9,7 +9,7 @@ use App\Entities\Comment;
 use App\Validators\CommentValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+ 
 /**
  * Class CommentRepositoryEloquent.
  *

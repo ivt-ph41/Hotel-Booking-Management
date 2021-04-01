@@ -44,7 +44,7 @@ Route::group(
          * Manager users
          */
       Route::get('manager/users', 'AdminController@managerUser')->name('user.manager');
-      // Edit user
+      // Edit user profile
       Route::get('/manager/users/{id}/edit', 'AdminController@editUser')->name('user.edit');
       Route::put('manager/users/{id}', 'AdminController@updateUser')->name('user.update');
       // Delete room

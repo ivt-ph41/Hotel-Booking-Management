@@ -25,4 +25,6 @@ interface UserRepository extends RepositoryInterface
     public function updatePassword(ChangePasswordRequest $request);
 
     public function showViewManagerUser(Request $request);
+
+    public function deleteUser($id);
 }

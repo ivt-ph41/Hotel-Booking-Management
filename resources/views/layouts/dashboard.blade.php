@@ -8,8 +8,7 @@
   <title>Admin | @yield('title', 'Dashboard')</title>
 
   <!-- Link favicon -->
-  <link rel="shortcut icon" href="https://img.icons8.com/dusk/64/000000/dashboard.png"
-    type="image/x-icon">
+  <link rel="shortcut icon" href="https://img.icons8.com/dusk/64/000000/dashboard.png" type="image/x-icon">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -51,11 +50,11 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="index3.html" class="nav-link">Home</a>
+          <a href="{{route('/')}}" class="nav-link">Home Page</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
+        {{-- <li class="nav-item d-none d-sm-inline-block">
           <a href="#" class="nav-link">Contact</a>
-        </li>
+        </li> --}}
       </ul>
 
       <!-- Right navbar links -->
@@ -186,7 +185,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
+      <a href="{{route('admins.dashboards')}}" class="brand-link">
         <img src="{{asset('AdminLTE/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
           class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">AdminLTE 3</span>
@@ -200,7 +199,7 @@
             <img src="{{asset('AdminLTE/dist/img/admin-avatar.png')}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">
+            <a href="#" class="d-block" data-toggle="tooltip" data-placement="right" title="View Information">
               @php
               $user = \Auth::user()->profile()->get();
               echo $user->first()->name;
