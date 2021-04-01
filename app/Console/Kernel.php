@@ -28,14 +28,14 @@ class Kernel extends ConsoleKernel
     // $schedule->command('inspire')
     //          ->hourly();
     $schedule->call(function () {
-      $time = Carbon::now('Asia/Ho_Chi_Minh');
-      $time = $time->toTimeString();
+      $time = Carbon::now('Asia/Ho_Chi_Minh'); // get current time
+      $time = $time->toTimeString(); // convert to date
       \App\Entities\Booking::with([
         'bookingDetails' => function ($query) use ($time) {
           return $query->where('date_end' < $time);
         }
       ])->update(['status' => \App\Entities\Booking::FINISH_STATUS]);
-    })->everyMinute()->runInBackground();
+    })->everyMinute();
   }
 
   /**

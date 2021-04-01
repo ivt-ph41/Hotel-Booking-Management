@@ -55,7 +55,7 @@
               @foreach($users as $user)
               <tr>
                 <td>{{$user->profile->name}}</td>
-                <td>{{$user->email}}</td>
+                <td class="text-danger">{{$user->email}}</td>
                 <td>{{$user->profile->address}}</td>
                 <td>{{{$user->profile->phone}}}</td>
                 <td>

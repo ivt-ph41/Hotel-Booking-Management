@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Entities\Role;
 use App\Entities\Booking;
+use App\Entities\BookingDetail;
+use App\Entities\Profile;
 
 /**
  * Class UserRepositoryEloquent.
@@ -95,14 +97,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     // If have search action from user
     if ($request->has('search') && !empty($request->input('search'))) {
       // dd('aa');
-      $users = $this->model->with([
-        'profile' => function ($query) use ($request) {
-          return $query->orwhere('name', 'LIKE', '%' . $request->input('search') . '%')
-            ->orWhere('address', 'LIKE', '%' . $request->input('search') . '%')
-            ->orWhere('phone', 'LIKE', '%' . $request->input('search') . '%');
-        }
-      ])->where('role_id', Role::USER_ROLE)->where('email', 'LIKE', '%' . $request->input('search') . '%')->orderBy('email')->paginate(3);
-      dd($users->toArray());
+      $users = $this->model->with(['profile'])->where('role_id', Role::USER_ROLE)->where('email', 'LIKE', '%' . $request->input('search') . '%')->orderBy('email')->paginate(3);
       $users->appends(['search' => $request->input('search')]);
       return view('admins.users.manager-users', compact('users'));
     }
@@ -118,25 +113,51 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
    */
   public function deleteUser($id)
   {
-    // IF USER HAVE BOOKING STATUS IS PENDING OR APPROVE, CAN'T DELETE
+    // get booking with approve and pending status
     $booking = Booking::where('user_id', $id)
       ->whereIn('status', [Booking::APPROVE_STATUS, Booking::PENDING_STATUS])
       ->get();
+
+    // IF USER HAVE BOOKING STATUS not have PENDING OR APPROVE can delete
     if ($booking->count() == 0) {
       DB::beginTransaction();
-      try {
-        //Delete profile first with user_id = $id
-        \App\Entities\Profile::where('user_id', $id)->destroy();
 
-        // Then delete user with $id
-        $this->model->destroy($id);
+      try {
+        // get current booking of user
+        $user = $this->model->with(['bookings'])->find($id);
+
+        if ($user->bookings->count() != 0) { // if user have booking then delete booking
+          // Get all bookings of user
+          $user_bookings = Booking::with('bookingDetails')->where('user_id', $id)->get();
+
+          //if user have booking then delete
+          if ($user_bookings->count() != 0) {
+            // Delete booking detail with booking id first then delete booking with booking id
+            foreach ($user_bookings as $val) {
+              if ($val->bookingDetails->count() != 0) {   //if bookingDetail not null(for sure)
+                BookingDetail::where('booking_id', $val->id)->delete();
+                Booking::destroy($id);
+              } else {
+                //only delete booking with booking id
+                Booking::destroy($id);
+              }
+            }
+          };
+        }
+
+        //Delete profile  with user_id = $id
+        $profile = Profile::where('user_id', $id)->delete();
+        if ($profile) { // if delete profile success
+          // Then delete user with $id
+          $this->model->destroy($id);
+        }
 
         //commit
         DB::commit();
         return redirect()->back()->with(['status' => 'Delete success!']);
       } catch (\Exception $e) {
         DB::rollBack();
-        return redirect()->back()->with(['status' => 'Delete fail!']);
+        return redirect()->back()->with(['status' => 'Something went wrong, please try again!']);
       }
     } else {
       return redirect()->back()->with(['status' => 'Delete fail!(May be user have booking in system!)']);
