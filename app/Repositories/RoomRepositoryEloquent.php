@@ -112,7 +112,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       return view('admins.manager-rooms', compact('rooms'));
     }
     // Default: get all room paginate
-    $rooms = $this->model->orderBy('name')->paginate(5);
+    $rooms = $this->model->paginate(5);
     return view('admins.manager-rooms', compact('rooms'));
   }
 
@@ -121,26 +121,9 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
    */
   public function updateRoom($id, EditRoomRequest $request)
   {
-    // dd($request->file('files'));
-    // Update room
     $this->model->where('id', $id)->update($request->except('images', '_token', '_method'));
-    // Get current images with room id
-    $room = $this->model->with('images')->find($id);
-    dd($room);
 
-    if ($request->hasFile('files')) {
-      foreach ($request->file('files') as $key =>  $file) {
-        $imageName = $file->getClientOriginalname();
-        // dd($imageName);
-        $target_dir = 'images/rooms';
-        $file->move($target_dir, $imageName);
-        $array[$key]['path'] = $imageName;
-      }
-    }
-    foreach ($room->images as $key => $image) {
-      Image::where('id', $image->id)->where('room_id', $id)->update(['path' => $array[$key]['path']]);
-    }
-    return 'Success';
+    return redirect()->route('admins.room.manager')->with(['success' => 'Update success']);
   }
 
   /**

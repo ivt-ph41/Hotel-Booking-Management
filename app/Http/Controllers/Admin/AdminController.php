@@ -155,10 +155,10 @@ class AdminController extends Controller
    */
   public function updateUser($id, EditProfileRequest $request)
   {
-    if ($this->profileRepo->where('user_id' , $id)->update($request->except('_token', '_method'))){
-      return redirect()->back()->with(['success'=> 'Update success!']);
+    if ($this->profileRepo->where('user_id', $id)->update($request->except('_token', '_method'))) {
+      return redirect()->back()->with(['success' => 'Update success!']);
     }
-    return redirect()->back()->with(['error'=> 'Update fail, something error!']);
+    return redirect()->back()->with(['error' => 'Update fail, something error!']);
   }
   /**
    * Delete room in resources
