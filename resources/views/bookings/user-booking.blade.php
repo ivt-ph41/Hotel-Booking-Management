@@ -16,6 +16,13 @@
 </script>
 
 @section('content')
+{{-- @php
+dd(\Carbon::now('Asia/Ho_Chi_Minh'));
+if (\Carbon::now('Asia/Ho_Chi_Minh')) {
+# code...
+}
+@endphp --}}
+
 <table class="table table-bordered">
   <caption>My bookings</caption>
   <thead>
@@ -43,7 +50,14 @@
       <td>
         {{--Pending--}}
         @if ($booking->status == \App\Entities\Booking::PENDING_STATUS)
-        <b class="text-warning">Pending</b>
+        <b class="text-warning">Pending
+          {{-- @php
+
+          if (\Carbon::now('Asia/Ho_Chi_Minh')->sub) {
+          # code...
+          }
+          @endphp --}}
+        </b>
         {{--Appprove--}}
         @elseif ($booking->status == \App\Entities\Booking::APPROVE_STATUS)
         <b class="text-success">Approve</b>

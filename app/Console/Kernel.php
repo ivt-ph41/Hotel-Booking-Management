@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,14 +29,11 @@ class Kernel extends ConsoleKernel
     // $schedule->command('inspire')
     //          ->hourly();
     $schedule->call(function () {
-      $time = Carbon::now('Asia/Ho_Chi_Minh'); // get current time
-      $time = $time->toTimeString(); // convert to date
-      \App\Entities\Booking::with([
-        'bookingDetails' => function ($query) use ($time) {
-          return $query->where('date_end' < $time);
-        }
-      ])->update(['status' => \App\Entities\Booking::FINISH_STATUS]);
-    })->everyMinute();
+      // dd(Carbon::today()->toDateString());
+      \App\Entities\Booking::whereHas('bookingDetails', function (Builder $query) {
+        return $query->whereDate('date_end', '<', Carbon::today()->toDateString());
+      })->update(['status' => \App\Entities\Booking::FINISH_STATUS]);
+    })->everyMinute()->runInBackground();
   }
 
   /**
