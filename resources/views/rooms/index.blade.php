@@ -23,7 +23,7 @@
 
 <div class="row mt-3">
   <div class="col-lg-12">
-    <form action="{{ route('rooms.search') }}" class="filter__form" method="get">
+    <form action="{{ route('rooms.filter') }}" class="filter__form" method="get">
       <div class="filter__form__item">
         <p>Check In</p>
         <div class="filter__form__datepicker">
@@ -56,6 +56,9 @@
         </div>
       </div>
       <button type="submit">Check Available</button>
+    </form>
+    <form action="" method="get">
+
     </form>
   </div>
 </div>

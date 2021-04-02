@@ -9,7 +9,7 @@ class RoomTableSeeder extends Seeder
    * Run the database seeds.
    *
    * @return void
-   */
+   */  
   public function run()
   {
     // factory('App\Entities\Room', 100)->create();

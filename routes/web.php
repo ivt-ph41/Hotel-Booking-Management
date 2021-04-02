@@ -22,7 +22,7 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 
 // Filter seach room available
-Route::get('rooms/filter', 'RoomController@filterRoom')->name('rooms.search');
+Route::get('rooms/filter', 'RoomController@filterRoom')->name('rooms.filter');
 
 /**
  * List rooms
