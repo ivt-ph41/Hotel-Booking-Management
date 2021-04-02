@@ -42,6 +42,9 @@ class RoomController extends Controller
     return view('rooms.detail', compact('room'));
   }
 
+  /**
+   * Filter room
+   */
   public function filterRoom(Request $request)
   {
     // Get list person/room in resource
@@ -54,8 +57,8 @@ class RoomController extends Controller
   }
 
 
-  public function deleteRoom($id)
-  {
-    dd('OK');
-  }
+  // public function deleteRoom($id)
+  // {
+  //   dd('OK');
+  // }
 }

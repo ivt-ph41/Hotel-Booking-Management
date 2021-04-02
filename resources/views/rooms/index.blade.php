@@ -58,7 +58,7 @@
       <button type="submit">Check Available</button>
     </form>
     <form action="" method="get">
-
+      
     </form>
   </div>
 </div>

@@ -24,6 +24,9 @@ Auth::routes();
 // Filter seach room available
 Route::get('rooms/filter', 'RoomController@filterRoom')->name('rooms.filter');
 
+// Search room using ajax
+Route::get('rooms/search', 'RoomController@searchRoom')->name('rooms.search');
+
 /**
  * List rooms
  */
