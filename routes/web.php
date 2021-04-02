@@ -14,18 +14,19 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+  return view('home');
 })->name('/');
 
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
+// Search room using ajax
+Route::get('rooms/search', 'RoomController@searchRoom')->name('rooms.search');
 // Filter seach room available
 Route::get('rooms/filter', 'RoomController@filterRoom')->name('rooms.filter');
 
-// Search room using ajax
-Route::get('rooms/search', 'RoomController@searchRoom')->name('rooms.search');
+
 
 /**
  * List rooms
@@ -45,7 +46,8 @@ Route::post('rooms/{room_id}/booking', 'BookingController@store')->name('booking
 
 // Show current booking of user
 Route::get('users/bookings', 'UserController@userBooking')->name('users.booking');
-
+// User cancel booking
+Route::delete('users/bookings/{id}', 'BookingController@cancelBooking')->name('bookings.cancel');
 // User send comment
 Route::post('rooms/{id}/comment', 'CommentController@store')->name('comments.store');
 

@@ -57,9 +57,15 @@
       </div>
       <button type="submit">Check Available</button>
     </form>
-    <form action="" method="get">
-      
-    </form>
+
+    {{-- Form search room by name --}}
+    <div class="footer__newslatter" style="width: 50%">
+      <input id="search-text" type="text" name="search" placeholder="Search room by name"
+        style="border: black solid 1px; padding:20px;">
+      <div id="result"></div>
+    </div>
+
+
   </div>
 </div>
 

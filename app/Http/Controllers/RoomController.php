@@ -56,9 +56,11 @@ class RoomController extends Controller
     return view('rooms.index', compact('roomFilter', 'person_room_list'));
   }
 
-
-  // public function deleteRoom($id)
-  // {
-  //   dd('OK');
-  // }
+  /**
+   * Search room by name
+   */
+  public function searchRoom(Request $request)
+  {
+    return $this->roomRepository->searchRoom($request);
+  }
 }

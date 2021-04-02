@@ -91,4 +91,22 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       return redirect()->back()->with(['booking_fail' => 'This room have been booking, please try another room or change another day!']);
     }
   }
+
+
+  /**
+   * User cancel booking
+   *
+   * @param  mixed $id booking id
+   * @return void
+   */
+  public function cancelBooking($id)
+  {
+    // Delete booking detail first
+    BookingDetail::where('booking_id', $id)->delete();
+
+    // Detele booking
+    $this->model->where('id', $id)->delete();
+
+    return redirect()->route('users.booking')->with(['status' => 'Cancel success']);
+  }
 }

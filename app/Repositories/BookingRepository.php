@@ -13,5 +13,9 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface BookingRepository extends RepositoryInterface
 {
+  // Creating booking of user
   public function booking($room_id, CreateBookingRequest $request);
+
+  //User cancel booking
+  public function cancelBooking($id);
 }
