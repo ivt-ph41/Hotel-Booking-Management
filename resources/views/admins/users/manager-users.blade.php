@@ -20,7 +20,7 @@
     <div class="col">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Manager user table</h3>
+          <h3 class="card-title">{{__('Manager user table')}}</h3>
           <div class="card-tools">
 
             <form action="{{route('admins.user.manager')}}" method="get">
@@ -69,7 +69,7 @@
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
                     <div class="dropdown-menu">
-                       <a href="{{route('admins.user.edit', $user->id)}}" class="btn">Edit</a>
+                      <a href="{{route('admins.user.edit', $user->id)}}" class="btn">Edit</a>
                       <div class="dropdown-divider"></div>
                       <form action="{{route('admins.user.destroy', $user->id)}}" method="post">
                         @csrf
