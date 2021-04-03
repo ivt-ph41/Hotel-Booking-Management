@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Entities\Role;
 use App\Entities\Booking;
 use App\Entities\BookingDetail;
+use App\Entities\Comment;
 use App\Entities\Profile;
 
 /**
@@ -127,7 +128,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $user = $this->model->with(['bookings'])->find($id);
 
         if ($user->bookings->count() != 0) { // if user have booking then delete booking
-          // Get all bookings of user
+          // Get all bookings of user include booking detail
           $user_bookings = Booking::with('bookingDetails')->where('user_id', $id)->get();
 
           //if user have booking then delete
@@ -144,7 +145,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             }
           };
         }
-
+        // Delete comment of user
+        Comment::where('user_id', $id)->delete();
         //Delete profile  with user_id = $id
         $profile = Profile::where('user_id', $id)->delete();
         if ($profile) { // if delete profile success

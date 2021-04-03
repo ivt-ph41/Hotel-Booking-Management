@@ -279,7 +279,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{route('admins.comments.index')}}" class="nav-link">
+                  <a href="{{route('admins.comments.manager')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Manager comments</p>
                   </a>
@@ -334,6 +334,7 @@
   </div>
   <!-- ./wrapper -->
 
+
   <!-- jQuery -->
   <script src="{{asset('AdminLTE/plugins/jquery/jquery.min.js')}}"></script>
   <!-- jQuery UI 1.11.4 -->
@@ -368,25 +369,10 @@
   <script src="{{asset('AdminLTE/dist/js/demo.js')}}"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
   <script src="{{asset('AdminLTE/dist/js/pages/dashboard.js')}}"></script>
-  <!-- Jquery ajax -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
-  {{-- get comments --}}
-  <script>
-  $(document).ready(function () {
-    var url = "{{route('admins.comments.index')}}"
-    console.log(url);
-    $.ajax({
-      type: "get",
-      url: url,
-      data: 'data',
-      dataType: "json",
-      success: function (response) {
-        console.log(response);
-      }
-    });
-  });
-</script>
+
+  @yield('script')
+
 </body>
 
 </html>

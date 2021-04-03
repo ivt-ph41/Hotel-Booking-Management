@@ -10,14 +10,14 @@ use App\Http\Requests\EditRoomRequest;
 use App\Repositories\BedRepository;
 use App\Repositories\BookingDetailRepository;
 use App\Repositories\BookingRepository;
-use App\Repositories\ImageRepository;
 use App\Repositories\PersonRoomRepository;
 use App\Repositories\RoomRepository;
 use App\Repositories\TypeRepository;
 use App\Repositories\UserRepository;
-use App\RepositoriesImageRepository;
 use App\Repositories\ProfileRepository;
+use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -29,6 +29,7 @@ class AdminController extends Controller
   protected $typeRepo;
   protected $personRoomRepo;
   protected $profileRepo;
+  protected $commentRepo;
 
   public function __construct(
     UserRepository $userRepository,
@@ -38,7 +39,8 @@ class AdminController extends Controller
     BedRepository $bedRepo,
     TypeRepository $typeRepo,
     PersonRoomRepository $personRoomRepo,
-    ProfileRepository $profileRepo
+    ProfileRepository $profileRepo,
+    CommentRepository $commenRepo
   ) {
     $this->userRepository = $userRepository;
     $this->bookingDetailRepository = $bookingDetailRepository;
@@ -48,6 +50,7 @@ class AdminController extends Controller
     $this->typeRepo = $typeRepo;
     $this->personRoomRepo = $personRoomRepo;
     $this->profileRepo = $profileRepo;
+    $this->commentRepo = $commenRepo;
   }
 
   /**
@@ -185,20 +188,36 @@ class AdminController extends Controller
     return $this->userRepository->deleteUser($id);
   }
 
-  /**
-   * Get all comments in resource
-   *
-   * @return void
-   */
-  public function comments()
+  public function managerComment(Request $request)
   {
-    $comments = $this->commentRepository->with(['user', 'comments'])->get();
-    if (request()->wantsJson()) {
+    if ($request->has('search')) {
+      $data = $request->input('search');
 
-      return response()->json(['data' => $comments], 200);
+      $comments = $this->commentRepo->with(['user', 'room'])->whereHas('user', function (Builder $query) use ($data) {
+        return $query->where('email', 'LIKE', "%$data%");
+      })->orWhereHas('room', function (Builder $query) use ($data) {
+        return $query->where('name', 'LIKE', "%$data%");
+      })
+        ->paginate(5);
+      // dd($comments->toArray());
+      $comments->appends([
+        'search' => $request->input('search')
+      ]);
+      return view('admins.comments.manager', compact('comments'));
     }
+    $comments = $this->commentRepo->with(['user', 'room'])->paginate(5);
     return view('admins.comments.manager', compact('comments'));
   }
+  // /**
+  //  * Get all comments in resource
+  //  *
+  //  * @return void
+  //  */
+  // public function commentIndex()
+  // {
+  //   $comments = $this->commentRepo->with(['user', 'room'])->get();
+  //   return response()->json($comments, 200);
+  // }
 
   /**
    * destroy comment in resource
@@ -208,5 +227,7 @@ class AdminController extends Controller
    */
   public function deleteComment($id)
   {
+    $this->commentRepo->destroy($id);
+    return redirect()->back()->with(['status' => 'Delete comment success']);
   }
 }

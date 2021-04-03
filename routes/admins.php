@@ -51,7 +51,7 @@ Route::group(
     Route::delete('manager/users/{id}', 'AdminController@deleteUser')->name('user.destroy');
 
     // Manager comments
-    Route::get('manager/comments', 'AdminController@comments')->name('comments.index');
+    Route::get('/manager/comments', 'AdminController@managerComment')->name('comments.manager');
     Route::delete('manager/comments/{id}', 'AdminController@deleteComment')->name('comments.destroy');
   }
 );
