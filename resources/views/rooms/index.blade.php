@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('title', 'Rooms')
 
+@section('css')
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="{{asset('css/search-room.css')}}">
+@endsection
+
 @section('our-room-ui')
 <div class="breadcrumb-option set-bg" data-setbg="{{ asset('hiroto-master/img/breadcrumb-bg.jpg')}}">
   <div class="container">
@@ -23,7 +28,7 @@
 
 <div class="row mt-3">
   <div class="col-lg-12">
-    <form action="{{ route('rooms.search') }}" class="filter__form" method="get">
+    <form action="{{ route('rooms.filter') }}" class="filter__form" method="get">
       <div class="filter__form__item">
         <p>Check In</p>
         <div class="filter__form__datepicker">
@@ -57,6 +62,15 @@
       </div>
       <button type="submit">Check Available</button>
     </form>
+
+    {{-- Form search room by name --}}
+    <div class="footer__newslatter" style="width: 50%">
+      <input id="search-text" type="text" name="search" placeholder="Search room by name"
+        style="border: black solid 1px; padding:20px;">
+      <div id="result"></div>
+    </div>
+
+
   </div>
 </div>
 
@@ -124,7 +138,7 @@
           @if (!empty($room->images))
           @foreach ($room->images as $image)
 
-          <div class="room__pic__item set-bg" data-setbg="{{ $image->path }}"></div>
+          <div class="room__pic__item set-bg" data-setbg="{{ asset('images/rooms/' . $image->path) }}"></div>
 
           @endforeach
           @endif

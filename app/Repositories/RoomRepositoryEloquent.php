@@ -70,6 +70,19 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   }
 
   /**
+   * search room
+   */
+  public function searchRoom(Request $request)
+  {
+    if ($request->has('search')) {
+      $data = $request->all();
+      $query = $data['search'];
+      $rooms = $this->model->where('name', 'LIKE', "%$query%")->select('rooms.id', 'rooms.name')->get();
+      return response()->json($rooms, 200);
+    }
+  }
+
+  /**
    * Create new room
    */
   public function storeRoom(CreateRoomRequest $request)

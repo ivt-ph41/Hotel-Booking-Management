@@ -42,6 +42,9 @@ class RoomController extends Controller
     return view('rooms.detail', compact('room'));
   }
 
+  /**
+   * Filter room
+   */
   public function filterRoom(Request $request)
   {
     // Get list person/room in resource
@@ -53,9 +56,11 @@ class RoomController extends Controller
     return view('rooms.index', compact('roomFilter', 'person_room_list'));
   }
 
-
-  public function deleteRoom($id)
+  /**
+   * Search room by name
+   */
+  public function searchRoom(Request $request)
   {
-    dd('OK');
+    return $this->roomRepository->searchRoom($request);
   }
 }

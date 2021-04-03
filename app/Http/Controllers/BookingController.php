@@ -28,8 +28,9 @@ class BookingController extends Controller
       if (Auth::user()->role_id == \App\Entities\Role::ADMIN_ROLE) {
         return redirect()->back();
       }
+      // TODO: need optimize this user 'with'profile
       $user = Auth::user();
-      $profile = $user->profile()->get();
+      $profile = $user->profile()->get(); //! Need Optimaze this code
       // dd($profile->toArray());
       $room = $this->roomRepository->find($room_id);
       return view('bookings.create', compact('room', 'profile'));
@@ -45,5 +46,17 @@ class BookingController extends Controller
   public function store($room_id, CreateBookingRequest $request)
   {
     return $this->bookingRepository->booking($room_id, $request);
+  }
+
+
+  /**
+   * cancelBooking
+   *
+   * @param  mixed $id
+   * @return void
+   */
+  public function cancelBooking($id)
+  {
+    return $this->bookingRepository->cancelBooking($id);
   }
 }

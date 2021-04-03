@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
 
-        // $this->call(ProfileTableSeeder::class);
+
 
         $this->call(BedTableSeeder::class);
 
@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(BookingTableSeeder::class);
 
         // $this->call(BookingDetailTableSeeder::class);
+        // $this->call(ProfileTableSeeder::class);
     }
 }
