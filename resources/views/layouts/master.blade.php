@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/slicknav.min.css')}}" type="text/css">
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/style.css')}}" type="text/css">
 
+  {{-- css search room  --}}
+  <link rel="stylesheet" href="{{asset('css/search-room.css')}}" type="text/css">
 
 </head>
 
@@ -78,7 +80,7 @@
         <div class="row">
           <div class="col-lg-2">
             <div class="header__logo">
-              <a href="./index.html"><img src="img/logo.png" alt=""></a>
+              <a href="#"><img src="{{asset('hiroto-master/img/logo.png')}}" alt=""></a>
             </div>
           </div>
           <div class="col-lg-10">
@@ -135,7 +137,7 @@
   <!-- Breadcrumb End -->
 
   <!-- Hero Section Begin -->
-  <section class="hero spad set-bg" data-setbg="img/hero.jpg">
+  <section class="hero spad set-bg" data-setbg="{{asset('')}}">
 
 
     <div class="container">
@@ -176,7 +178,7 @@
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="footer__about">
               <div class="footer__logo">
-                <a href="#"><img src="{{ asset('horoto-master/img/logo.png')}}" alt=""></a>
+                <a href="#"><img src="{{ asset('hiroto-master/img/logo.png')}}" alt=""></a>
               </div>
               <h4>(84) 984-641-362</h4>
               <ul>
@@ -267,7 +269,49 @@
   <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
 
   {{-- search room using ajax --}}
-  <script src="{{asset('js/search-rooms.js')}}"></script>
+  <script>
+     $(document).ready(function () {
+    $('#search-text').keyup(function (e) {
+      $(this).css("background-color", "#e9ad28");
+      if($(this).val() == '')
+      {
+        $(this).css("background-color", "white");
+      }
+      var url = "{{route('rooms.search')}}";
+      console.log('url: ', url);
+      $.ajax({
+        type: "GET",
+        url: url,
+        data: {
+          'search' : $('input[name="search"]').val(),
+        },
+        dataType: "json",
+        success: function (response) {
+          console.log(response);
+          var html= '';
+          $.each(response, function (item ,value) {
+            // html+='<div class="col-md-2"> '+value.name+'</div>';
+            // });
+            // html += '<div class="col-md-2">' + '<ul class="nav nav-pills nav-stacked anyClass">' + '<li class="nav-item">'
+            //   + '</li>'+ '</ul>'+ '</div>';
+            html+=
+              '<div class="col-md-2">'
+              +'<ul class="nav nav-pills nav-stacked" style=" height:150px; overflow-y: scroll;">'
+              +'<li class="nav-item">'
+              +'<a class="nav-link" href="rooms/' + value.id + '">'
+              +value.name
+              +'</a>'
+              +'</li>'
+              +'</ul>'
+              +'</div>';
+            });
+            $('#result').html('');
+            $('#result').append(html);
+        }
+      });
+    });
+  });
+  </script>
 </body>
 
 </html>

@@ -3,6 +3,7 @@
 
 @section('css')
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="{{asset('css/search-room.css')}}">
 @endsection
 
 @section('our-room-ui')
@@ -66,7 +67,7 @@
     <div class="footer__newslatter" style="width: 50%">
       <input id="search-text" type="text" name="search" placeholder="Search room by name"
         style="border: black solid 1px; padding:20px;">
-      <div style="height:150px; overflow-y: scroll;" id="result"></div>
+      <div id="result"></div>
     </div>
 
 
