@@ -17,7 +17,6 @@ use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
 use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -188,25 +187,15 @@ class AdminController extends Controller
     return $this->userRepository->deleteUser($id);
   }
 
+  /**
+   * Show view manager comments
+   *
+   * @param  mixed $request
+   * @return void
+   */
   public function managerComment(Request $request)
   {
-    if ($request->has('search')) {
-      $data = $request->input('search');
-
-      $comments = $this->commentRepo->with(['user', 'room'])->whereHas('user', function (Builder $query) use ($data) {
-        return $query->where('email', 'LIKE', "%$data%");
-      })->orWhereHas('room', function (Builder $query) use ($data) {
-        return $query->where('name', 'LIKE', "%$data%");
-      })
-        ->paginate(5);
-      // dd($comments->toArray());
-      $comments->appends([
-        'search' => $request->input('search')
-      ]);
-      return view('admins.comments.manager', compact('comments'));
-    }
-    $comments = $this->commentRepo->with(['user', 'room'])->paginate(5);
-    return view('admins.comments.manager', compact('comments'));
+    return $this->commentRepo->showTableManager($request);
   }
   // /**
   //  * Get all comments in resource

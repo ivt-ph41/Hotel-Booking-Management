@@ -23,5 +23,5 @@ class CommentController extends Controller
     return redirect()->route('rooms.show', ['id' => $room_id]);
   }
 
-
+  
 }

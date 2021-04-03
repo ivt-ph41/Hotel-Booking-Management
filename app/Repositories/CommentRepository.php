@@ -12,5 +12,13 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CommentRepository extends RepositoryInterface
 {
-    public function storeComment($room_id, Request $request);
+  public function storeComment($room_id, Request $request);
+
+  /**
+   * Show table manager comment
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function showTableManager(Request $request);
 }
