@@ -184,4 +184,29 @@ class AdminController extends Controller
   {
     return $this->userRepository->deleteUser($id);
   }
+
+  /**
+   * Get all comments in resource
+   *
+   * @return void
+   */
+  public function comments()
+  {
+    $comments = $this->commentRepository->with(['user', 'comments'])->get();
+    if (request()->wantsJson()) {
+
+      return response()->json(['data' => $comments], 200);
+    }
+    return view('admins.comments.manager', compact('comments'));
+  }
+
+  /**
+   * destroy comment in resource
+   *
+   * @param  mixed $id
+   * @return void
+   */
+  public function deleteComment($id)
+  {
+  }
 }
