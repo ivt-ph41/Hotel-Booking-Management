@@ -269,7 +269,8 @@
   <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
 
   {{-- search room using ajax --}}
-  <script>
+  <script src="{{asset('js/search-rooms.js')}}"></script>
+  {{-- <script>
      $(document).ready(function () {
     $('#search-text').keyup(function (e) {
       $(this).css("background-color", "#e9ad28");
@@ -311,7 +312,7 @@
       });
     });
   });
-  </script>
+  </script> --}}
 </body>
 
 </html>
