@@ -1,6 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Rooms')
 
+@section('css')
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet"/>
+@endsection
+
 @section('our-room-ui')
 <div class="breadcrumb-option set-bg" data-setbg="{{ asset('hiroto-master/img/breadcrumb-bg.jpg')}}">
   <div class="container">
@@ -62,7 +66,7 @@
     <div class="footer__newslatter" style="width: 50%">
       <input id="search-text" type="text" name="search" placeholder="Search room by name"
         style="border: black solid 1px; padding:20px;">
-      <div id="result"></div>
+      <div style="height:150px; overflow-y: scroll;" id="result"></div>
     </div>
 
 
@@ -133,7 +137,7 @@
           @if (!empty($room->images))
           @foreach ($room->images as $image)
 
-          <div class="room__pic__item set-bg" data-setbg="{{ $image->path }}"></div>
+          <div class="room__pic__item set-bg" data-setbg="{{ asset('images/rooms/' . $image->path) }}"></div>
 
           @endforeach
           @endif
