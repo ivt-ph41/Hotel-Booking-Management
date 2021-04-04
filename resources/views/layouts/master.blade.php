@@ -12,7 +12,7 @@
   {{-- favicon --}}
   <link rel="shortcut icon" href="https://img.icons8.com/dusk/64/000000/3-star-hotel.png" type="image/x-icon">
 
-  @yield('css')
+
   <!-- Css Styles -->
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/bootstrap.min.css')}}" type="text/css">
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/font-awesome.min.css')}}" type="text/css">
@@ -85,6 +85,7 @@
             <div class="header__nav">
               <nav class="header__menu">
                 <ul class="menu__class">
+                  <!-- If current route name is '/' then show color yello <li> -->
                   <li @if (Route::current()->getName() == '/' )
                     class="active"
                     @endif>
@@ -260,7 +261,6 @@
   <script src="{{ asset('hiroto-master/js/owl.carousel.min.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
 
-  @yield('js')
   <!-- search room using ajax -->
   <script src="{{asset('js/search-rooms.js')}}"></script>
 </body>
