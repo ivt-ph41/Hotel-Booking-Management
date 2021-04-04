@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateBookingRequest;
 use App\Repositories\BookingRepository;
 use App\Repositories\RoomRepository;
-use Illuminate\Support\Facades\Auth;
+
 
 class BookingController extends Controller
 {
@@ -18,26 +18,13 @@ class BookingController extends Controller
   }
 
   /**
-   * return view booking form with room_id
+   * Return view booking form with room_id
+   * If user with auth then display information to form
+   * IF user is Admin role will return redirect back
    */
   public function create($room_id)
   {
-    // if  current user loggin in system
-    if (Auth::check()) {
-      //if user is admin, redirect back
-      if (Auth::user()->role_id == \App\Entities\Role::ADMIN_ROLE) {
-        return redirect()->back();
-      }
-      // TODO: need optimize this user 'with'profile
-      $user = Auth::user();
-      $profile = $user->profile()->get(); //! Need Optimaze this code
-      // dd($profile->toArray());
-      $room = $this->roomRepository->find($room_id);
-      return view('bookings.create', compact('room', 'profile'));
-    }
-    //Get current room for booking
-    $room = $this->roomRepository->find($room_id);
-    return view('bookings.create', compact('room'));
+    return $this->bookingRepository->showFormBooking($room_id);
   }
 
   /**

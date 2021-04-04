@@ -13,6 +13,12 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface BookingRepository extends RepositoryInterface
 {
+  /**
+   * showFormBooking for user
+   *
+   * @return void
+   */
+  public function showFormBooking($room_id);
   // Creating booking of user
   public function booking($room_id, CreateBookingRequest $request);
 
