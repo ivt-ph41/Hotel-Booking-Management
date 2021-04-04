@@ -17,10 +17,6 @@ $(document).ready(function () {
         console.log(response);
         var html = '';
         $.each(response, function (item, value) {
-          // html+='<div class="col-md-2"> '+value.name+'</div>';
-          // });
-          // html += '<div class="col-md-2">' + '<ul class="nav nav-pills nav-stacked anyClass">' + '<li class="nav-item">'
-          //   + '</li>'+ '</ul>'+ '</div>';
           html +=
             '<div class="col-md-2">'
             + '<ul class="nav nav-pills nav-stacked" style=" height:150px; overflow-y: scroll;">'

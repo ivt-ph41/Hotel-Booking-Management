@@ -23,8 +23,7 @@
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/slicknav.min.css')}}" type="text/css">
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/style.css')}}" type="text/css">
 
-  {{-- css search room  --}}
-  <link rel="stylesheet" href="{{asset('css/search-room.css')}}" type="text/css">
+
 
 </head>
 
@@ -52,8 +51,7 @@
                 @auth
 
                 <form action="{{ route('logout') }}" method="post">
-                  <a href="{{route('users.profile')}}" title="Click to view your profile"
-                    style="font-size: 100%; color:black">
+                  <a href="{{route('users.profile')}}" title="Click to view your profile" style="font-size: 100%; color:black">
                     {{Auth::user()->email}}
                   </a>
                   @csrf
@@ -90,7 +88,8 @@
                   <li @if (Route::current()->getName() == '/' )
                     class="active"
                     @endif>
-                    <a href="{{ route('/')}}">Home</a></li>
+                    <a href="{{ route('/')}}">Home</a>
+                  </li>
                   <li @if (Route::current()->getName() == 'rooms.index')
                     class="active"
                     @endif>
@@ -137,7 +136,7 @@
   <!-- Breadcrumb End -->
 
   <!-- Hero Section Begin -->
-  <section class="hero spad set-bg" data-setbg="{{asset('')}}">
+  <section class="hero spad set-bg">
 
 
     <div class="container">
@@ -186,7 +185,7 @@
                 <li>phuoc04012000@gmail.com</li>
               </ul>
               <div class="footer__social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="https://www.facebook.com/phuoctran455"><i class="fa fa-facebook"></i></a>
                 <a href="#"><i class="fa fa-twitter"></i></a>
                 <a href="#"><i class="fa fa-linkedin"></i></a>
                 <a href="#"><i class="fa fa-youtube-play"></i></a>
@@ -197,18 +196,11 @@
             <div class="footer__widget">
               <h4>Quick Link</h4>
               <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Booking</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Review</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{ route('/') }}">Home</a></li>
+                <li><a href="{{ route('rooms.index') }}">Booking</a></li>
               </ul>
               <ul>
-                <li><a href="#">Services</a></li>
                 <li><a href="{{ route('rooms.index' )}}">Our Room</a></li>
-                <li><a href="#">Restaurants</a></li>
-                <li><a href="#">Payments</a></li>
-                <li><a href="#">Events</a></li>
               </ul>
             </div>
           </div>
@@ -241,8 +233,8 @@
                 <script>
                   document.write(new Date().getFullYear());
                 </script>
-                All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a
-                  href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+              </p>
             </div>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
           </div>
@@ -258,61 +250,19 @@
   </footer>
   <!-- Footer Section End -->
 
-  @yield('js')
+
   <!-- Js Plugins -->
-  <script src="{{ asset('hiroto-master/js/jquery-3.3.1.min.js')}}"></script>
-  <script src="{{ asset('hiroto-master/js/bootstrap.min.js')}}"></script>
+  <script src="{{ asset('hiroto-master/js/jquery-3.3.1.min.js') }}"></script>
+  <script src="{{ asset('hiroto-master/js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('hiroto-master/js/jquery.nice-select.min.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/jquery-ui.min.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/jquery.slicknav.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/owl.carousel.min.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
 
-  {{-- search room using ajax --}}
+  @yield('js')
+  <!-- search room using ajax -->
   <script src="{{asset('js/search-rooms.js')}}"></script>
-  {{-- <script>
-     $(document).ready(function () {
-    $('#search-text').keyup(function (e) {
-      $(this).css("background-color", "#e9ad28");
-      if($(this).val() == '')
-      {
-        $(this).css("background-color", "white");
-      }
-      var url = "{{route('rooms.search')}}";
-      console.log('url: ', url);
-      $.ajax({
-        type: "GET",
-        url: url,
-        data: {
-          'search' : $('input[name="search"]').val(),
-        },
-        dataType: "json",
-        success: function (response) {
-          console.log(response);
-          var html= '';
-          $.each(response, function (item ,value) {
-            // html+='<div class="col-md-2"> '+value.name+'</div>';
-            // });
-            // html += '<div class="col-md-2">' + '<ul class="nav nav-pills nav-stacked anyClass">' + '<li class="nav-item">'
-            //   + '</li>'+ '</ul>'+ '</div>';
-            html+=
-              '<div class="col-md-2">'
-              +'<ul class="nav nav-pills nav-stacked" style=" height:150px; overflow-y: scroll;">'
-              +'<li class="nav-item">'
-              +'<a class="nav-link" href="rooms/' + value.id + '">'
-              +value.name
-              +'</a>'
-              +'</li>'
-              +'</ul>'
-              +'</div>';
-            });
-            $('#result').html('');
-            $('#result').append(html);
-        }
-      });
-    });
-  });
-  </script> --}}
 </body>
 
 </html>
