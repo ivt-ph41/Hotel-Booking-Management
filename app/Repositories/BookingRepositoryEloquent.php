@@ -9,6 +9,8 @@ use App\Repositories\BookingRepository;
 use App\Entities\Booking;
 use App\Entities\BookingDetail;
 use App\Http\Requests\CreateBookingRequest;
+use App\User;
+use App\Entities\Room;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -36,6 +38,28 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     $this->pushCriteria(app(RequestCriteria::class));
   }
 
+  /**
+   * showFormBooking for user
+   *
+   * @return void
+   */
+  public function showFormBooking($room_id)
+  {
+    // if  current user loggin in system
+    if (Auth::check()) {
+      //if user is admin, redirect back
+      if (Auth::user()->role_id == \App\Entities\Role::ADMIN_ROLE) {
+        return redirect()->back();
+      }
+
+      $user = User::with('profile')->find(Auth::id());
+      $room = Room::find($room_id);
+      return view('bookings.create', compact('room', 'user'));
+    }
+    //Get current room for booking
+    $room = Room::find($room_id);
+    return view('bookings.create', compact('room'));
+  }
   /**
    * Store booking of user or guest
    */
