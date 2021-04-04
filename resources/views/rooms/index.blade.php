@@ -2,7 +2,7 @@
 @section('title', 'Rooms')
 
 @section('css')
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('css/search-room.css')}}">
 @endsection
 
@@ -65,8 +65,7 @@
 
     {{-- Form search room by name --}}
     <div class="footer__newslatter" style="width: 50%">
-      <input id="search-text" type="text" name="search" placeholder="Search room by name"
-        style="border: black solid 1px; padding:20px;">
+      <input id="search-text" type="text" name="search" placeholder="Search room by name" style="border: black solid 1px; padding:20px;" autocomplete="off">
       <div id="result"></div>
     </div>
 
@@ -114,11 +113,11 @@
 {{-- Paginate --}}
 <div class="row">
   <div class="col-lg-12">
-    {{-- <div class="pagination__number">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Next <span class="arrow_right"></span></a>
-                </div> --}}
+    <!-- <div class="pagination__number">
+      <a href="#">1</a>
+      <a href="#">2</a>
+      <a href="#">Next <span class="arrow_right"></span></a>
+    </div> -->
     {{ $rooms->links() }}
   </div>
 </div>
@@ -126,6 +125,7 @@
 
 
 {{-- Filter Room start --}}
+
 @isset($roomFilter)
 <!-- Rooms Section Begin -->
 <section class="rooms spad">
@@ -169,11 +169,12 @@
 {{-- Paginate --}}
 <div class="row">
   <div class="col-lg-12">
-    {{-- <div class="pagination__number">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Next <span class="arrow_right"></span></a>
-                </div> --}}
+    {{ $roomFilter->links() }}
+    <!-- <div class="pagination__number">
+      <a href="#">1</a>
+      <a href="#">2</a>
+      <a href="#">Next <span class="arrow_right"></span></a>
+    </div> -->
   </div>
 </div>
 @endisset

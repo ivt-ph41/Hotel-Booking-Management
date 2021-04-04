@@ -47,13 +47,7 @@ class RoomController extends Controller
    */
   public function filterRoom(Request $request)
   {
-    // Get list person/room in resource
-    $person_room_list = $this->personRoomRepository->all();
-
-    // Get rooms by filter
-    $roomFilter = $this->roomRepository->filterRoom($request);
-
-    return view('rooms.index', compact('roomFilter', 'person_room_list'));
+    return $this->roomRepository->filterRoom($request);
   }
 
   /**
