@@ -1,10 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Rooms')
 
-@section('css')
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="{{asset('css/search-room.css')}}">
-@endsection
+
 
 @section('our-room-ui')
 <div class="breadcrumb-option set-bg" data-setbg="{{ asset('hiroto-master/img/breadcrumb-bg.jpg')}}">
@@ -66,8 +63,14 @@
     {{-- Form search room by name --}}
     <div class="footer__newslatter" style="width: 50%">
       <input id="search-text" type="text" name="search" placeholder="Search room by name" style="border: black solid 1px; padding:20px;" autocomplete="off">
-      <div id="result"></div>
     </div>
+    <!-- Result search -->
+    <div class="container">
+      <div class="row">
+        <div id="result" class="col-2"></div>
+      </div>
+    </div>
+
 
 
   </div>

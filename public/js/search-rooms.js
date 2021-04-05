@@ -16,18 +16,14 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         var html = '';
+        html += '<ul class="nav nav-pills nav-stacked search-room">';
+
         $.each(response, function (item, value) {
-          html +=
-            '<div class="col-md-2">'
-            + '<ul class="nav nav-pills nav-stacked" style=" height:150px; overflow-y: scroll;">'
-            + '<li class="nav-item">'
-            + '<a class="nav-link" href="rooms/' + value.id + '">'
-            + value.name
-            + '</a>'
-            + '</li>'
-            + '</ul>'
-            + '</div>';
+          html += '<li class="nav-item">' +
+            '<a class="nav-link text-warning text-bold" href="rooms/' + value.id + '">' + value.name + '</a>' +
+            '</li>' + '</br>';
         });
+        html += '</ul>';
         $('#result').html('');
         $('#result').append(html);
       }

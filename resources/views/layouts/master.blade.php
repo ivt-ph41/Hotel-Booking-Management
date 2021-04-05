@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/slicknav.min.css')}}" type="text/css">
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/style.css')}}" type="text/css">
 
+  <!-- Search room css -->
+  <link rel="stylesheet" href="{{ asset('css/search-room.css')}}">
 
 
 </head>
