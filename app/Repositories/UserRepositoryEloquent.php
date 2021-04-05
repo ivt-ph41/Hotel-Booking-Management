@@ -158,7 +158,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return redirect()->back()->with(['status' => 'Something went wrong, please try again!']);
       }
     } else {
-      return redirect()->back()->with(['status' => 'Delete fail!(May be user have booking in system!)']);
+      return redirect()->back()->with(['status' => 'Fail! This current user have booking with status pending or approve.)']);
     }
   }
 }
