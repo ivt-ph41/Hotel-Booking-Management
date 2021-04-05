@@ -60,7 +60,7 @@ class UserController extends Controller
   public function userBooking()
   {
     $user = $this->userRepository->with('bookings.bookingDetails.room')->find(Auth::id());
-    //        dd($user->toArray());
+    
     return view('bookings.user-booking', compact('user'));
   }
 

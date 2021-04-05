@@ -127,22 +127,20 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $user = $this->model->with(['bookings'])->find($id);
 
         if ($user->bookings->count() != 0) { // if user have booking then delete booking
+
           // Get all bookings of user
           $user_bookings = Booking::with('bookingDetails')->where('user_id', $id)->get();
 
-          //if user have booking then delete
-          if ($user_bookings->count() != 0) {
-            // Delete booking detail with booking id first then delete booking with booking id
-            foreach ($user_bookings as $val) {
-              if ($val->bookingDetails->count() != 0) {   //if bookingDetail not null(for sure)
-                BookingDetail::where('booking_id', $val->id)->delete();
-                Booking::destroy($id);
-              } else {
-                //only delete booking with booking id
-                Booking::destroy($id);
-              }
+          // Delete booking detail with booking id first then delete booking with booking id
+          foreach ($user_bookings as $val) {
+            if ($val->bookingDetails->count() != 0) {   //if bookingDetail not null(for sure)
+              BookingDetail::where('booking_id', $val->id)->delete();
+              Booking::destroy($id);
+            } else {
+              //only delete booking with booking id
+              Booking::destroy($id);
             }
-          };
+          }
         }
 
         //Delete profile  with user_id = $id
