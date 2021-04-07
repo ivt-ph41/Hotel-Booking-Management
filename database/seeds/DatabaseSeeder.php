@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
 
-        $this->call(ProfileTableSeeder::class);
+        // $this->call(ProfileTableSeeder::class);
 
         $this->call(BedTableSeeder::class);
 
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(ImageTableSeeder::class);
 
-        $this->call(CommentTableSeeder::class);
+        // $this->call(CommentTableSeeder::class);
 
         // $this->call(BookingTableSeeder::class);
 
