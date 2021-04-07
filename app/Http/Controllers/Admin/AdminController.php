@@ -96,7 +96,7 @@ class AdminController extends Controller
    */
   public function showFormCreateRoom()
   {
-    //      Get all bed and type of room
+    //Get all bed and type of room
     $beds = $this->bedRepo->orderBy('name')->all();
     $types = $this->typeRepo->orderBy('name')->all();
     $person_rooms = $this->personRoomRepo->orderBy('name')->all();

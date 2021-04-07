@@ -9,6 +9,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RoomRepository;
 use App\Entities\Room;
 use App\Entities\Image;
+use App\Entities\PersonRoom;
 use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,18 +56,37 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     $date_end = date('Y-m-d', $date_end);
 
     // \DB::enableQueryLog();
-    $rooms = $this->model->with([
+    $roomFilter = $this->model->with([
       'type',
       'bed',
       'bookingDetails' => function ($query) use ($date_start, $date_end) {
         return $query->where('date_start', '<', $date_start)
           ->Where('date_end', '>', $date_end);
       }
-    ])->where('person_room_id', '=', $person_room_id)->get();
-
-    return $rooms;
+    ])->where('person_room_id', '=', $person_room_id)->paginate(5);
+    $roomFilter->appends([
+      'date_start' => $date_start,
+      'date_end' => $date_end,
+      'person_room' => $person_room_id
+    ]);
+    // Get list person/room in resource
+    $person_room_list = PersonRoom::all();
+    return view('rooms.index', compact('roomFilter', 'person_room_list'));
 
     // dd(\DB::getQueryLog());
+  }
+
+  /**
+   * search room
+   */
+  public function searchRoom(Request $request)
+  {
+    if ($request->has('search')) {
+      $data = $request->all();
+      $query = $data['search'];
+      $rooms = $this->model->where('name', 'LIKE', "%$query%")->select('rooms.id', 'rooms.name')->get();
+      return response()->json($rooms, 200);
+    }
   }
 
   /**

@@ -42,20 +42,19 @@ class RoomController extends Controller
     return view('rooms.detail', compact('room'));
   }
 
+  /**
+   * Filter room
+   */
   public function filterRoom(Request $request)
   {
-    // Get list person/room in resource
-    $person_room_list = $this->personRoomRepository->all();
-
-    // Get rooms by filter
-    $roomFilter = $this->roomRepository->filterRoom($request);
-
-    return view('rooms.index', compact('roomFilter', 'person_room_list'));
+    return $this->roomRepository->filterRoom($request);
   }
 
-
-  public function deleteRoom($id)
+  /**
+   * Search room by name
+   */
+  public function searchRoom(Request $request)
   {
-    dd('OK');
+    return $this->roomRepository->searchRoom($request);
   }
 }

@@ -78,12 +78,10 @@
               @if ($errors->has('content'))
               <p style="color: red">{{$errors->first('content')}}</p>
               @endif
-              <form id="frm-commnent" action="{{route('comments.store', ['id' => $room->id])}}" method="post"
-                style="margin-bottom: 2%">
+              <form id="frm-commnent" action="{{route('comments.store', ['id' => $room->id])}}" method="post" style="margin-bottom: 2%">
                 @csrf
                 <div>
-                  <textarea style="background-color: #e9ad28;color:#FFF" name="content" id="" cols="50"
-                    rows="5"></textarea>
+                  <textarea style="background-color: #e9ad28;color:#FFF" name="content" id="" cols="50" rows="5"></textarea>
                 </div>
                 <button type=" submit" class="btn btn-danger">Send your comment</button>
               </form>
@@ -138,44 +136,44 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-1.png" alt="">
+                      <div class="icon"><img src="{{ asset('hiroto-master/img/rooms/details/facilities/fac-1.png')}}" alt="">
                       </div>
                       <h6>Air Conditioning</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-2.png" alt="">
+                      <div class="icon"><img src="{{ asset('hiroto-master/img/rooms/details/facilities/fac-2.png') }}" alt="">
                       </div>
                       <h6>Cable TV</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-3.png" alt="">
+                      <div class="icon"><img src="{{ asset('hiroto-master/img/rooms/details/facilities/fac-3.png') }}" alt="">
                       </div>
                       <h6>Free drinks</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-4.png" alt="">
+                      <div class="icon"><img src="{{asset('hiroto-master/img/rooms/details/facilities/fac-4.png')}}" alt="">
                       </div>
                       <h6>Unlimited Wifi</h6>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-5.png" alt="">
+                      <div class="icon"><img src="{{asset('hiroto-master/img/rooms/details/facilities/fac-5.png')}}" alt="">
                       </div>
                       <h6>Restaurant quality</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-6.png" alt="">
+                      <div class="icon"><img src="{{asset('hiroto-master/img/rooms/details/facilities/fac-6.png')}}" alt="">
                       </div>
                       <h6>Service 24/24</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-7.png" alt="">
+                      <div class="icon"><img src="{{asset('hiroto-master/img/rooms/details/facilities/fac-7.png')}}" alt="">
                       </div>
                       <h6>Gym Centre</h6>
                     </div>
                     <div class="room__details__more__facilities__item">
-                      <div class="icon"><img src="img/rooms/details/facilities/fac-8.png" alt="">
+                      <div class="icon"><img src="{{asset('hiroto-master/img/rooms/details/facilities/fac-8.png')}}" alt="">
                       </div>
                       <h6>Spa & Wellness</h6>
                     </div>

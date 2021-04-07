@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'Rooms')
 
+
+
 @section('our-room-ui')
 <div class="breadcrumb-option set-bg" data-setbg="{{ asset('hiroto-master/img/breadcrumb-bg.jpg')}}">
   <div class="container">
@@ -23,7 +25,7 @@
 
 <div class="row mt-3">
   <div class="col-lg-12">
-    <form action="{{ route('rooms.search') }}" class="filter__form" method="get">
+    <form action="{{ route('rooms.filter') }}" class="filter__form" method="get">
       <div class="filter__form__item">
         <p>Check In</p>
         <div class="filter__form__datepicker">
@@ -57,6 +59,20 @@
       </div>
       <button type="submit">Check Available</button>
     </form>
+
+    {{-- Form search room by name --}}
+    <div class="footer__newslatter" style="width: 50%">
+      <input id="search-text" type="text" name="search" placeholder="Search room by name" style="border: black solid 1px; padding:20px;" autocomplete="off">
+    </div>
+    <!-- Result search -->
+    <div class="container">
+      <div class="row">
+        <div id="result" class="col-2"></div>
+      </div>
+    </div>
+
+
+
   </div>
 </div>
 
@@ -100,11 +116,11 @@
 {{-- Paginate --}}
 <div class="row">
   <div class="col-lg-12">
-    {{-- <div class="pagination__number">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Next <span class="arrow_right"></span></a>
-                </div> --}}
+    <!-- <div class="pagination__number">
+      <a href="#">1</a>
+      <a href="#">2</a>
+      <a href="#">Next <span class="arrow_right"></span></a>
+    </div> -->
     {{ $rooms->links() }}
   </div>
 </div>
@@ -112,6 +128,7 @@
 
 
 {{-- Filter Room start --}}
+
 @isset($roomFilter)
 <!-- Rooms Section Begin -->
 <section class="rooms spad">
@@ -124,7 +141,7 @@
           @if (!empty($room->images))
           @foreach ($room->images as $image)
 
-          <div class="room__pic__item set-bg" data-setbg="{{ $image->path }}"></div>
+          <div class="room__pic__item set-bg" data-setbg="{{ asset('images/rooms/' . $image->path) }}"></div>
 
           @endforeach
           @endif
@@ -155,11 +172,12 @@
 {{-- Paginate --}}
 <div class="row">
   <div class="col-lg-12">
-    {{-- <div class="pagination__number">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Next <span class="arrow_right"></span></a>
-                </div> --}}
+    {{ $roomFilter->links() }}
+    <!-- <div class="pagination__number">
+      <a href="#">1</a>
+      <a href="#">2</a>
+      <a href="#">Next <span class="arrow_right"></span></a>
+    </div> -->
   </div>
 </div>
 @endisset

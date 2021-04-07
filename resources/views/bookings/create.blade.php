@@ -13,30 +13,29 @@
     <p style="color: red">{{session()->get('booking_fail')}}</p>
   </div>
   @endif
-  <h1>Room: {{$room->name}}</h1>
-  <h2>Price: <sup>$</sup>{{$room->price}}<span>/day</span></h2>
+  <h3>{{$room->name}}</h3>
+  <h3>Price: <sup>$</sup>{{$room->price}}<span>/day</span></h3>
 </div>
 @auth
-
-<form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form"
-  style="border: solid #e9ad28; " method="post">
+<h5 style="margin-bottom: 10px;">{{$user->email}}</h5>
+<form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form" style="border: solid #e9ad28; " method="post">
   @csrf
   <div class="filter__form__item">
     <p>Username</p>
     <div class="filter__form__datepicker">
-      <input style="padding-left: 0px" type="text" name="name" value="{{$profile->first()->name}}">
+      <input style="padding-left: 0px" type="text" name="name" value="{{$user->profile->name}}">
     </div>
   </div>
   <div class="filter__form__item">
     <p>Address</p>
     <div class="filter__form__datepicker">
-      <input style="padding-left:0px" type="text" name="address" value="{{$profile->first()->address}}">
+      <input style="padding-left:0px" type="text" name="address" value="{{$user->profile->address}}">
     </div>
   </div>
   <div class="filter__form__item">
     <p>Phone</p>
     <div class="filter__form__datepicker">
-      <input style="padding-left: 0px;" type="text" name="phone" value="{{$profile->first()->phone}}">
+      <input style="padding-left: 0px;" type="text" name="phone" value="{{$user->profile->phone}}">
     </div>
   </div>
   <div class="filter__form__item">
@@ -60,8 +59,7 @@
 @endauth
 @guest
 
-<form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form"
-  style="border: solid #e9ad28; " method="post">
+<form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form" style="border: solid #e9ad28; " method="post">
   @csrf
   <div class="filter__form__item">
     <p>Username</p>
