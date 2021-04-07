@@ -22,32 +22,28 @@ dd($errors->all());
           <div class="card-body">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" name="name" value="{{old('name')}}" class="form-control" id="name"
-                placeholder="Eg: 001">
+              <input type="text" name="name" value="{{old('name')}}" class="form-control" id="name" placeholder="Eg: 001">
             </div>
             @if($errors->has('name'))
             <p class="text-bold text-danger">{{$errors->first('name')}}</p>
             @endif
             <div class="form-group">
               <label for="description">Description</label>
-              <input type="text" name="description" value="{{old('description')}}" class="form-control" id="description"
-                placeholder="Description">
+              <input type="text" name="description" value="{{old('description')}}" class="form-control" id="description" placeholder="Description">
             </div>
             @if($errors->has('description'))
             <p class="text-bold text-danger">{{$errors->first('description')}}</p>
             @endif
             <div class="form-group">
               <label for="size">Size(ft)</label>
-              <input type="text" name="size" value="{{old('size')}}" class="form-control" id="size"
-                placeholder="Eg 10ft">
+              <input type="text" name="size" value="{{old('size')}}" class="form-control" id="size" placeholder="Eg 10ft">
             </div>
             @if($errors->has('size'))
             <p class="text-bold text-danger">{{$errors->first('size')}}</p>
             @endif
             <div class="form-group">
               <label for="price">Price/day</label>
-              <input type="text" name="price" value="{{old('price')}}" class="form-control" id="price"
-                placeholder="Price per day">
+              <input type="text" name="price" value="{{old('price')}}" class="form-control" id="price" placeholder="Price per day">
             </div>
             @if($errors->has('price'))
             <p class="text-bold text-danger">{{$errors->first('price')}}</p>

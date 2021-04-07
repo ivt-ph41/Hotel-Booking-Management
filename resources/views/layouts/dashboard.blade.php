@@ -249,24 +249,6 @@
                     <p>Create room</p>
                   </a>
                 </li>
-                {{--                                <li class="nav-item">--}}
-                {{--                                    <a href="pages/forms/advanced.html" class="nav-link">--}}
-                {{--                                        <i class="far fa-circle nav-icon"></i>--}}
-                {{--                                        <p>Advanced Elements</p>--}}
-                {{--                                    </a>--}}
-                {{--                                </li>--}}
-                {{--                                <li class="nav-item">--}}
-                {{--                                    <a href="pages/forms/editors.html" class="nav-link">--}}
-                {{--                                        <i class="far fa-circle nav-icon"></i>--}}
-                {{--                                        <p>Editors</p>--}}
-                {{--                                    </a>--}}
-                {{--                                </li>--}}
-                {{--                                <li class="nav-item">--}}
-                {{--                                    <a href="pages/forms/validation.html" class="nav-link">--}}
-                {{--                                        <i class="far fa-circle nav-icon"></i>--}}
-                {{--                                        <p>Validation</p>--}}
-                {{--                                    </a>--}}
-                {{--                                </li>--}}
               </ul>
             </li>
             <li class="nav-item">
@@ -294,6 +276,12 @@
                   <a href="{{route('admins.user.manager')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Manager users</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('admins.comments.manager')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manager comments</p>
                   </a>
                 </li>
               </ul>
@@ -346,6 +334,7 @@
   </div>
   <!-- ./wrapper -->
 
+
   <!-- jQuery -->
   <script src="{{asset('AdminLTE/plugins/jquery/jquery.min.js')}}"></script>
   <!-- jQuery UI 1.11.4 -->
@@ -380,6 +369,10 @@
   <script src="{{asset('AdminLTE/dist/js/demo.js')}}"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
   <script src="{{asset('AdminLTE/dist/js/pages/dashboard.js')}}"></script>
+
+
+  @yield('script')
+
 </body>
 
 </html>

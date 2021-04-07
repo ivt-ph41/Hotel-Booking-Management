@@ -10,13 +10,12 @@ use App\Http\Requests\EditRoomRequest;
 use App\Repositories\BedRepository;
 use App\Repositories\BookingDetailRepository;
 use App\Repositories\BookingRepository;
-use App\Repositories\ImageRepository;
 use App\Repositories\PersonRoomRepository;
 use App\Repositories\RoomRepository;
 use App\Repositories\TypeRepository;
 use App\Repositories\UserRepository;
-use App\RepositoriesImageRepository;
 use App\Repositories\ProfileRepository;
+use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -29,6 +28,7 @@ class AdminController extends Controller
   protected $typeRepo;
   protected $personRoomRepo;
   protected $profileRepo;
+  protected $commentRepo;
 
   public function __construct(
     UserRepository $userRepository,
@@ -38,7 +38,8 @@ class AdminController extends Controller
     BedRepository $bedRepo,
     TypeRepository $typeRepo,
     PersonRoomRepository $personRoomRepo,
-    ProfileRepository $profileRepo
+    ProfileRepository $profileRepo,
+    CommentRepository $commenRepo
   ) {
     $this->userRepository = $userRepository;
     $this->bookingDetailRepository = $bookingDetailRepository;
@@ -48,6 +49,7 @@ class AdminController extends Controller
     $this->typeRepo = $typeRepo;
     $this->personRoomRepo = $personRoomRepo;
     $this->profileRepo = $profileRepo;
+    $this->commentRepo = $commenRepo;
   }
 
   /**
@@ -183,5 +185,38 @@ class AdminController extends Controller
   public function deleteUser($id)
   {
     return $this->userRepository->deleteUser($id);
+  }
+
+  /**
+   * Show view manager comments
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerComment(Request $request)
+  {
+    return $this->commentRepo->showTableManager($request);
+  }
+  // /**
+  //  * Get all comments in resource
+  //  *
+  //  * @return void
+  //  */
+  // public function commentIndex()
+  // {
+  //   $comments = $this->commentRepo->with(['user', 'room'])->get();
+  //   return response()->json($comments, 200);
+  // }
+
+  /**
+   * destroy comment in resource
+   *
+   * @param  mixed $id
+   * @return void
+   */
+  public function deleteComment($id)
+  {
+    $this->commentRepo->destroy($id);
+    return redirect()->back()->with(['status' => 'Delete comment success']);
   }
 }
