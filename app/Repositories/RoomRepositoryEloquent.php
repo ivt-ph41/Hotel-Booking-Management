@@ -76,21 +76,12 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     // dd(\DB::getQueryLog());
   }
 
-  /**
-   * search room
-   */
-  public function searchRoom(Request $request)
-  {
-    if ($request->has('search')) {
-      $data = $request->all();
-      $query = $data['search'];
-      $rooms = $this->model->where('name', 'LIKE', "%$query%")->select('rooms.id', 'rooms.name')->get();
-      return response()->json($rooms, 200);
-    }
-  }
 
   /**
-   * Create new room
+   * store new room in resources
+   *
+   * @param  mixed $request
+   * @return void
    */
   public function storeRoom(CreateRoomRequest $request)
   {
@@ -110,14 +101,15 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       }
       $room->images()->insert($array);
 
+      // all OK then commit
       DB::commit();
-      // all good
-      return redirect()->back()->with(['success' => 'Success']);
     } catch (\Exception $e) {
       DB::rollback();
       // something went wrong
       return redirect()->back()->with(['error' => 'Something went wrong, please try again!']);
     }
+
+    return redirect()->route('admins.room.manager')->with(['create success' => 'Success']);
   }
 
   /**
@@ -143,7 +135,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   {
     $this->model->where('id', $id)->update($request->except('images', '_token', '_method'));
 
-    return redirect()->route('admins.room.manager')->with(['success' => 'Update success']);
+    return redirect()->route('admins.room.manager')->with(['update success' => 'Update success']);
   }
 
   /**
@@ -155,13 +147,14 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     try {
       \App\Entities\Image::where('room_id', $id)->delete();
       $this->model->where('id', $id)->delete();
-      DB::commit();
+
       // all good
-      return redirect()->back()->withInput()->with(['status' => 'Delete Success!']);
+      DB::commit();
     } catch (\Exception $e) {
       DB::rollback();
       // something went wrong
-      return redirect()->back()->withInput()->with(['status' => 'Something went wrong, please try again!']);
+      return redirect()->back()->withInput()->with(['something error' => 'Something went wrong, please try again!']);
     }
+    return redirect()->route('admins.room.manager')->with(['delete success' => 'Delete Success!']);
   }
 }

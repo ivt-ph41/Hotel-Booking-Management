@@ -42,8 +42,8 @@
                         <div class="card-footer text-center">
                             <button type="submit" class="btn btn-outline-success">Submit</button>
 
-                            {{--Show result--}}
-                            @if(session()->has('success'))
+                            <!-- show result -->
+                            <!-- @if(session()->has('success'))
                             <div class="alert alert-success mt-2" role="alert">
                                 {{session()->get('success')}}
                             </div>
@@ -51,7 +51,7 @@
                             <div class="alert alert-danger mt-2" role="alert">
                                 {{session()->get('error')}}
                             </div>
-                            @endif
+                            @endif -->
                         </div>
                 </form>
             </div>
@@ -62,4 +62,30 @@
 </div>
 </div>
 
+@endsection
+@section('js')
+@if(session()->has('error'))
+<script>
+    $(function() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.success('Update user fail!');
+    });
+</script>
+@endif
 @endsection

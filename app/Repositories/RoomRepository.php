@@ -14,10 +14,9 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface RoomRepository extends RepositoryInterface
 {
-    public function filterRoom(Request $request);
-    public function searchRoom(Request $request);
-    public function storeRoom(CreateRoomRequest $request);
-    public function showViewManagerRoom(Request $request);
-    public function updateRoom($id, EditRoomRequest $request);
-    public function destroyRoom($id);
+  public function filterRoom(Request $request);
+  public function storeRoom(CreateRoomRequest $request);
+  public function showViewManagerRoom(Request $request);
+  public function updateRoom($id, EditRoomRequest $request);
+  public function destroyRoom($id);
 }
