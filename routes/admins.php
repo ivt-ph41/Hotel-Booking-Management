@@ -19,7 +19,7 @@ Route::group(
     // return  View manager all booking
     Route::get('dashboards/booking', 'AdminController@booking')->name('dashboards.booking');
     // Update status of booking from view manager booking
-    Route::put('dashboards/booking/{id}', 'AdminController@statusBooking')->name('update.status-booking');
+    Route::put('dashboards/booking/{booking_id}', 'AdminController@statusBooking')->name('update.status-booking');
 
     /**
      * Create room

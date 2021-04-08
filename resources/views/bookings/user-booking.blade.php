@@ -42,12 +42,12 @@
             <td>{{$bookingDetail->date_start}}</td>
             <td>{{$bookingDetail->date_end}}</td>
             <td>
-                {{--Pending--}}
+                <!-- Pending -->
                 @if ($booking->status == \App\Entities\Booking::PENDING_STATUS)
-                <b class="text-warning mr-3">Pending</b>
+                <div class="d-inline"><b class="text-warning mr-3">{{__('Pending')}}</b></div>
+                <div class="d-inline">
                 {{-- if current day < date_start two day, user can Cancel booking --}}
                 @if ($flag = \Carbon\Carbon::now()->addDay(2)->toDateString() < $bookingDetail->date_start ? true : false)
-            <td>
                 <form class="form-inline" action="{{ route('bookings.cancel', $booking->id) }}" method="post">
                     @csrf
                     @method('DELETE')
@@ -55,8 +55,8 @@
                         <button type="submit" class="btn btn-info">Cancel</button>
                     </div>
                 </form>
-            </td>
-            @endif
+                @endif
+                </div>
 
             {{--Appprove--}}
             @elseif ($booking->status == \App\Entities\Booking::APPROVE_STATUS)

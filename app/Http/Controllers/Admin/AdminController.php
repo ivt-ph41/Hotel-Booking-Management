@@ -17,6 +17,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
 use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -63,11 +64,20 @@ class AdminController extends Controller
   /**
    * Return view management bookings
    */
-  public function booking()
+  public function booking(Request $request)
   {
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search booking by room name or user name of booking
+      $booking_details = $this->bookingDetailRepository->with(['booking', 'room'])->whereHas('booking', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->orWhereHas('room', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->get();
+    }
     // GET USER WITH BOOKING
-    $booking_details = $this->bookingDetailRepository->with(['room', 'booking.user.profile',])->paginate(5);
-    // dd($booking_details->toArray());
+    $booking_details = $this->bookingDetailRepository->with(['room', 'booking'])->paginate(5);
+
     return view('admins.manager-booking', compact('booking_details'));
   }
 
@@ -75,20 +85,9 @@ class AdminController extends Controller
    * Update status of booking
    * @param $id (booking_id)
    */
-  public function statusBooking($id, Request $request)
+  public function statusBooking($booking_id, Request $request)
   {
-    $status = $request->input('status');
-
-    $this->bookingRepository->with([
-      'bookingDetails' => function ($query) use ($request) {
-        return $query->where(
-          'date_start',
-          $request->input('date_start')
-        )->where('date_end', $request->input('date_end'));
-      }
-    ])->where('id', $id)->update(['status' => $status]);
-
-    return redirect()->back()->with(['success' => 'Update status success']);
+    return $this->bookingRepository->updateStatus($booking_id, $request);
   }
 
   /**

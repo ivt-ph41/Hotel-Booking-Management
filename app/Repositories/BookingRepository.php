@@ -21,7 +21,8 @@ interface BookingRepository extends RepositoryInterface
   public function showFormBooking($room_id);
   // Creating booking of user
   public function booking($room_id, CreateBookingRequest $request);
-
+  // update status booking
+  public function updateStatus($booking_id, Request $request);
   //User cancel booking
   public function cancelBooking($id);
 }

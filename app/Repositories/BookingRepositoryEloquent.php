@@ -11,6 +11,7 @@ use App\Entities\BookingDetail;
 use App\Http\Requests\CreateBookingRequest;
 use App\User;
 use App\Entities\Room;
+use Illuminate\Http\Request;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -39,6 +40,28 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
   }
 
   /**
+   * updata Status of booking
+   *
+   * @param  mixed $booking_id
+   * @param  mixed $request
+   * @return void
+   */
+  public function updateStatus($booking_id, Request $request)
+  {
+    $booking_detai_id = $request->input('bookingDetailId');
+
+    $result = $this->model->with(['bookingDetails' => function ($query) use ($booking_detai_id) {
+      return $query->where('id', $booking_detai_id); // where id is booking detail id
+    }])->where('id', $booking_id)->update(['status' => $request->input('status')]); // where booking id = $id
+
+    if ($result) { // success
+      return redirect()->back()->with(['success' => 'Update status success']);
+    }
+    // fail
+    return redirect()->back()->with(['update fail' => 'Update status fail']);
+  }
+  /**
+   * User
    * showFormBooking for user
    *
    * @return void
@@ -60,8 +83,14 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     $room = Room::find($room_id);
     return view('bookings.create', compact('room'));
   }
+
   /**
+   * User or guest
    * Store booking of user or guest
+   *
+   * @param  mixed $room_id
+   * @param  mixed $request
+   * @return void
    */
   public function booking($room_id, CreateBookingRequest $request)
   {

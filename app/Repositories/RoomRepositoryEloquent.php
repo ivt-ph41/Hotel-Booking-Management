@@ -9,10 +9,13 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RoomRepository;
 use App\Entities\Room;
 use App\Entities\Image;
+use App\Entities\Booking;
+use App\Entities\BookingDetail;
 use App\Entities\PersonRoom;
 use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class RoomRepositoryEloquent.
@@ -139,22 +142,46 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   }
 
   /**
-   * Destroy room
+   * destroy Room if room not have booking with status approve and pending
+   *
+   * @param  mixed $id (room id)
+   * @return void
    */
   public function destroyRoom($id)
   {
-    DB::beginTransaction();
-    try {
-      \App\Entities\Image::where('room_id', $id)->delete();
-      $this->model->where('id', $id)->delete();
+    /* Retrieve current booking
+    has status approve or pending with room id */
+    $booking_details = BookingDetail::whereHas('booking', function (Builder $query) {
+      $query->whereIn('status', [Booking::APPROVE_STATUS, Booking::PENDING_STATUS]);
+    })->where('room_id', $id)->get();
 
-      // all good
-      DB::commit();
-    } catch (\Exception $e) {
-      DB::rollback();
-      // something went wrong
-      return redirect()->back()->withInput()->with(['something error' => 'Something went wrong, please try again!']);
+    /* If $booking_detail == [] (not have booking with approve or pending)
+    then can delete this room */
+    if (count($booking_details) == 0) {
+      DB::beginTransaction();
+
+      try {
+        foreach ($booking_details as $booking_detail) {
+          // Delete booking detail
+          BookingDetail::destroy($booking_detail->id);
+          // Delete booking
+          Booking::destroy($booking_detail->booking_id);
+        }
+        // Delete images of room
+        Image::where('room_id', $id)->delete();
+        // Delete room
+        $this->model->where('id', $id)->delete();
+
+        // all good
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+        // something went wrong
+        return redirect()->back()->with(['something wrong' => 'Something went wrong, please try again!']);
+      }
+      return redirect()->route('admins.room.manager')->with(['delete success' => 'Delete Success!']);
     }
-    return redirect()->route('admins.room.manager')->with(['delete success' => 'Delete Success!']);
+    // default
+    return redirect()->back()->with(['delete fail' => 'Delete fail!']);
   }
 }
