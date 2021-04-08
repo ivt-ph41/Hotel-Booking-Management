@@ -19,15 +19,15 @@ Route::group(
     // return  View manager all booking
     Route::get('dashboards/booking', 'AdminController@booking')->name('dashboards.booking');
     // Update status of booking from view manager booking
-    Route::put('dashboards/booking/{id}', 'AdminController@statusBooking')->name('update.status-booking');
+    Route::put('dashboards/booking/{booking_id}', 'AdminController@statusBooking')->name('update.status-booking');
 
     /**
      * Create room
      */
     // return view form create room
-    Route::get('dashboards/forms/room', 'AdminController@showFormCreateRoom')->name('room.create');
+    Route::get('dashboards/room/create', 'AdminController@showFormCreateRoom')->name('room.create');
     // create room from form create room
-    Route::post('dashboards/forms/room', 'AdminController@storeRoom')->name('room.store');
+    Route::post('dashboards/room', 'AdminController@storeRoom')->name('room.store');
 
     /**
      * Manager rooms
@@ -41,7 +41,7 @@ Route::group(
     Route::delete('manager/rooms/{id}', 'AdminController@deleteRoom')->name('room.destroy');
 
     /**
-     * Manager users
+     * Return manager user view
      */
     Route::get('manager/users', 'AdminController@managerUser')->name('user.manager');
     // Edit user profile

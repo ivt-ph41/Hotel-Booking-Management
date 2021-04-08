@@ -17,6 +17,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
 use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -63,10 +64,19 @@ class AdminController extends Controller
   /**
    * Return view management bookings
    */
-  public function booking()
+  public function booking(Request $request)
   {
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search booking by room name or user name of booking
+      $booking_details = $this->bookingDetailRepository->with(['booking', 'room'])->whereHas('booking', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->orWhereHas('room', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->get();
+    }
     // GET USER WITH BOOKING
-    $booking_details = $this->bookingDetailRepository->with(['room', 'booking.user.profile',])->paginate(5);
+    $booking_details = $this->bookingDetailRepository->with(['room', 'booking'])->paginate(5);
 
     return view('admins.manager-booking', compact('booking_details'));
   }
@@ -75,20 +85,9 @@ class AdminController extends Controller
    * Update status of booking
    * @param $id (booking_id)
    */
-  public function statusBooking($id, Request $request)
+  public function statusBooking($booking_id, Request $request)
   {
-    $status = $request->input('status');
-
-    $this->bookingRepository->with([
-      'bookingDetails' => function ($query) use ($request) {
-        return $query->where(
-          'date_start',
-          $request->input('date_start')
-        )->where('date_end', $request->input('date_end'));
-      }
-    ])->where('id', $id)->update(['status' => $status]);
-
-    return redirect()->back()->with(['success' => 'Update status success']);
+    return $this->bookingRepository->updateStatus($booking_id, $request);
   }
 
   /**
@@ -140,6 +139,32 @@ class AdminController extends Controller
     return $this->roomRepository->updateRoom($id, $request);
   }
 
+
+  /**
+   * Delete room in resources
+   * @param int $id
+   */
+  public function deleteRoom($id)
+  {
+    return $this->roomRepository->destroyRoom($id);
+  }
+
+
+
+
+  /**
+   * Return view table manager users
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerUser(Request $request)
+  {
+    return $this->userRepository->showViewManagerUser($request);
+  }
+
+
+
   /**
    * Show form edit user
    * @param int $id
@@ -158,27 +183,10 @@ class AdminController extends Controller
   public function updateUser($id, EditProfileRequest $request)
   {
     if ($this->profileRepo->where('user_id', $id)->update($request->except('_token', '_method'))) {
-      return redirect()->back()->with(['success' => 'Update success!']);
+      return redirect()->route('admins.user.manager')->with(['update success' => 'Update success!']);
     }
     return redirect()->back()->with(['error' => 'Update fail, something error!']);
   }
-  /**
-   * Delete room in resources
-   * @param int $id
-   */
-  public function deleteRoom($id)
-  {
-    return $this->roomRepository->destroyRoom($id);
-  }
-
-  /**
-   * Return view table manager users
-   */
-  public function managerUser(Request $request)
-  {
-    return $this->userRepository->showViewManagerUser($request);
-  }
-
   /**
    * Delete user
    */
@@ -186,6 +194,8 @@ class AdminController extends Controller
   {
     return $this->userRepository->deleteUser($id);
   }
+
+
 
   /**
    * Show view manager comments
@@ -197,16 +207,7 @@ class AdminController extends Controller
   {
     return $this->commentRepo->showTableManager($request);
   }
-  // /**
-  //  * Get all comments in resource
-  //  *
-  //  * @return void
-  //  */
-  // public function commentIndex()
-  // {
-  //   $comments = $this->commentRepo->with(['user', 'room'])->get();
-  //   return response()->json($comments, 200);
-  // }
+
 
   /**
    * destroy comment in resource

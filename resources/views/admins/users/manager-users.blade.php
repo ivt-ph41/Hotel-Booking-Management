@@ -4,19 +4,6 @@
 @section('content')
 <div class="container">
   <div class="row">
-    <div class="col-9"></div>
-    <div class="col-3">
-      @if(session()->has('status'))
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>{{session()->get('status')}}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      @endif
-    </div>
-  </div>
-  <div class="row">
     <div class="col">
       <div class="card">
         <div class="card-header">
@@ -64,8 +51,7 @@
                     <button type="button" class="btn btn-secondary">
                       Action
                     </button>
-                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
                     <div class="dropdown-menu">
@@ -97,4 +83,78 @@
     </div>
   </div>
 </div>
+@endsection
+@section('js')
+@if(session()->has('update success'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Update user success!');
+  });
+</script>
+@endif
+@if(session()->has('delete success'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Delete user success!');
+  });
+</script>
+@endif
+@if(session()->has('delete fail'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Delete user fail!');
+  });
+</script>
+@endif
 @endsection

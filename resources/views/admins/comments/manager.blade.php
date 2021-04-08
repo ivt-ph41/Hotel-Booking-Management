@@ -14,15 +14,8 @@
 </div> --}}
 
 <div class="container">
-  @if(session()->has('status'))
   <div class="row">
-    <div class="col">
-      <p class="text-success text-bold text-capitalize">{{session()->get('status')}}</p>
-    </div>
-  </div>
-  @endif
-  <div class="row">
-    <div id="result" class="">
+    <div id="result" class="col-12">
       @isset($comments)
       <div class="card">
         <div class="card-header">
@@ -67,8 +60,7 @@
                     <button type="button" class="btn btn-secondary">
                       Action
                     </button>
-                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
                     <div class="dropdown-menu">
@@ -100,56 +92,54 @@
 </div>
 
 @endsection
-{{-- @section('script')
 
-
- <script>
-   $(document).ready(function () {
-    $("#list-comments").click(function (e) {
-      e.preventDefault();
-      var url = "{{route('admins.comments.index')}}";
-console.log('URL: ', url);
-// alert('OK');
-$.ajax({
-type: "get",
-url: url,
-data: "comments",
-dataType: "json",
-success: function (response) {
-var html = '';
-console.log(response);
-html+=
-'<table class="table table-bordered">'+
-  '<thead>'+
-    '<tr>'+
-      '<th scope="col">Email</th>'+
-      '<th scope="col">RoomName</th>'+
-      '<th scope="col">Content</th>'+
-      '<th scope="col">Action</th>'+
-      '</tr>'+
-    '</thead>'+
-  '<tbody>'
-    $.each(response, function (item, value) {
-    +'<tr>'+
-      '<td>' + value.user.email + '</td>'+
-      '<td>' + value.room.name + '</td>'+
-      '<td>' + value.content + '</td>'+
-      '<td>'+
-        '<form action="admins/manager/comments/' + value.id + '" method="POST">'+
-          '@csrf'
-          '@method("DELETE")'
-          '<input class="btn btn-danger" value="Delete" type="submit">'+
-          '</form>'+
-        '</td>'+
-      '</tr>'
-    });
-    +'</tbody>'+
-  '</table>';
-$("#result").html('');
-$("#result").append(html);
-}
-});
-});
-});
+@section('js')
+@if(session()->has('status'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Delete success!', 'Notification');
+  });
 </script>
-@endsection --}}
+@endif
+@if(session()->has('no result found'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.info('No result found!', 'Notification');
+  });
+</script>
+@endif
+@endsection

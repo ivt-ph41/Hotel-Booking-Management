@@ -9,10 +9,13 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RoomRepository;
 use App\Entities\Room;
 use App\Entities\Image;
+use App\Entities\Booking;
+use App\Entities\BookingDetail;
 use App\Entities\PersonRoom;
 use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class RoomRepositoryEloquent.
@@ -76,21 +79,12 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     // dd(\DB::getQueryLog());
   }
 
-  /**
-   * search room
-   */
-  public function searchRoom(Request $request)
-  {
-    if ($request->has('search')) {
-      $data = $request->all();
-      $query = $data['search'];
-      $rooms = $this->model->where('name', 'LIKE', "%$query%")->select('rooms.id', 'rooms.name')->get();
-      return response()->json($rooms, 200);
-    }
-  }
 
   /**
-   * Create new room
+   * store new room in resources
+   *
+   * @param  mixed $request
+   * @return void
    */
   public function storeRoom(CreateRoomRequest $request)
   {
@@ -110,14 +104,15 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       }
       $room->images()->insert($array);
 
+      // all OK then commit
       DB::commit();
-      // all good
-      return redirect()->back()->with(['success' => 'Success']);
     } catch (\Exception $e) {
       DB::rollback();
       // something went wrong
       return redirect()->back()->with(['error' => 'Something went wrong, please try again!']);
     }
+
+    return redirect()->route('admins.room.manager')->with(['create success' => 'Success']);
   }
 
   /**
@@ -143,25 +138,50 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   {
     $this->model->where('id', $id)->update($request->except('images', '_token', '_method'));
 
-    return redirect()->route('admins.room.manager')->with(['success' => 'Update success']);
+    return redirect()->route('admins.room.manager')->with(['update success' => 'Update success']);
   }
 
   /**
-   * Destroy room
+   * destroy Room if room not have booking with status approve and pending
+   *
+   * @param  mixed $id (room id)
+   * @return void
    */
   public function destroyRoom($id)
   {
-    DB::beginTransaction();
-    try {
-      \App\Entities\Image::where('room_id', $id)->delete();
-      $this->model->where('id', $id)->delete();
-      DB::commit();
-      // all good
-      return redirect()->back()->withInput()->with(['status' => 'Delete Success!']);
-    } catch (\Exception $e) {
-      DB::rollback();
-      // something went wrong
-      return redirect()->back()->withInput()->with(['status' => 'Something went wrong, please try again!']);
+    /* Retrieve current booking
+    has status approve or pending with room id */
+    $booking_details = BookingDetail::whereHas('booking', function (Builder $query) {
+      $query->whereIn('status', [Booking::APPROVE_STATUS, Booking::PENDING_STATUS]);
+    })->where('room_id', $id)->get();
+
+    /* If $booking_detail == [] (not have booking with approve or pending)
+    then can delete this room */
+    if (count($booking_details) == 0) {
+      DB::beginTransaction();
+
+      try {
+        foreach ($booking_details as $booking_detail) {
+          // Delete booking detail
+          BookingDetail::destroy($booking_detail->id);
+          // Delete booking
+          Booking::destroy($booking_detail->booking_id);
+        }
+        // Delete images of room
+        Image::where('room_id', $id)->delete();
+        // Delete room
+        $this->model->where('id', $id)->delete();
+
+        // all good
+        DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+        // something went wrong
+        return redirect()->back()->with(['something wrong' => 'Something went wrong, please try again!']);
+      }
+      return redirect()->route('admins.room.manager')->with(['delete success' => 'Delete Success!']);
     }
+    // default
+    return redirect()->back()->with(['delete fail' => 'Delete fail!']);
   }
 }
