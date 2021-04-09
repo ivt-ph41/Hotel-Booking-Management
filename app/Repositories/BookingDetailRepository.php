@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
-
+use Illuminate\Http\Request;
 /**
  * Interface BookingDetailRepository.
  *
@@ -11,5 +11,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface BookingDetailRepository extends RepositoryInterface
 {
-   //
+  /**
+   * Return view manager booking status
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerBooking(Request $request);
 }
