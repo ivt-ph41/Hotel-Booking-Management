@@ -5,7 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Entities\BookingDetail;
+use App\Entities\Booking;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,9 +31,19 @@ class Kernel extends ConsoleKernel
     //          ->hourly();
     $schedule->call(function () {
       // dd(Carbon::today()->toDateString());
-      \App\Entities\Booking::whereHas('bookingDetails', function (Builder $query) {
-        $query->whereDate('date_end', '<', Carbon::today()->toDateString());
-      })->update(['status' => \App\Entities\Booking::FINISH_STATUS]);
+      Booking::whereHas('bookingDetails', function ($query) {
+        return $query->whereDate('date_end', '<', Carbon::today()->toDateString());
+      })->update(['status' => Booking::FINISH_STATUS]);
+    })->everyMinute()->runInBackground();
+
+    // Delete finish status
+    $schedule->call(function () {
+      // Retrive all booking id with status 'finish'
+      $bookingIds = Booking::where('status', Booking::FINISH_STATUS)->pluck('id');
+      // Delete booking detail where booking id in array $bookingIds
+      BookingDetail::whereIn('booking_id', $bookingIds)->delete();
+      // Delete Booking where status finish
+      Booking::where('status', Booking::FINISH_STATUS)->delete();
     })->everyMinute()->runInBackground();
   }
 
