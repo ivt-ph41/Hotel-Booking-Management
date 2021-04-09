@@ -12,6 +12,7 @@ use App\Http\Requests\CreateBookingRequest;
 use App\User;
 use App\Entities\Room;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -30,6 +31,22 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     return Booking::class;
   }
 
+  public function managerBooking(Request $request)
+  {
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search booking by room name or user name of booking
+      $booking_details = $this->bookingDetailRepository->with(['booking', 'room'])->whereHas('booking', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->orWhereHas('room', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->get();
+    }
+    // GET USER WITH BOOKING
+    $booking_details = $this->bookingDetailRepository->with(['room', 'booking'])->paginate(5);
+
+    return view('admins.manager-booking', compact('booking_details'));
+  }
 
   /**
    * Boot up the repository, pushing criteria
@@ -38,6 +55,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
   {
     $this->pushCriteria(app(RequestCriteria::class));
   }
+
 
   /**
    * updata Status of booking
