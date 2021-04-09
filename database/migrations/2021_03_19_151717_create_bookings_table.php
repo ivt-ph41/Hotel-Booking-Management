@@ -19,7 +19,7 @@ class CreateBookingsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('user_id')->nullable(); // nullable for guest(visitor)
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('name');
+            $table->string('email');
             $table->string('address');
             $table->string('phone');
             $table->integer('status')->default(0);

@@ -13,6 +13,7 @@ use App\User;
 use App\Entities\Room;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Mail;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -141,8 +142,10 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         // Create booking detail
         $booking->bookingDetails()->create($booking_detail);
         //if success
-        return redirect()->back()->with(['booking_success' => 'We will send status of booking to you, please check your mail!']);
+        return redirect()->back()->with(['booking_success' => 'We had send status of booking to you, please check your mail!']);
       }
+      // Send mail to user
+      
     } else {
       return redirect()->back()->with(['booking_fail' => 'This room have been booking, please try another room or change another day!']);
     }
