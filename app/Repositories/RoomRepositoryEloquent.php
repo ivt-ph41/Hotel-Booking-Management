@@ -67,26 +67,25 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     $date_end = strtotime($date_end);
     $date_end = date('Y-m-d', $date_end);
 
+    // Room have booking in booking detail
+    $roomNotAvailable = $this->model->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
+      $query->whereBetween('date_start', [$date_start, $date_end])
+            ->orWhereBetween('date_end', [$date_start, $date_end]);
+    })->pluck('id'); // get all id of room not available
 
-    // \DB::enableQueryLog();
-    $roomFilter = $this->model->with([
-      'type',
-      'bed',
-      'bookingDetails' => function ($query) use ($date_start, $date_end) {
-        return $query->where('date_start', '<', $date_start)
-          ->where('date_end', '>', $date_end);
-      }
-    ])->where('person_room_id', '=', $person_room_id)->paginate(5);
-    $roomFilter->appends([
+    // Room not have booking in booking detail
+    $roomAvailable = $this->model->with(['type', 'bed', 'bookingDetails'])
+    ->whereNotIn('id', $roomNotAvailable)
+    ->where('person_room_id', '=', $person_room_id)->paginate(3);
+
+    $roomAvailable->appends([
       'date_start' => $date_start,
       'date_end' => $date_end,
       'person_room' => $person_room_id
     ]);
-    // Get list person/room in resource
+    // Get list person/room in resource for 'filter room'
     $person_room_list = PersonRoom::all();
-    return view('rooms.index', compact('roomFilter', 'person_room_list'));
-
-    // dd(\DB::getQueryLog());
+    return view('rooms.index', compact('roomAvailable', 'person_room_list'));
   }
 
   /**

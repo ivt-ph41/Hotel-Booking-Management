@@ -133,11 +133,11 @@ dd($errors->all());
 
 {{-- Filter Room start --}}
 
-@isset($roomFilter)
+@isset($roomAvailable)
 <!-- Rooms Section Begin -->
 <section class="rooms spad">
   <div class="container">
-    @foreach ($roomFilter as $room)
+    @foreach ($roomAvailable as $room)
 
     <div class="row">
       <div class="col-lg-6 p-0 order-lg-3 order-md-3 col-md-6">
@@ -176,7 +176,7 @@ dd($errors->all());
 {{-- Paginate --}}
 <div class="row">
   <div class="col-lg-12">
-    {{ $roomFilter->links() }}
+    {{ $roomAvailable->links() }}
     <!-- <div class="pagination__number">
       <a href="#">1</a>
       <a href="#">2</a>
