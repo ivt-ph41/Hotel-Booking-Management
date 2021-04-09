@@ -3,6 +3,7 @@ $(document).ready(function () {
     $(this).css("background-color", "#e9ad28");
     if ($(this).val() == '') {
       $(this).css("background-color", "white");
+      $('#result').html('');
     }
     var url = "rooms/search";
     console.log('url: ', url);
@@ -24,6 +25,7 @@ $(document).ready(function () {
             '</li>' + '</br>';
         });
         html += '</ul>';
+
         $('#result').html('');
         $('#result').append(html);
       }

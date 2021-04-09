@@ -61,13 +61,13 @@
     </form>
 
     {{-- Form search room by name --}}
-    <div class="footer__newslatter" style="width: 50%">
-      <input id="search-text" type="text" name="search" placeholder="Search room by name" style="border: black solid 1px; padding:20px;" autocomplete="off">
+    <div class="mt-3">
+      <input id="search-text" class="form-control form-control-lg rounded" type="text" name="search" placeholder="Enter room name" autocomplete="off">
     </div>
     <!-- Result search -->
     <div class="container">
       <div class="row">
-        <div id="result" class="col-2"></div>
+        <div id="result" class="col"></div>
       </div>
     </div>
 
