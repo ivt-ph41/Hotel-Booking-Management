@@ -21,9 +21,9 @@
 <form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form" style="border: solid #e9ad28; " method="post">
   @csrf
   <div class="filter__form__item">
-    <p>Username</p>
+    <p>Email</p>
     <div class="filter__form__datepicker">
-      <input style="padding-left: 0px" type="text" name="name" value="{{$user->profile->name}}">
+      <input style="padding-left: 0px" type="text" name="email" value="{{$user->email}}">
     </div>
   </div>
   <div class="filter__form__item">
@@ -62,9 +62,9 @@
 <form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form" style="border: solid #e9ad28; " method="post">
   @csrf
   <div class="filter__form__item">
-    <p>Username</p>
+    <p>Email</p>
     <div class="filter__form__datepicker">
-      <input style="padding: 0px" type="text" name="name">
+      <input style="padding: 0px" type="text" name="email">
     </div>
   </div>
   <div class="filter__form__item">

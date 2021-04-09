@@ -29,7 +29,7 @@ class Booking extends Model implements Transformable
    */
   protected $fillable = [
     'user_id',
-    'name',
+    'email',
     'address',
     'phone',
     'status'

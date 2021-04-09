@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/slicknav.min.css')}}" type="text/css">
   <link rel="stylesheet" href="{{ asset('hiroto-master/css/style.css')}}" type="text/css">
 
+  <!-- Toast notiications -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <!-- Search room css -->
   <link rel="stylesheet" href="{{ asset('css/search-room.css')}}">
 
@@ -262,7 +264,10 @@
   <script src="{{ asset('hiroto-master/js/jquery.slicknav.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/owl.carousel.min.js')}}"></script>
   <script src="{{ asset('hiroto-master/js/main.js')}}"></script>
+  <!-- Toast -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+  @yield('js')
   <!-- search room using ajax -->
   <script src="{{asset('js/search-rooms.js')}}"></script>
 </body>

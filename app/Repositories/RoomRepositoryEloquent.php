@@ -48,6 +48,15 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       */
   public function filterRoom(Request $request)
   {
+    // Validate
+    // $validatedData = $request->validate([
+    //   'person_room' => 'required',
+    //   'date_start' => 'required|before:date_end',
+    //   'date_end' => 'required'
+    // ]);
+    // if($validatedData){
+    //   return redirect()->back()->with(['error', 'Date start must be before date end']);
+    // }
     $person_room_id = $request->input('person_room');
 
     $date_start = $request->input('date_start');
@@ -58,13 +67,14 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     $date_end = strtotime($date_end);
     $date_end = date('Y-m-d', $date_end);
 
+
     // \DB::enableQueryLog();
     $roomFilter = $this->model->with([
       'type',
       'bed',
       'bookingDetails' => function ($query) use ($date_start, $date_end) {
         return $query->where('date_start', '<', $date_start)
-          ->Where('date_end', '>', $date_end);
+          ->where('date_end', '>', $date_end);
       }
     ])->where('person_room_id', '=', $person_room_id)->paginate(5);
     $roomFilter->appends([

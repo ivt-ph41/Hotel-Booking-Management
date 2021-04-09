@@ -47,12 +47,16 @@ class BookingDetailRepositoryEloquent extends BaseRepository implements BookingD
   {
     if ($request->has('search')) {
       $data = $request->input('search');
-      // search booking by room name or user name of booking
+      // search booking by room name or email of booking
       $booking_details = $this->model->with(['booking', 'room'])->whereHas('booking', function (Builder $query) use ($data) {
-        $query->where('name', 'like', "%$data%");
+        $query->where('email', 'LIKE', "%$data%");
       })->orWhereHas('room', function (Builder $query) use ($data) {
-        $query->where('name', 'like', "%$data%");
-      })->get();
+        $query->where('name', 'LIKE', "%$data%");
+      })->paginate(5);
+      $booking_details->appends([
+        'search' => $request->input('search')
+      ]);
+      return view('admins.manager-booking', compact('booking_details'));
     }
     // GET USER WITH BOOKING
     $booking_details = $this->model->with(['room', 'booking'])->paginate(5);

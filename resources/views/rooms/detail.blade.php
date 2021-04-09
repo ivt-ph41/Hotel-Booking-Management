@@ -37,7 +37,7 @@
               </div>
             </div>
             <div class="room__details__advisor">
-              <img src="img/rooms/details/tripadvisor.png" alt="">
+              <img src="{{asset('hiroto-master/img/rooms/details/tripadvisor.png')}}" alt="">
               <div class="room__details__advisor__rating">
                 <span class="icon_star"></span>
                 <span class="icon_star"></span>
@@ -73,15 +73,16 @@
 
           <div class="row">
             <div class="col-lg-6">
-              <h3><i>Comment</i></h3>
               @auth
               @if ($errors->has('content'))
               <p style="color: red">{{$errors->first('content')}}</p>
               @endif
               <form id="frm-commnent" action="{{route('comments.store', ['id' => $room->id])}}" method="post" style="margin-bottom: 2%">
                 @csrf
-                <div>
-                  <textarea style="background-color: #e9ad28;color:#FFF" name="content" id="" cols="50" rows="5"></textarea>
+                <div class="form-group">
+                  <!-- <textarea class="rounded" name="content" id="" cols="50" rows="5"></textarea> -->
+                  <label for="comment">Comment:</label>
+                  <textarea class="form-control" name="content" rows="5" id="comment"></textarea>
                 </div>
                 <button type=" submit" class="btn btn-danger">Send your comment</button>
               </form>

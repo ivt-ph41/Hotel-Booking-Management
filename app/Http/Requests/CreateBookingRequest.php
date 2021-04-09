@@ -24,7 +24,7 @@ class CreateBookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'email' => 'required',
             'date_start' => 'required|before:date_end',
             'date_end' => 'required'
         ];

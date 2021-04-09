@@ -22,7 +22,11 @@
 @endsection
 
 @section('content')
-
+<!-- @if ($errors->any())
+@php
+dd($errors->all());
+@endphp
+@endif -->
 <div class="row mt-3">
   <div class="col-lg-12">
     <form action="{{ route('rooms.filter') }}" class="filter__form" method="get">
@@ -182,4 +186,35 @@
 </div>
 @endisset
 {{-- Filter Room End --}}
+
+@endsection
+
+<!-- Js toast display -->
+@section('js')
+
+@if($errors->has('date_start'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.warning('The date start must be a date before date end!', 'Notification');
+  });
+</script>
+@endif
+
 @endsection

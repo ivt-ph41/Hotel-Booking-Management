@@ -29,7 +29,7 @@
           <table class="table table-head-fixed text-nowrap">
             <thead>
               <tr>
-                <th>UserName</th>
+                <th>Email</th>
                 <th>Room</th>
                 <th>Price/Day</th>
                 <th>Date start</th>
@@ -41,7 +41,7 @@
               @isset($booking_details)
               @foreach($booking_details as $booking_detail)
               <tr>
-                <td class="text-bold text-success">{{ $booking_detail->booking->name }}</td>
+                <td class="text-bold text-success">{{ $booking_detail->booking->email }}</td>
                 <td>{{$booking_detail->room->name}}</td>
                 <td>
                   {{$booking_detail->room->price}}
