@@ -3,10 +3,10 @@ $(document).ready(function () {
     $(this).css("background-color", "#e9ad28");
     if ($(this).val() == '') {
       $(this).css("background-color", "white");
-      $('#result').html('');
+      // $('#result').html('');
     }
-    var url = "rooms/search";
-    console.log('url: ', url);
+    var url = "http://hotelmanagement.test/rooms/search";
+    console.log('url1: ', url);
     $.ajax({
       type: "GET",
       url: url,
@@ -18,10 +18,9 @@ $(document).ready(function () {
         console.log(response);
         var html = '';
         html += '<ul class="nav nav-pills nav-stacked search-room">';
-
         $.each(response, function (item, value) {
           html += '<li class="nav-item">' +
-            '<a class="nav-link text-warning text-bold" href="rooms/' + value.id + '">' + value.name + '</a>' +
+            '<a class="nav-link text-warning text-bold" href="/rooms' + value.id + '">' + value.name + '</a>' +
             '</li>' + '</br>';
         });
         html += '</ul>';
