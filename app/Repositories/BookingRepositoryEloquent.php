@@ -126,7 +126,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
 
         $data = $request->except('date_start', 'date_end', '_token');
         $data['user_id'] = $user_id;
-
+        // dd($data);
         // Create new resource to bookings table
         $booking = $this->model->create($data);
 
@@ -141,11 +141,16 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
 
         // Create booking detail
         $booking->bookingDetails()->create($booking_detail);
+        $data = $request->all();
+        // dd($data);
+        // Send mail to guest
+        Mail::send('mail', $data, function ($message) use($data) {
+          $message->to($data['email'])->subject('Hiroto hotel');
+          $message->from('phuoc04012000@gmail.com', 'Ngoc Phuoc');
+        });
         //if success
-        return redirect()->back()->with(['booking_success' => 'We had send status of booking to you, please check your mail!']);
+        return redirect()->back()->with(['booking_success' => 'We had send booking detail to your email, please check it!']);
       }
-      // Send mail to user
-      
     } else {
       return redirect()->back()->with(['booking_fail' => 'This room have been booking, please try another room or change another day!']);
     }
