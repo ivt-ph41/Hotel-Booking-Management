@@ -9,7 +9,7 @@ dd($errors->all());
 @endif --}}
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-12">
       <!-- general form elements -->
       <div class="card card-gray-dark">
         <div class="card-header">
@@ -21,33 +21,29 @@ dd($errors->all());
           @csrf
           <div class="card-body">
             <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" name="name" value="{{old('name')}}" class="form-control" id="name"
-                placeholder="Eg: 001">
+              <label for="name">Name <small class="text-danger">(*)</small></label>
+              <input type="text" name="name" value="{{old('name')}}" class="form-control" id="name" placeholder="Eg: 001">
             </div>
             @if($errors->has('name'))
             <p class="text-bold text-danger">{{$errors->first('name')}}</p>
             @endif
             <div class="form-group">
-              <label for="description">Description</label>
-              <input type="text" name="description" value="{{old('description')}}" class="form-control" id="description"
-                placeholder="Description">
+              <label for="description">Description <small class="text-danger">(*)</small></label>
+              <input type="text" name="description" value="{{old('description')}}" class="form-control" id="description" placeholder="Description">
             </div>
             @if($errors->has('description'))
             <p class="text-bold text-danger">{{$errors->first('description')}}</p>
             @endif
             <div class="form-group">
-              <label for="size">Size(ft)</label>
-              <input type="text" name="size" value="{{old('size')}}" class="form-control" id="size"
-                placeholder="Eg 10ft">
+              <label for="size">Size(ft) <small class="text-danger">(*)</small></label>
+              <input type="text" name="size" value="{{old('size')}}" class="form-control" id="size" placeholder="Eg 10ft">
             </div>
             @if($errors->has('size'))
             <p class="text-bold text-danger">{{$errors->first('size')}}</p>
             @endif
             <div class="form-group">
-              <label for="price">Price/day</label>
-              <input type="text" name="price" value="{{old('price')}}" class="form-control" id="price"
-                placeholder="Price per day">
+              <label for="price">Price/day <small class="text-danger">(*)</small></label>
+              <input type="text" name="price" value="{{old('price')}}" class="form-control" id="price" placeholder="Price per day">
             </div>
             @if($errors->has('price'))
             <p class="text-bold text-danger">{{$errors->first('price')}}</p>
@@ -80,7 +76,7 @@ dd($errors->all());
               </select>
             </div>
             <div class="form-group">
-              <label for="exampleInputFile">Room image</label>
+              <label for="exampleInputFile">Room image <small class="text-danger">(*)</small></label>
               <div class="input-group">
                 <div class="custom-file">
                   <input type="file" name="images[]" multiple class="custom-file-input" id="image">
@@ -97,25 +93,52 @@ dd($errors->all());
           </div>
           <!-- /.card-body -->
 
-          <div class="card-footer">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+          <div class="card-footer text-center">
+            <button type="submit" class="btn bg-gradient-blue col-3">Submit</button>
           </div>
         </form>
       </div>
       <!-- /.card -->
     </div>
-    {{--Show result--}}
-    <div class="col-md-6">
-      @if(session()->has('success'))
-      <div class="alert alert-success" role="alert">
-        {{session()->get('success')}}
-      </div>
-      @elseif(session()->has('error'))
-      <div class="alert alert-danger" role="alert">
-        {{session()->get('error')}}
-      </div>
-      @endif
-    </div>
+
+    <!-- <div class="col-md-6">
+            @if(session()->has('success'))
+            <div class="alert alert-success" role="alert">
+                {{session()->get('success')}}
+            </div>
+            @elseif(session()->has('error'))
+            <div class="alert alert-danger" role="alert">
+                {{session()->get('error')}}
+            </div>
+            @endif
+        </div> -->
   </div>
 </div>
+@endsection
+<!-- Script -->
+@section('js')
+@if(session()->has('error'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.error('Some thing error please try again!', 'Notification');
+  });
+</script>
+@endif
 @endsection

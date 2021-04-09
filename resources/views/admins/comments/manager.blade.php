@@ -1,16 +1,28 @@
 @extends('layouts.dashboard')
-@section('title', 'Manager User')
+@section('title', 'Manager comments')
 
 @section('content')
+{{-- <div class="container">
+  <div class="row justify-content-end">
+    <div class="col-3"></div>
+    <div class="col-3"></div>
+    <div class="col-3"></div>
+    <div class="col-3">
+      <a href="{{route('admins.comments.index')}}" id="list-comments" class="btn bg-gradient-cyan">List comments</a>
+</div>
+</div>
+</div> --}}
+
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div id="result" class="col-12">
+      @isset($comments)
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{__('Manager user table')}}</h3>
+          <h3 class="card-title">Manager comment table</h3>
           <div class="card-tools">
 
-            <form action="{{route('admins.user.manager')}}" method="get">
+            <form action="{{ route('admins.comments.manager')}}" method="get">
               <div class="input-group input-group-sm" style="width: 150px;">
                 <input type="text" name="search" class="form-control float-right" placeholder="Search">
 
@@ -29,22 +41,19 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>{{__('Username')}}</th>
                 <th>{{__('Email')}}</th>
-                <th>{{__('Address')}}</th>
-                <th>{{__('Phone')}}</th>
-                <th></th>
+                <th>{{__('Room')}}</th>
+                <th>{{__('Content')}}</th>
+                <th>{{__('Action')}}</th>
+
               </tr>
             </thead>
             <tbody>
-              @isset($users)
-
-              @foreach($users as $user)
+              @foreach($comments as $comment)
               <tr>
-                <td>{{$user->profile->name}}</td>
-                <td class="text-danger">{{$user->email}}</td>
-                <td>{{$user->profile->address}}</td>
-                <td>{{{$user->profile->phone}}}</td>
+                <td class="text-danger">{{$comment->user->email}}</td>
+                <td>{{$comment->room->name}}</td>
+                <td>{{{$comment->content}}}</td>
                 <td>
                   <!-- Split dropright button -->
                   <div class="btn-group dropright">
@@ -55,9 +64,8 @@
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
                     <div class="dropdown-menu">
-                      <a href="{{route('admins.user.edit', $user->id)}}" class="btn">Edit</a>
                       <div class="dropdown-divider"></div>
-                      <form action="{{route('admins.user.destroy', $user->id)}}" method="post">
+                      <form action="{{route('admins.comments.destroy', $comment->id)}}" method="post">
                         @csrf
                         @method("DELETE")
                         <input type="submit" value="Delete" class="btn">
@@ -68,24 +76,25 @@
                 </td>
               </tr>
               @endforeach
-              @endisset
             </tbody>
           </table>
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
           <ul class="pagination pagination-sm m-0 float-right">
-            {{$users->links()}}
+            {{$comments->links()}}
           </ul>
         </div>
       </div>
-      <!-- /.card -->
+      @endisset()
     </div>
   </div>
 </div>
+
 @endsection
+
 @section('js')
-@if(session()->has('update success'))
+@if(session()->has('status'))
 <script>
   $(function() {
     toastr.options = {
@@ -105,11 +114,11 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.success('Update user success!');
+    toastr.success('Delete success!', 'Notification');
   });
 </script>
 @endif
-@if(session()->has('delete success'))
+@if(session()->has('no result found'))
 <script>
   $(function() {
     toastr.options = {
@@ -129,31 +138,7 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.success('Delete user success!');
-  });
-</script>
-@endif
-@if(session()->has('delete fail'))
-<script>
-  $(function() {
-    toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "newestOnTop": true,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": true,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success('Delete user fail!');
+    toastr.info('No result found!', 'Notification');
   });
 </script>
 @endif

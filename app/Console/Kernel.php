@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
     $schedule->call(function () {
       // dd(Carbon::today()->toDateString());
       \App\Entities\Booking::whereHas('bookingDetails', function (Builder $query) {
-        return $query->whereDate('date_end', '<', Carbon::today()->toDateString());
+        $query->whereDate('date_end', '<', Carbon::today()->toDateString());
       })->update(['status' => \App\Entities\Booking::FINISH_STATUS]);
     })->everyMinute()->runInBackground();
   }

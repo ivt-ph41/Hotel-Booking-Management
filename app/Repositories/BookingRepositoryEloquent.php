@@ -11,6 +11,8 @@ use App\Entities\BookingDetail;
 use App\Http\Requests\CreateBookingRequest;
 use App\User;
 use App\Entities\Room;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -29,6 +31,22 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     return Booking::class;
   }
 
+  public function managerBooking(Request $request)
+  {
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search booking by room name or user name of booking
+      $booking_details = $this->bookingDetailRepository->with(['booking', 'room'])->whereHas('booking', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->orWhereHas('room', function (Builder $query) use ($data) {
+        $query->where('name', 'like', "%$data%");
+      })->get();
+    }
+    // GET USER WITH BOOKING
+    $booking_details = $this->bookingDetailRepository->with(['room', 'booking'])->paginate(5);
+
+    return view('admins.manager-booking', compact('booking_details'));
+  }
 
   /**
    * Boot up the repository, pushing criteria
@@ -38,7 +56,30 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     $this->pushCriteria(app(RequestCriteria::class));
   }
 
+
   /**
+   * updata Status of booking
+   *
+   * @param  mixed $booking_id
+   * @param  mixed $request
+   * @return void
+   */
+  public function updateStatus($booking_id, Request $request)
+  {
+    $booking_detai_id = $request->input('bookingDetailId');
+
+    $result = $this->model->with(['bookingDetails' => function ($query) use ($booking_detai_id) {
+      return $query->where('id', $booking_detai_id); // where id is booking detail id
+    }])->where('id', $booking_id)->update(['status' => $request->input('status')]); // where booking id = $id
+
+    if ($result) { // success
+      return redirect()->back()->with(['success' => 'Update status success']);
+    }
+    // fail
+    return redirect()->back()->with(['update fail' => 'Update status fail']);
+  }
+  /**
+   * User
    * showFormBooking for user
    *
    * @return void
@@ -60,8 +101,14 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     $room = Room::find($room_id);
     return view('bookings.create', compact('room'));
   }
+
   /**
+   * User or guest
    * Store booking of user or guest
+   *
+   * @param  mixed $room_id
+   * @param  mixed $request
+   * @return void
    */
   public function booking($room_id, CreateBookingRequest $request)
   {

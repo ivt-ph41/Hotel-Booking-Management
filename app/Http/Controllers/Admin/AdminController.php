@@ -10,14 +10,14 @@ use App\Http\Requests\EditRoomRequest;
 use App\Repositories\BedRepository;
 use App\Repositories\BookingDetailRepository;
 use App\Repositories\BookingRepository;
-use App\Repositories\ImageRepository;
 use App\Repositories\PersonRoomRepository;
 use App\Repositories\RoomRepository;
 use App\Repositories\TypeRepository;
 use App\Repositories\UserRepository;
-use App\RepositoriesImageRepository;
 use App\Repositories\ProfileRepository;
+use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -29,6 +29,7 @@ class AdminController extends Controller
   protected $typeRepo;
   protected $personRoomRepo;
   protected $profileRepo;
+  protected $commentRepo;
 
   public function __construct(
     UserRepository $userRepository,
@@ -38,7 +39,8 @@ class AdminController extends Controller
     BedRepository $bedRepo,
     TypeRepository $typeRepo,
     PersonRoomRepository $personRoomRepo,
-    ProfileRepository $profileRepo
+    ProfileRepository $profileRepo,
+    CommentRepository $commenRepo
   ) {
     $this->userRepository = $userRepository;
     $this->bookingDetailRepository = $bookingDetailRepository;
@@ -48,6 +50,7 @@ class AdminController extends Controller
     $this->typeRepo = $typeRepo;
     $this->personRoomRepo = $personRoomRepo;
     $this->profileRepo = $profileRepo;
+    $this->commentRepo = $commenRepo;
   }
 
   /**
@@ -59,34 +62,23 @@ class AdminController extends Controller
   }
 
   /**
-   * Return view management bookings
+   * return view manager booking
+   *
+   * @param  mixed $request
+   * @return void
    */
-  public function booking()
+  public function booking(Request $request)
   {
-    // GET USER WITH BOOKING
-    $booking_details = $this->bookingDetailRepository->with(['room', 'booking.user.profile',])->paginate(5);
-
-    return view('admins.manager-booking', compact('booking_details'));
+    return $this->bookingRepository->managerBooking($request);
   }
 
   /**
    * Update status of booking
    * @param $id (booking_id)
    */
-  public function statusBooking($id, Request $request)
+  public function statusBooking($booking_id, Request $request)
   {
-    $status = $request->input('status');
-
-    $this->bookingRepository->with([
-      'bookingDetails' => function ($query) use ($request) {
-        return $query->where(
-          'date_start',
-          $request->input('date_start')
-        )->where('date_end', $request->input('date_end'));
-      }
-    ])->where('id', $id)->update(['status' => $status]);
-
-    return redirect()->back()->with(['success' => 'Update status success']);
+    return $this->bookingRepository->updateStatus($booking_id, $request);
   }
 
   /**
@@ -138,6 +130,32 @@ class AdminController extends Controller
     return $this->roomRepository->updateRoom($id, $request);
   }
 
+
+  /**
+   * Delete room in resources
+   * @param int $id
+   */
+  public function deleteRoom($id)
+  {
+    return $this->roomRepository->destroyRoom($id);
+  }
+
+
+
+
+  /**
+   * Return view table manager users
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerUser(Request $request)
+  {
+    return $this->userRepository->showViewManagerUser($request);
+  }
+
+
+
   /**
    * Show form edit user
    * @param int $id
@@ -156,32 +174,41 @@ class AdminController extends Controller
   public function updateUser($id, EditProfileRequest $request)
   {
     if ($this->profileRepo->where('user_id', $id)->update($request->except('_token', '_method'))) {
-      return redirect()->back()->with(['success' => 'Update success!']);
+      return redirect()->route('admins.user.manager')->with(['update success' => 'Update success!']);
     }
     return redirect()->back()->with(['error' => 'Update fail, something error!']);
   }
-  /**
-   * Delete room in resources
-   * @param int $id
-   */
-  public function deleteRoom($id)
-  {
-    return $this->roomRepository->destroyRoom($id);
-  }
-
-  /**
-   * Return view table manager users
-   */
-  public function managerUser(Request $request)
-  {
-    return $this->userRepository->showViewManagerUser($request);
-  }
-
   /**
    * Delete user
    */
   public function deleteUser($id)
   {
     return $this->userRepository->deleteUser($id);
+  }
+
+
+
+  /**
+   * Show view manager comments
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerComment(Request $request)
+  {
+    return $this->commentRepo->showTableManager($request);
+  }
+
+
+  /**
+   * destroy comment in resource
+   *
+   * @param  mixed $id
+   * @return void
+   */
+  public function deleteComment($id)
+  {
+    $this->commentRepo->destroy($id);
+    return redirect()->back()->with(['status' => 'Delete comment success']);
   }
 }

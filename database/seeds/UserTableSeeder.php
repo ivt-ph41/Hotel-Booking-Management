@@ -14,19 +14,8 @@ class UserTableSeeder extends Seeder
    */
   public function run()
   {
-    // factory('App\User', 5)->create();
-    $user = [
-      'email' => 'admin@gmail.com',
-      'password' => Hash::make('ngocphuocha'),
-      'role_id' => Role::ADMIN_ROLE
-    ];
-    $profile = [
-      'name' => 'Tran Ngoc Phuoc',
-      'address' => 'Hoi An',
-      'phone' => '0984641362'
-    ];
-    // create user
-    $user = User::create($user);
-    $user->profile()->create($profile);
+    factory(App\User::class, 30)->create()->each(function ($user) {
+      $user->profile()->save(factory(App\Entities\Profile::class)->make());
+    });
   }
 }
