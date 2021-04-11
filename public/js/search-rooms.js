@@ -3,7 +3,7 @@ $(document).ready(function () {
     $(this).css("background-color", "#e9ad28");
     if ($(this).val() == '') {
       $(this).css("background-color", "white");
-      // $('#result').html('');
+
     }
     var url = "http://hotelmanagement.test/rooms/search";
     console.log('url1: ', url);
