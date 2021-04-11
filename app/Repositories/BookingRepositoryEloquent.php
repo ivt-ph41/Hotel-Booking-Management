@@ -145,12 +145,12 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
 
         // Send mail to guest
         $data = $request->all();
-        $room = Room::find($room_id);
+        $room = Room::find($room_id)->toArray();
         $data['room'] = $room;
-        // dd($data);
+
         Mail::send('mail', $data, function ($message) use($data) {
-          $message->to($data['email'])->subject('Hiroto hotel booking');
-          $message->from('phuoc04012000@gmail.com', 'Hiroto hotel');
+          $message->to($data['email'])->subject('Hiroto hotel');
+          $message->from('phuoc04012000@gmail.com', 'Admin');
         });
         //if success
         return redirect()->back()->with(['booking_success' => 'We had send booking detail to your email, please check it!']);
