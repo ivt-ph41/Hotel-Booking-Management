@@ -20,7 +20,7 @@ $(document).ready(function () {
         html += '<ul class="nav nav-pills nav-stacked search-room">';
         $.each(response, function (item, value) {
           html += '<li class="nav-item">' +
-            '<a class="nav-link text-warning text-bold" href="/rooms' + value.id + '">' + value.name + '</a>' +
+            '<a class="nav-link text-warning text-bold" href="http://hotelmanagement.test/rooms' + '/' + value.id + '">' + value.name + '</a>' +
             '</li>' + '</br>';
         });
         html += '</ul>';
