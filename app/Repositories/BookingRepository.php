@@ -21,7 +21,15 @@ interface BookingRepository extends RepositoryInterface
   public function showFormBooking($room_id);
 
   /**
-   * booking
+   * create booking and booking_detail
+   *
+   * @param  array $booking This is booking array data
+   * @param  array $booking_detail This is booking detail data
+   * @return void
+   */
+  public function createBooking($booking, $booking_detail);
+  /**
+   * Store new booking
    *
    * @param  mixed $room_id
    * @param  mixed $request
