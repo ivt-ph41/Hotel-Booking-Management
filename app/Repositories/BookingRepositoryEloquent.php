@@ -84,8 +84,8 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
                           ]);
 
     // Get current booking by id = $id
-    $data = $this->model->find($id);
-    dd($data->toArray());
+    $data = $this->model->find($id)->toArray();
+
     Mail::send('status-mail', $data, function ($message) use ($data) {
       $message->to($data['email'])->subject('Hiroto hotel');
       $message->from('phuoc04012000@gmail.com', 'Admin');
