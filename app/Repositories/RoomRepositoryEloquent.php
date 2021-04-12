@@ -78,6 +78,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     ->whereNotIn('id', $roomNotAvailable)
     ->where('person_room_id', '=', $person_room_id)->paginate(3);
 
+    // Append to the query string of pagination links
     $roomAvailable->appends([
       'date_start' => $date_start,
       'date_end' => $date_end,
@@ -143,11 +144,15 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     // If have search action from user
     if ($request->has('search') && !empty($request->input('search'))) {
       $rooms = $this->model->where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);
+
+      // Append to the query string of pagination links
       $rooms->appends(['search' => $request->input('search')]);
+
       return view('admins.manager-rooms', compact('rooms'));
     }
-    // Default: get all room paginate
-    $rooms = $this->model->paginate(5);
+    // Default: get all room
+    $rooms = $this->model->orderBy('id', 'desc')->paginate(5);
+
     return view('admins.manager-rooms', compact('rooms'));
   }
 

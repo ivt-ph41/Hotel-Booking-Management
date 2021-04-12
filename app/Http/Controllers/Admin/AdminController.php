@@ -69,7 +69,7 @@ class AdminController extends Controller
    */
   public function booking(Request $request)
   {
-    return $this->bookingDetailRepository->managerBooking($request);
+    return $this->bookingRepository->managerBooking($request);
   }
 
   /**

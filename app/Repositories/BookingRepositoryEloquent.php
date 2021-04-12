@@ -44,6 +44,30 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     $this->pushCriteria(app(RequestCriteria::class));
   }
 
+  /**
+   * Return view manager booking status
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerBooking(Request $request)
+  {
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search booking by  email of bookings table
+      $bookings = $this->model->where('email', 'like',  "%$data%")
+      ->paginate(5);
+      // Append to the query string of pagination links
+      $bookings->appends([
+        'search' => $request->input('search')
+      ]);
+      return view('admins.manager-booking', compact('bookings'));
+    }
+    // Get bookings order by descending (last booking first)
+    $bookings = $this->model->orderBy('id', 'desc')->paginate(5);
+
+    return view('admins.manager-booking', compact('bookings'));
+  }
 
   /**
    * updata Status of booking
@@ -52,13 +76,20 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    * @param  mixed $request
    * @return void
    */
-  public function updateStatus($booking_id, Request $request)
+  public function updateStatus($id, Request $request)
   {
-    // $booking_detai_id = $request->input('bookingDetailId');
-    // dd($booking_detai_id,$booking_id);
-    \DB::enableQueryLog();
-    $result = $this->model->where('id', $booking_id)->update(['status' => $request->input('status')]); // where booking id = $id
+    $result = $this->model->where('id', $id)
+                          ->update([
+                            'status' => $request->input('status')
+                          ]);
 
+    // Get current booking by id = $id
+    $data = $this->model->find($id)->toArray();
+
+    Mail::send('status-mail', $data, function ($message) use ($data) {
+      $message->to($data['email'])->subject('Hiroto hotel');
+      $message->from('phuoc04012000@gmail.com', 'Admin');
+    });
     if ($result) { // success
       return redirect()->back()->with(['success' => 'Update status success']);
     }
@@ -141,7 +172,6 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         ->orWhereBetween('date_end', [$date_start, $date_end]);
     })->find($room_id);
 
-    // dd(\DB::getQueryLog());
 
     /* If room not have in booking detail
     from date_start to date_end
@@ -173,7 +203,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         $data = $request->all();
         $room = Room::find($room_id)->toArray();
         $data['room'] = $room;
-        
+
         Mail::send('mail', $data, function ($message) use ($data) {
           $message->to($data['email'])->subject('Hiroto hotel');
           $message->from('phuoc04012000@gmail.com', 'Admin');

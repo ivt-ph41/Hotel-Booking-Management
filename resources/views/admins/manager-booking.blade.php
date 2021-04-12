@@ -30,44 +30,35 @@
             <thead>
               <tr>
                 <th>Email</th>
-                <th>Room</th>
-                <th>Price/Day</th>
-                <th>Date start</th>
-                <th>Date end</th>
+                <th>Address</th>
+                <th>Phone</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              @isset($booking_details)
-              @foreach($booking_details as $booking_detail)
+              @isset($bookings)
+              @foreach($bookings as $booking)
               <tr>
-                <td class="text-bold text-success">{{ $booking_detail->booking->email }}</td>
-                <td>{{$booking_detail->room->name}}</td>
+                <td class="text-bold text-success">{{ $booking->email }}</td>
+                <td>{{ $booking->address }}</td>
+                <td>{{$booking->phone}}</td>
                 <td>
-                  {{$booking_detail->room->price}}
-                </td>
-                <td>{{$booking_detail->date_start}}</td>
-                <td>{{$booking_detail->date_end}}</td>
-                <td>
-                  <form class="form-inline" method="POST" action="{{route('admins.update.status-booking', ['booking_id' => $booking_detail->booking->id])}}">
+                  <form class="form-inline" method="POST" action="{{route('admins.update.status-booking', ['booking_id' => $booking->id])}}">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="bookingDetailId" value="{{ $booking_detail->room_id }}">
                     <div class="form-check">
                       <select name="status" class="form-control">
-                        <option {{-- if current status is pending  then selected --}} {{\App\Entities\Booking::PENDING_STATUS == $booking_detail->booking->status? 'selected' : null}} value="{{\App\Entities\Booking::PENDING_STATUS}}">
+                        <option {{-- if current status is pending  then selected --}} {{\App\Entities\Booking::PENDING_STATUS == $booking->status? 'selected' : null}} value="{{\App\Entities\Booking::PENDING_STATUS}}">
                           {{__('Pending')}}
                         </option>
-                        <option {{-- if current status is appove then selected --}} {{\App\Entities\Booking::APPROVE_STATUS == $booking_detail->booking->status? 'selected' : null}} value="{{\App\Entities\Booking::APPROVE_STATUS}}">
+                        <option {{-- if current status is appove then selected --}} {{\App\Entities\Booking::APPROVE_STATUS == $booking->status? 'selected' : null}} value="{{\App\Entities\Booking::APPROVE_STATUS}}">
                           {{__('Approve')}}
                         </option>
-                        <option {{-- if current status is cancel then selected --}} {{\App\Entities\Booking::CANCEL_STATUS == $booking_detail->booking->status? 'selected' : null}} value="{{\App\Entities\Booking::CANCEL_STATUS}}">
+                        <option {{-- if current status is cancel then selected --}} {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'selected' : null}} value="{{\App\Entities\Booking::CANCEL_STATUS}}">
                           {{__('Cancel')}}
                         </option>
                       </select>
                     </div>
-                    <input type="hidden" name="date_start" value="{{$booking_detail->date_start}}">
-                    <input type="hidden" name="date_end" value="{{$booking_detail->date_end}}">
                     <div class="form-check ml-5">
                       <button class="btn btn-success">Confirm</button>
                     </div>
@@ -81,7 +72,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          {{$booking_details->links()}}
+          {{$bookings->links()}}
         </div>
       </div>
       <!-- /.card -->
