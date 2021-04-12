@@ -14,6 +14,7 @@ use App\Entities\Room;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Mail;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class BookingRepositoryEloquent.
@@ -22,6 +23,7 @@ use Mail;
  */
 class BookingRepositoryEloquent extends BaseRepository implements BookingRepository
 {
+
   /**
    * Specify Model class name
    *
@@ -52,11 +54,10 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function updateStatus($booking_id, Request $request)
   {
-    $booking_detai_id = $request->input('bookingDetailId');
-
-    $result = $this->model->with(['bookingDetails' => function ($query) use ($booking_detai_id) {
-      return $query->where('id', $booking_detai_id); // where id is booking detail id
-    }])->where('id', $booking_id)->update(['status' => $request->input('status')]); // where booking id = $id
+    // $booking_detai_id = $request->input('bookingDetailId');
+    // dd($booking_detai_id,$booking_id);
+    \DB::enableQueryLog();
+    $result = $this->model->where('id', $booking_id)->update(['status' => $request->input('status')]); // where booking id = $id
 
     if ($result) { // success
       return redirect()->back()->with(['success' => 'Update status success']);
@@ -88,6 +89,25 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     return view('bookings.create', compact('room'));
   }
 
+  public function createBooking($booking, $booking_detail)
+  {
+    DB::beginTransaction();
+    try {
+      // Create new resource to bookings table
+      $booking = $this->model->create($booking);
+
+      // Create booking details with booking relation ship
+      $booking->bookingDetails()->create($booking_detail);
+
+      // all good
+      DB::commit();
+    } catch (\Exception $e) {
+      // Some thing went wrong
+
+      DB::rollBack();
+      return redirect()->back()->with(['error' => 'Some thing wrong!']);
+    }
+  }
   /**
    * User or guest
    * Store booking of user or guest
@@ -112,43 +132,49 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       'date_start' => $date_start,
       'date_end' => $date_end
     ];
-    //  Booking success if current booking of user not exist in system
-    //checking current booking of user vs in system
-    $check_booking = BookingDetail::where('room_id', '=', $room_id)
-      ->where('date_start', '=', $date_start)
-      ->where('date_end', '=', $date_end)
-      ->get();
 
-    if (count($check_booking) == 0) { // if not have this booking in system, user can booking this room
+    /* Checking booking detail with room id,
+    get room in booking detail table with $room_id
+    */
+    $roomNotAvailable = Room::whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
+      $query->whereBetween('date_start', [$date_start, $date_end])
+        ->orWhereBetween('date_end', [$date_start, $date_end]);
+    })->find($room_id);
 
-      if (Auth::check()) { // if user authentication
+    // dd(\DB::getQueryLog());
+
+    /* If room not have in booking detail
+    from date_start to date_end
+    then user can booking
+    */
+    if (empty($roomNotAvailable)) {
+
+      // With user login to system
+      if (Auth::check()) { // Checking if user had login?
         $user_id = Auth::user()->id;
 
-        $data = $request->except('date_start', 'date_end', '_token');
-        $data['user_id'] = $user_id;
-        // dd($data);
-        // Create new resource to bookings table
-        $booking = $this->model->create($data);
+        $booking_data = $request->except('date_start', 'date_end', '_token');
+        $booking_data[] = $user_id;
 
-        // Create booking detail
-        $booking->bookingDetails()->create($booking_detail);
+        // Create new booking
+        $this->createBooking($booking_data, $booking_detail);
 
-        // if success
+        // If success
         return redirect()->route('users.booking');
-      } else { // if guest
+      } else { // With guest
+
         // Create new resource to bookings table
-        $booking = $this->model->create($request->except(['date_start', 'date_end', '_token']));
+        $booking_data =$request->except(['date_start', 'date_end', '_token']);
 
-        // Create booking detail
-        $booking->bookingDetails()->create($booking_detail);
-
+        // Create new booking
+        $this->createBooking($booking_data, $booking_detail);
 
         // Send mail to guest
         $data = $request->all();
         $room = Room::find($room_id)->toArray();
         $data['room'] = $room;
-
-        Mail::send('mail', $data, function ($message) use($data) {
+        
+        Mail::send('mail', $data, function ($message) use ($data) {
           $message->to($data['email'])->subject('Hiroto hotel');
           $message->from('phuoc04012000@gmail.com', 'Admin');
         });
