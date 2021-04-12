@@ -11,11 +11,5 @@ use Illuminate\Http\Request;
  */
 interface BookingDetailRepository extends RepositoryInterface
 {
-  /**
-   * Return view manager booking status
-   *
-   * @param  mixed $request
-   * @return void
-   */
-  public function managerBooking(Request $request);
+  
 }

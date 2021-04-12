@@ -14,6 +14,14 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface BookingRepository extends RepositoryInterface
 {
   /**
+   * Return view manager booking status in admin darshboard
+   *
+   * @param  mixed $request
+   * @return void
+   */
+  public function managerBooking(Request $request);
+
+  /**
    * showFormBooking for user
    *
    * @return void
