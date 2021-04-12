@@ -6,9 +6,9 @@
 @if($status == 0)
 <b style="color: #ffc107;">Pending</b>
 @elseif($status == 1)
-<b style="color: green;">Approve</b>
+<b style="color: #28a745;">Approve</b>
 @elseif($status == 2)
-<b style="color: red;">Cancel</b>
+<b style="color: #dc3545;">Cancel</b>
 @endif
 </h4>
 
