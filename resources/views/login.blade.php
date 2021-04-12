@@ -72,13 +72,17 @@
             </div>
             @endif
           </div>
-
-          <div class="flex-col-c p-t-155">
-            <a href="{{route('register')}}" class="txt2">
-              Register
-            </a>
-          </div>
         </form>
+        <div class="flex-col-c p-t-155">
+          <a href="{{route('register')}}" class="txt2">
+            Register
+          </a>
+        </div>
+        <div class="text-right p-t-8 p-b-31">
+          <a href="{{ route('/') }}">
+            Home Page
+          </a>
+        </div>
       </div>
     </div>
   </div>
