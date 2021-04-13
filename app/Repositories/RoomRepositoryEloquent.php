@@ -56,8 +56,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       'person_room' => 'required'
     ]);
     // If validate fail then return redirect back with error
-    if($validator->fails()){
-      $request->session()->forget('success');  // Delete session key 'success'
+    if ($validator->fails()) {
       return redirect()->route('rooms.index')->with(['error' => 'Error date_start must be before date_end!']);
     }
 
@@ -90,7 +89,6 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     ]);
     // Get list person/room in resource for 'filter room'
     $person_room_list = PersonRoom::all();
-    $request->session()->put('success', 'Sucess filter!');
     return view('rooms.index', compact('roomAvailable', 'person_room_list'));
   }
 
@@ -117,24 +115,32 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     DB::beginTransaction();
     try {
       $room = $this->model->create($request->only('name', 'price', 'description', 'size', 'bed_id', 'type_id', 'person_room_id'));
+
+      // If request has file upload
       if ($request->hasFile('images')) {
         foreach ($request->file('images') as $key => $image) {
+          // Get file name inclue extention
           $imageName = $image->getClientOriginalname();
+          // Declare target dir contain image in public/images/rooms forder
           $target_dir = 'images/rooms';
+          // Move file to target dir
           $image->move($target_dir, $imageName);
+          // Add information to array for store new resource in images table
           $array[$key]['path'] = $imageName;
           $array[$key]['created_at'] = now();
           $array[$key]['updated_at'] = now();
           $array[$key]['room_id'] = $room->id;
         }
       }
+      // Insert new resource with data = $array by using relation ship
       $room->images()->insert($array);
 
       // all OK then commit
       DB::commit();
     } catch (\Exception $e) {
-      DB::rollback();
       // something went wrong
+      DB::rollback();
+      // return redirect back with session error
       return redirect()->back()->with(['error' => 'Something went wrong, please try again!']);
     }
 
@@ -166,8 +172,9 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
    */
   public function updateRoom($id, EditRoomRequest $request)
   {
+    // Update room where room id = $id
     $this->model->where('id', $id)->update($request->except('images', '_token', '_method'));
-
+    // if success then return view manager room with session success
     return redirect()->route('admins.room.manager')->with(['update success' => 'Update success']);
   }
 
