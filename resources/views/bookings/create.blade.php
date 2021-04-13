@@ -52,7 +52,7 @@
     <p>Date Start</p>
     <div class="filter__form__datepicker">
       <span class="icon_calendar"></span>
-      <input type="text" name="date_start" class="datepicker_pop check__in">
+      <input type="text" name="date_start" value="{{ old('date_start') }}" class="datepicker_pop check__in">
       <i class="arrow_carrot-down"></i>
     </div>
     @if ($errors->has('date_start'))
@@ -63,7 +63,7 @@
     <p>Date End</p>
     <div class="filter__form__datepicker">
       <span class="icon_calendar"></span>
-      <input type="text" name="date_end" class="datepicker_pop check__out">
+      <input type="text" name="date_end" value="{{ old('date_end') }}" class="datepicker_pop check__out">
       <i class="arrow_carrot-down"></i>
     </div>
     @if ($errors->has('date_end'))
@@ -81,7 +81,7 @@
   <div class="filter__form__item">
     <p>Email</p>
     <div class="filter__form__datepicker">
-      <input style="padding: 0px" type="text" name="email">
+      <input style="padding: 0px" type="text" name="email" value="{{ old('email') }}">
     </div>
     @if ($errors->has('email'))
     <p style="color: red">{{$errors->first('email')}}</p>
@@ -90,7 +90,7 @@
   <div class="filter__form__item">
     <p>Address</p>
     <div class="filter__form__datepicker">
-      <input style="padding: 0px" type="text" name="address">
+      <input style="padding: 0px" type="text" name="address" value="{{ old('address') }}">
     </div>
     @if ($errors->has('address'))
     <p style="color: red">{{$errors->first('address')}}</p>
@@ -99,7 +99,7 @@
   <div class="filter__form__item">
     <p>Phone</p>
     <div class="filter__form__datepicker">
-      <input style="padding: 0px" type="text" name="phone">
+      <input style="padding: 0px" type="text" name="phone" value="{{ old('phone') }}">
     </div>
     @if ($errors->has('phone'))
     <p style="color: red">{{$errors->first('phone')}}</p>
@@ -109,7 +109,7 @@
     <p>Date Start</p>
     <div class="filter__form__datepicker">
       <span class="icon_calendar"></span>
-      <input type="text" name="date_start" class="datepicker_pop check__in">
+      <input type="text" name="date_start" value="{{ old('date_start') }}" class="datepicker_pop check__in">
       <i class="arrow_carrot-down"></i>
     </div>
     @if ($errors->has('date_start'))
@@ -120,7 +120,7 @@
     <p>Date End</p>
     <div class="filter__form__datepicker">
       <span class="icon_calendar"></span>
-      <input type="text" name="date_end" class="datepicker_pop check__out">
+      <input type="text" name="date_end" value="{{ old('date_end') }}" class="datepicker_pop check__out">
       <i class="arrow_carrot-down"></i>
     </div>
     @if ($errors->has('date_end'))

@@ -74,7 +74,7 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
             return view('admins.comments.manager', compact('comments'));
         }
         // Default
-        $comments = $this->model->with(['user', 'room'])->paginate(5);
+        $comments = $this->model->with(['user', 'room'])->orderBy('id', 'desc')->paginate(5);
         return view('admins.comments.manager', compact('comments'));
     }
 }

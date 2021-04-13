@@ -184,8 +184,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         $user_id = Auth::user()->id;
 
         $booking_data = $request->except('date_start', 'date_end', '_token');
-        $booking_data[] = $user_id;
-
+        $booking_data['user_id'] = $user_id;
         // Create new booking
         $this->createBooking($booking_data, $booking_detail);
 

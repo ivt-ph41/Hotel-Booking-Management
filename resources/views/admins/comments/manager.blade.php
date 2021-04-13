@@ -55,24 +55,11 @@
                 <td>{{$comment->room->name}}</td>
                 <td>{{{$comment->content}}}</td>
                 <td>
-                  <!-- Split dropright button -->
-                  <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary">
-                      Action
-                    </button>
-                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropright</span>
-                    </button>
-                    <div class="dropdown-menu">
-                      <div class="dropdown-divider"></div>
                       <form action="{{route('admins.comments.destroy', $comment->id)}}" method="post">
                         @csrf
                         @method("DELETE")
-                        <input type="submit" value="Delete" class="btn">
+                        <input type="submit" value="Delete" class="btn btn-danger">
                       </form>
-                    </div>
-                  </div>
-
                 </td>
               </tr>
               @endforeach

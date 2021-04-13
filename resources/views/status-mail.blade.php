@@ -1,15 +1,14 @@
 <h1>Hiroto hotel</h1>
-<p>Hi {{$email}}!</p>
-<p>Thank you for choose our service.</p>
-<h3>Your current booking status</h3>
-<h4>
-@if($status == 0)
-<b style="color: #ffc107;">Pending</b>
-@elseif($status == 1)
-<b style="color: #28a745;">Approve</b>
-@elseif($status == 2)
-<b style="color: #dc3545;">Cancel</b>
-@endif
-</h4>
+<p>Dear {{$email}},</p>
 
-<small>Have a good day!</small>
+
+@if($status == \App\Entities\Booking::PENDING_STATUS)
+<h3>Your status booking is <b style="color: #ffc107;">pending</b> now.</h3>
+@elseif($status == \App\Entities\Booking::APPROVE_STATUS)
+<h3>Congratulations, your booking now is <b style="color: #28a745;">approve</b></h3>
+@elseif($status == \App\Entities\Booking::CANCEL_STATUS)
+<h3>Sorry, your status booking now is  <b style="color: #dc3545;">cancel</b></h3>
+@endif
+
+<p>Thank you for choose our service &#128155;</p>
+<h1>Have a good day!</h1>
