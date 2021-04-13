@@ -40,14 +40,16 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
 
     public function storeComment($room_id, Request $request)
     {
+      // Validate form comment
         $request->validate([
             'content' => 'required'
         ]);
-        if (Auth::check()) {
+        if (Auth::check()) { // If user has login then can store comment
             $user_id = Auth::user()->id;
+            // Get value all filed except field '_token'
             $data = $request->except('_token');
-            $data['user_id'] = $user_id;
-            $data['room_id'] = $room_id;
+            $data['user_id'] = $user_id; // add user_id to array $data
+            $data['room_id'] = $room_id; // add room_id to array $data
             $this->model->create($data);
         }
     }
@@ -56,24 +58,27 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
     {
         // If request has search
         if ($request->has('search')) {
-            $data = $request->input('search');
-
+            $data = $request->input('search'); // Set value $data == input search field
+            // get comment with user and room where like email of user or where has name of room via relationship
             $comments = $this->model->with(['user', 'room'])->whereHas('user', function (Builder $query) use ($data) {
                 return $query->where('email', 'LIKE', "%$data%");
             })->orWhereHas('room', function (Builder $query) use ($data) {
                 return $query->where('name', 'LIKE', "%$data%");
-            })
-                ->paginate(5);
+            })->paginate(5);
 
+            // Append to the query string of pagination links
             $comments->appends([
                 'search' => $request->input('search')
             ]);
-            if (count($comments) == 0) { // if not have result
+
+            // if not have result or empty input search field then
+            if (count($comments) == 0 || empty($request->input('search'))) {
                 return redirect()->back()->with(['no result found' => 'No Result Found!']);
             }
+            // return $comments with search query
             return view('admins.comments.manager', compact('comments'));
         }
-        // Default
+        // Default returl all comments order by descending and paginate 5 record/page
         $comments = $this->model->with(['user', 'room'])->orderBy('id', 'desc')->paginate(5);
         return view('admins.comments.manager', compact('comments'));
     }

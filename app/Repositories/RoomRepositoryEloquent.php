@@ -97,6 +97,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
    */
   public function searchRoom(Request $request)
   {
+    
     if ($request->has('search')) {
       $data = $request->all();
       $query = $data['search'];

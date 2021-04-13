@@ -100,18 +100,6 @@ dd($errors->all());
       </div>
       <!-- /.card -->
     </div>
-
-    <!-- <div class="col-md-6">
-            @if(session()->has('success'))
-            <div class="alert alert-success" role="alert">
-                {{session()->get('success')}}
-            </div>
-            @elseif(session()->has('error'))
-            <div class="alert alert-danger" role="alert">
-                {{session()->get('error')}}
-            </div>
-            @endif
-        </div> -->
   </div>
 </div>
 @endsection

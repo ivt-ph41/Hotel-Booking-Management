@@ -52,18 +52,24 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function managerBooking(Request $request)
   {
+    // If request has input search from form search booking
     if ($request->has('search')) {
       $data = $request->input('search');
-      // search booking by  email of bookings table
+      // search booking by email of bookings table
       $bookings = $this->model->where('email', 'like',  "%$data%")
-      ->paginate(5);
+        ->paginate(5);
       // Append to the query string of pagination links
       $bookings->appends([
         'search' => $request->input('search')
       ]);
+      // if not have result or empty input search field then
+      if (count($bookings) == 0 || empty($request->input('search'))) {
+        return redirect()->back()->with(['no result found' => 'No Result Found!']);
+      }
+
       return view('admins.manager-booking', compact('bookings'));
     }
-    // Get bookings order by descending (last booking first)
+    // Get bookings order by descending
     $bookings = $this->model->orderBy('id', 'desc')->paginate(5);
 
     return view('admins.manager-booking', compact('bookings'));
@@ -78,14 +84,16 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function updateStatus($id, Request $request)
   {
+    //
     $result = $this->model->where('id', $id)
-                          ->update([
-                            'status' => $request->input('status')
-                          ]);
+      ->update([
+        'status' => $request->input('status')
+      ]);
 
     // Get current booking by id = $id
-    $data = $this->model->find($id)->toArray();
+    $data = $this->model->find($id)->toArray(); // convert to array
 
+    // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data) {
       $message->to($data['email'])->subject('Hiroto hotel');
       $message->from('phuoc04012000@gmail.com', 'Admin');
@@ -104,14 +112,15 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function showFormBooking($room_id)
   {
-    // if  current user loggin in system
+    // if  user had login to system, only nomal users can view their booking
     if (Auth::check()) {
-      //if user is admin, redirect back
+      //if user is admin role, return  redirect back
       if (Auth::user()->role_id == \App\Entities\Role::ADMIN_ROLE) {
         return redirect()->back();
       }
-
+      // Get user with profile relation ship
       $user = User::with('profile')->find(Auth::id());
+      // find room by room id
       $room = Room::find($room_id);
       return view('bookings.create', compact('room', 'user'));
     }
@@ -193,7 +202,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       } else { // With guest
 
         // Create new resource to bookings table
-        $booking_data =$request->except(['date_start', 'date_end', '_token']);
+        $booking_data = $request->except(['date_start', 'date_end', '_token']);
 
         // Create new booking
         $this->createBooking($booking_data, $booking_detail);
