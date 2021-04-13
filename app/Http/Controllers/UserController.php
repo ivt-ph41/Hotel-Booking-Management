@@ -59,8 +59,14 @@ class UserController extends Controller
    */
   public function userBooking()
   {
-    $user = $this->userRepository->with('bookings.bookingDetails.room')->find(Auth::id());
-    
+    // Get booking with user, order by last booking
+    $user = $this->userRepository->with([
+      'bookings' => function($query) {
+      return $query->orderBy('id', 'desc');
+    },
+    'bookings.bookingDetails.room'
+    ])->find(Auth::id());
+
     return view('bookings.user-booking', compact('user'));
   }
 
