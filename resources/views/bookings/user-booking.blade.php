@@ -4,18 +4,6 @@
 
 @section('content')
 
-@if (session()->has('status'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <strong>{{session()->get('status')}}</strong>
-</div>
-
-<script>
-    $(".alert").alert();
-</script>
-@endif
 
 <table class="table table-bordered">
     <caption>My bookings</caption>
@@ -80,4 +68,34 @@
 
     </tbody>
 </table>
+@endsection
+
+<!-- Js toast notification -->
+@section('js')
+
+@if(session()->has('status'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('You have cancel booking success!', 'Notification');
+  });
+</script>
+@endif
+
 @endsection
