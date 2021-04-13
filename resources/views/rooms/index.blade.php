@@ -1,8 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Rooms')
 
-
-
 @section('our-room-ui')
 <div class="breadcrumb-option set-bg" data-setbg="{{ asset('hiroto-master/img/breadcrumb-bg.jpg')}}">
   <div class="container">
@@ -177,11 +175,6 @@ dd($errors->all());
 <div class="row">
   <div class="col-lg-12">
     {{ $roomAvailable->links() }}
-    <!-- <div class="pagination__number">
-      <a href="#">1</a>
-      <a href="#">2</a>
-      <a href="#">Next <span class="arrow_right"></span></a>
-    </div> -->
   </div>
 </div>
 @endisset
@@ -192,7 +185,7 @@ dd($errors->all());
 <!-- Js toast display -->
 @section('js')
 
-@if($errors->has('date_start'))
+@if(session()->has('error'))
 <script>
   $(function() {
     toastr.options = {

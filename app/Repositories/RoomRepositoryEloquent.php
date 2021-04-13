@@ -16,6 +16,7 @@ use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class RoomRepositoryEloquent.
@@ -48,15 +49,14 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       */
   public function filterRoom(Request $request)
   {
-    // Validate
-    // $validatedData = $request->validate([
-    //   'person_room' => 'required',
-    //   'date_start' => 'required|before:date_end',
-    //   'date_end' => 'required'
-    // ]);
-    // if($validatedData){
-    //   return redirect()->back()->with(['error', 'Date start must be before date end']);
-    // }
+    $validator = Validator::make($request->all(), [
+      'date_start' => 'required|before:date_end',
+      'date_end' => 'required',
+      'person_room' => 'required'
+    ]);
+    if($validator->fails()){
+      return redirect()->back()->with(['error' => 'Error date_start must be before date_end!']);
+    }
     $person_room_id = $request->input('person_room');
 
     $date_start = $request->input('date_start');
@@ -70,13 +70,13 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     // Room have booking in booking detail
     $roomNotAvailable = $this->model->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
       $query->whereBetween('date_start', [$date_start, $date_end])
-            ->orWhereBetween('date_end', [$date_start, $date_end]);
+        ->orWhereBetween('date_end', [$date_start, $date_end]);
     })->pluck('id'); // get all id of room not available
 
     // Room not have booking in booking detail
     $roomAvailable = $this->model->with(['type', 'bed', 'bookingDetails'])
-    ->whereNotIn('id', $roomNotAvailable)
-    ->where('person_room_id', '=', $person_room_id)->paginate(3);
+      ->whereNotIn('id', $roomNotAvailable)
+      ->where('person_room_id', '=', $person_room_id)->paginate(3);
 
     // Append to the query string of pagination links
     $roomAvailable->appends([
