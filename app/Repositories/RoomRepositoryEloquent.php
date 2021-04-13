@@ -49,14 +49,18 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       */
   public function filterRoom(Request $request)
   {
+    //Make validator
     $validator = Validator::make($request->all(), [
       'date_start' => 'required|before:date_end',
       'date_end' => 'required',
       'person_room' => 'required'
     ]);
+    // If validate fail then return redirect back with error
     if($validator->fails()){
-      return redirect()->back()->with(['error' => 'Error date_start must be before date_end!']);
+      $request->session()->forget('success');  // Delete session key 'success'
+      return redirect()->route('rooms.index')->with(['error' => 'Error date_start must be before date_end!']);
     }
+
     $person_room_id = $request->input('person_room');
 
     $date_start = $request->input('date_start');
@@ -86,6 +90,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     ]);
     // Get list person/room in resource for 'filter room'
     $person_room_list = PersonRoom::all();
+    $request->session()->put('success', 'Sucess filter!');
     return view('rooms.index', compact('roomAvailable', 'person_room_list'));
   }
 

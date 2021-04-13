@@ -184,21 +184,46 @@ dd($errors->all());
 
 <!-- Js toast display -->
 @section('js')
-
-@if(session()->has('error'))
+<!-- If success -->
+@if(session()->has('success'))
 <script>
   $(function() {
     toastr.options = {
       "closeButton": true,
-      "debug": false,
+      "debug": true,
       "newestOnTop": true,
-      "progressBar": true,
+      "progressBar": false,
       "positionClass": "toast-top-right",
       "preventDuplicates": true,
       "onclick": null,
       "showDuration": "300",
       "hideDuration": "1000",
-      "timeOut": "5000",
+      "timeOut": "1000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Filter success!', 'Notification');
+  });
+</script>
+@endif
+<!-- If error filter when date start not before day end -->
+@if(session()->has('error'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": true,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "1000",
       "extendedTimeOut": "1000",
       "showEasing": "swing",
       "hideEasing": "linear",
