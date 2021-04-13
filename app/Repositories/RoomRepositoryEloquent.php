@@ -57,7 +57,6 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     ]);
     // If validate fail then return redirect back with error
     if ($validator->fails()) {
-      $request->session()->forget('success');  // Delete session key 'success'
       return redirect()->route('rooms.index')->with(['error' => 'Error date_start must be before date_end!']);
     }
 
@@ -90,7 +89,6 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     ]);
     // Get list person/room in resource for 'filter room'
     $person_room_list = PersonRoom::all();
-    $request->session()->put('success', 'Sucess filter!');
     return view('rooms.index', compact('roomAvailable', 'person_room_list'));
   }
 
