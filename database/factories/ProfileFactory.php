@@ -11,6 +11,6 @@ $factory->define(Profile::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'address' => $faker->streetAddress,
-        'phone' => $faker->phoneNumber,
+        'phone' => '0999999999',
     ];
 });
