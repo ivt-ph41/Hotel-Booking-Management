@@ -45,8 +45,8 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   }
 
   /*
-      * Filter room by date and a number person/room
-      */
+  * Filter room by date and a number person/room
+  */
   public function filterRoom(Request $request)
   {
     //Make validator
@@ -59,9 +59,10 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     if ($validator->fails()) {
       return redirect()->route('rooms.index')->with(['error' => 'Error date_start must be before date_end!']);
     }
-
+    // Get list person_room_id to display for select option
     $person_room_id = $request->input('person_room');
 
+    // convert date to format 'Y-m-d'
     $date_start = $request->input('date_start');
     $date_start = strtotime($date_start);
     $date_start = date('Y-m-d', $date_start);
@@ -129,7 +130,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
           $imageName = $image->getClientOriginalname();
           // Declare target dir contain image in public/images/rooms forder
           $target_dir = 'images/rooms';
-          // Move file to target dir
+          // Move images to target dir
           $image->move($target_dir, $imageName);
           // Add information to array for store new resource in images table
           $array[$key]['path'] = $imageName;
@@ -141,7 +142,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       // Insert new resource in images table with data = $array by using relationship
       $room->images()->insert($array);
 
-      // all OK then commit
+      // All OK then commit
       DB::commit();
     } catch (\Exception $e) {
       // something went wrong

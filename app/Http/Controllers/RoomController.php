@@ -30,13 +30,11 @@ class RoomController extends Controller
 
   public function show($id)
   {
-    // Get room by id
-    // \DB::enableQueryLog();
+    // Get room by id with comment
     $room = $this->roomRepository->with(['bed', 'images', 'type', 'comments.user', 'personRoom', 'comments' => function ($query) {
       return $query->orderBy('id', 'desc');
     }])->find($id);
-    // dd($room->toArray());
-    // dd(\DB::getQueryLog());
+
 
     // dd($room->toArray());
     return view('rooms.detail', compact('room'));
