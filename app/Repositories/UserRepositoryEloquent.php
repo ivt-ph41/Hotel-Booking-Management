@@ -100,6 +100,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
       // dd('aa');
       $users = $this->model->with(['profile'])->where('role_id', Role::USER_ROLE)->where('email', 'LIKE', '%' . $request->input('search') . '%')->orderBy('email')->paginate(3);
       $users->appends(['search' => $request->input('search')]);
+      // if not have result or empty input search field then
+      if (count($users) == 0 || empty($request->input('search'))) {
+        return redirect()->back()->with(['no result found' => 'No Result Found!']);
+      }
+      // return $users with search query
       return view('admins.users.manager-users', compact('users'));
     }
     // Default: get all user paginate

@@ -41,17 +41,6 @@
 
                         <div class="card-footer text-center">
                             <button type="submit" class="btn btn-outline-success">Submit</button>
-
-                            <!-- show result -->
-                            <!-- @if(session()->has('success'))
-                            <div class="alert alert-success mt-2" role="alert">
-                                {{session()->get('success')}}
-                            </div>
-                            @elseif(session()->has('error'))
-                            <div class="alert alert-danger mt-2" role="alert">
-                                {{session()->get('error')}}
-                            </div>
-                            @endif -->
                         </div>
                 </form>
             </div>
@@ -64,6 +53,7 @@
 
 @endsection
 @section('js')
+<!-- If update user fail -->
 @if(session()->has('error'))
 <script>
     $(function() {

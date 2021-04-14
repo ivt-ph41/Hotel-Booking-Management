@@ -41,7 +41,6 @@ class ProfileRepositoryEloquent extends BaseRepository implements ProfileReposit
      */
     public function updateProfile(EditProfileRequest $request)
     {
-        // TODO: Implement updateProfile() method.
         return  $this->model->where('user_id', Auth::id())->update($request->except('_token', '_method'));
     }
 

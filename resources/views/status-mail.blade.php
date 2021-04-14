@@ -10,5 +10,5 @@
 <h3>Sorry, your status booking now is  <b style="color: #dc3545;">cancel</b></h3>
 @endif
 
-<p>Thank you for choose our service &#128155;</p>
-<h1>Have a good day!</h1>
+<p>Thank you for choose our service.</p>
+<h1>Have a good day &#128155;</h1>
