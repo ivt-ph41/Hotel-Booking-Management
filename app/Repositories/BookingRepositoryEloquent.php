@@ -67,6 +67,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
         return redirect()->back()->with(['no result found' => 'No Result Found!']);
       }
 
+       // return $comments with search query
       return view('admins.manager-booking', compact('bookings'));
     }
     // Get bookings order by descending

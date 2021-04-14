@@ -85,6 +85,7 @@
 </div>
 @endsection
 @section('js')
+<!-- if update information of user success -->
 @if(session()->has('update success'))
 <script>
   $(function() {
@@ -109,6 +110,7 @@
   });
 </script>
 @endif
+<!-- If delete user success -->
 @if(session()->has('delete success'))
 <script>
   $(function() {
@@ -133,6 +135,8 @@
   });
 </script>
 @endif
+
+<!-- If delete user fail -->
 @if(session()->has('delete fail'))
 <script>
   $(function() {
@@ -154,6 +158,31 @@
       "hideMethod": "fadeOut"
     }
     toastr.success('Delete user fail!');
+  });
+</script>
+@endif
+<!-- If no result found for search -->
+@if(session()->has('no result found'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.info('No result found!', 'Notification');
   });
 </script>
 @endif

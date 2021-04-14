@@ -105,6 +105,7 @@ dd($errors->all());
 @endsection
 <!-- Script -->
 @section('js')
+<!-- If create room fail -->
 @if(session()->has('error'))
 <script>
   $(function() {

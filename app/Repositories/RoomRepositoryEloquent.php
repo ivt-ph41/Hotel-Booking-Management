@@ -97,11 +97,14 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
    */
   public function searchRoom(Request $request)
   {
-    
+    // if request has search
     if ($request->has('search')) {
-      $data = $request->all();
-      $query = $data['search'];
+      // $query == value input search
+      $query = $request->input('search');
+      // Search room with room name
       $rooms = $this->model->where('name', 'LIKE', "%$query%")->select('rooms.id', 'rooms.name')->get();
+
+      // return response with json with http status 200
       return response()->json($rooms, 200);
     }
   }
@@ -113,8 +116,10 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
    */
   public function storeRoom(CreateRoomRequest $request)
   {
+    // start transaction
     DB::beginTransaction();
     try {
+      // create new room in rooms table
       $room = $this->model->create($request->only('name', 'price', 'description', 'size', 'bed_id', 'type_id', 'person_room_id'));
 
       // If request has file upload
@@ -133,7 +138,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
           $array[$key]['room_id'] = $room->id;
         }
       }
-      // Insert new resource with data = $array by using relation ship
+      // Insert new resource in images table with data = $array by using relationship
       $room->images()->insert($array);
 
       // all OK then commit
@@ -144,7 +149,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       // return redirect back with session error
       return redirect()->back()->with(['error' => 'Something went wrong, please try again!']);
     }
-
+    // return route manager room with session 'create success'
     return redirect()->route('admins.room.manager')->with(['create success' => 'Success']);
   }
 
