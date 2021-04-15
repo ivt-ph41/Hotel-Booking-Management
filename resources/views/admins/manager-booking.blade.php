@@ -47,7 +47,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-check">
-                      <select name="status" class="form-control">
+                      <select name="status" class="form-control" {{-- if current status is cancel then disble form --}} {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'disabled' : null}}>
                         <option {{-- if current status is pending  then selected --}} {{\App\Entities\Booking::PENDING_STATUS == $booking->status? 'selected' : null}} value="{{\App\Entities\Booking::PENDING_STATUS}}">
                           {{__('Pending')}}
                         </option>
@@ -60,7 +60,8 @@
                       </select>
                     </div>
                     <div class="form-check ml-5">
-                      <button class="btn btn-success">Confirm</button>
+                    <!-- If current booking status is cancel then display none -->
+                      <button class="btn btn-success {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}" >Confirm</button>
                     </div>
                   </form>
                 </td>
@@ -102,7 +103,7 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.success('Update status sucess!', 'Notification');
+    toastr.success('Update status sucess, mail sent to the user!', 'Notification');
   });
 </script>
 @endif
