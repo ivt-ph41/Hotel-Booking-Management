@@ -93,7 +93,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
 
     // Get current booking by id = $id
     $data = $this->model->find($id)->toArray(); // convert to array
-
+        // create $subject
     // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data) {
       $message->to($data['email'])->subject('Hiroto hotel');
@@ -218,10 +218,10 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
           $message->from('phuoc04012000@gmail.com', 'Admin');
         });
         //if success
-        return redirect()->back()->with(['booking_success' => 'We had send booking detail to your email, please check it!']);
+        return redirect()->back()->withInput()->with(['booking_success' => 'We had send booking detail to your email, please check it!']);
       }
     } else {
-      return redirect()->back()->with(['booking_fail' => 'This room have been booking, please try another room or change another day!']);
+      return redirect()->back()->withInput()->with(['booking_fail' => 'This room have been booking, please try another room or change another day!']);
     }
   }
 
@@ -234,11 +234,8 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function cancelBooking($id)
   {
-    // Delete booking detail first
-    BookingDetail::where('booking_id', $id)->delete();
-
-    // Detele booking
-    $this->model->where('id', $id)->delete();
+    // update status to cancel
+    $this->model->where('id', $id)->update(['status' => \App\Entities\Booking::CANCEL_STATUS]);
 
     return redirect()->route('users.booking')->with(['status' => 'Cancel success']);
   }

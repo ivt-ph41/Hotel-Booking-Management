@@ -49,9 +49,7 @@ class UserController extends Controller
    */
   public function update(EditProfileRequest $request)
   {
-    $this->profileRepository->updateProfile($request);
-    // Return view profile with user
-    return $this->profile();
+    return $this->profileRepository->updateProfile($request);
   }
 
   /**

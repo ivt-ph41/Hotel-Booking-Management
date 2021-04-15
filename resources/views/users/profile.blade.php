@@ -11,50 +11,105 @@
 @section('content')
 @isset($user)
 <div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading" style="background-color: #e9ad28">
-            <h4>My Profile</h4>
-        </div>
-        <div class="panel-body">
-            <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
-                <img alt="User Pic"
-                    src="https://sothis.es/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"
-                    id="profile-image1" class="img-circle img-responsive">
-            </div>
-            <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
-                <div class="container">
-                    <h2>{{$user->profile->name}}</h2>
-                    <p><a style="color: darkred; text-decoration-color: darkblue; text-decoration: underline" href="{{route
+  <div class="panel panel-default">
+    <div class="panel-heading" style="background-color: #e9ad28">
+      <h4>My Profile</h4>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+        <img alt="User Pic" src="https://sothis.es/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" id="profile-image1" class="img-circle img-responsive">
+      </div>
+      <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
+        <div class="container">
+          <h2>{{$user->profile->name}}</h2>
+          <p><a style="color: darkred; text-decoration-color: darkblue; text-decoration: underline" href="{{route
                     ('users.edit')}}">{{__
                     ('Change Profile')}}</a></p>
-                    <p><a  style="color: darkred;text-decoration-color: darkblue; text-decoration: underline" href="{{route('users.change-password')}}">{{__('Change Password')
+          <p><a style="color: darkred;text-decoration-color: darkblue; text-decoration: underline" href="{{route('users.change-password')}}">{{__('Change Password')
                     }}</a></p>
-                </div>
-                <hr>
-                <ul class="container details">
-                    <li>
-                        <p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>Phone number:
-                            {{$user->profile->phone}}</p>
-                    </li>
-                    <li>
-                        <p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>Address:
-                            {{$user->profile->address}}</p>
-                    </li>
-                    <li>
-                        <p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{$user->email}}
-                        </p>
-                    </li>
-                </ul>
-                <hr>
-                <div class="col-sm-5 col-xs-6 tital ">
-                    Date Of Joining:
-                    @php
-                    echo date("l jS \of F Y h:i:s A", strtotime($user->created_at));
-                    @endphp
-                </div>
-            </div>
         </div>
+        <hr>
+        <ul class="container details">
+          <li>
+            <p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>Phone number:
+              {{$user->profile->phone}}
+            </p>
+          </li>
+          <li>
+            <p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>Address:
+              {{$user->profile->address}}
+            </p>
+          </li>
+          <li>
+            <p><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{$user->email}}
+            </p>
+          </li>
+        </ul>
+        <hr>
+        <div class="col-sm-5 col-xs-6 tital ">
+          Date Of Joining:
+          @php
+          echo date("l jS \of F Y h:i:s A", strtotime($user->created_at));
+          @endphp
+        </div>
+      </div>
     </div>
-    @endisset
+  </div>
+  @endisset
 
-    @endsection
+  @endsection
+
+  <!-- Js toast notification -->
+  @section('js')
+  <!-- password update success -->
+  @if(session()->has('password-success'))
+  <script>
+    $(function() {
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+      toastr.success('Your current password is update!', 'Notification');
+    });
+  </script>
+  @endif
+
+  <!-- change profile user success -->
+  @if(session()->has('profile-success'))
+  <script>
+    $(function() {
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+      toastr.success('Your current profile update success!', 'Notification');
+    });
+  </script>
+  @endif
+  @endsection

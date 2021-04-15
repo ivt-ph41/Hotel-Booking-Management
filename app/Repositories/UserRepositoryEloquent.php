@@ -88,9 +88,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
       $this->model->where('id', Auth::id())->update([
         'password' => Hash::make($request->input('new_password'))
       ]);
-      return redirect()->back()->with(['success' => 'Your current password is update']);
+      return redirect()->route('users.profile')->with(['password-success' => 'Your current password is update']);
     }
-    return redirect()->back()->with(['error' => 'Your current password is not correct!']);
+    return redirect()->back()->withInput()->with(['error' => 'Your current password is not correct!']);
   }
 
   public function showViewManagerUser(Request $request)

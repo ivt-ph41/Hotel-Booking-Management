@@ -78,12 +78,6 @@
                 Accept Change
               </button>
             </div>
-
-            @if (session()->has('success'))
-            <div>
-              <p style="color: rgb(67, 255, 50)">{{session()->get('success')}}</p>
-            </div>
-            @endif
           </div>
 
           <div class="flex-col-c p-t-155">
