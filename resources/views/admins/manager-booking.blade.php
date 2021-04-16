@@ -30,8 +30,7 @@
             <thead>
               <tr>
                 <th>Email</th>
-                <th>Address</th>
-                <th>Phone</th>
+                <th>Details</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -40,8 +39,11 @@
               @foreach($bookings as $booking)
               <tr>
                 <td class="text-bold text-success">{{ $booking->email }}</td>
-                <td>{{ $booking->address }}</td>
-                <td>{{$booking->phone}}</td>
+                <!-- Detail -->
+                <td>
+                <a class="btn btn-info" href="{{ route('admins.bookings.detail', $booking->id) }}">View</a>
+                </td>
+                <!-- Cofirm change status -->
                 <td>
                   <form class="form-inline" method="POST" action="{{route('admins.update.status-booking', ['booking_id' => $booking->id])}}">
                     @csrf
@@ -65,9 +67,7 @@
                     </div>
                   </form>
                 </td>
-                <td>
-                <a class="btn btn-info" href="{{ route('admins.bookings.detail', $booking->id) }}">Detail</a>
-                </td>
+
               </tr>
               @endforeach
             </tbody>
