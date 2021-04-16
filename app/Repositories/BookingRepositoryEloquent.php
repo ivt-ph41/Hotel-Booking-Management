@@ -190,9 +190,9 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     // If have booking with date_start and date_end but it is cancle booking then another user can booking
     \DB::enableQueryLog();
     $roomNotAvailable = Room::whereHas('bookingDetails.booking', function (Builder $query) use ($date_start, $date_end) {
-      $query->where('status', '<>', Booking::CANCEL_STATUS)
-        ->whereBetween('date_start', [$date_start, $date_end])
-        ->orWhereBetween('date_end', [$date_start, $date_end]);
+      $query->whereBetween('date_start', [$date_start, $date_end])
+        ->orWhereBetween('date_end', [$date_start, $date_end])
+        ->where('status', '<>', Booking::CANCEL_STATUS);
     })->find($room_id);
     // Check room with status cancel
     // dd(\DB::getQueryLog());
