@@ -56,22 +56,26 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     if ($request->has('search')) {
       $data = $request->input('search');
       // search booking by email of bookings table
-      $bookings = $this->model->where('email', 'like',  "%$data%")
-        ->paginate(5);
+      $bookings = $this->model->with('bookingDetails')->where('email', 'like',  "%$data%")
+        ->paginate(4);
       // Append to the query string of pagination links
       $bookings->appends([
         'search' => $request->input('search')
       ]);
-      // if not have result or empty input search field then
-      if (count($bookings) == 0 || empty($request->input('search'))) {
-        return redirect()->back()->with(['no result found' => 'No Result Found!']);
+      // if not have result
+      if (count($bookings) == 0) {
+        $noResultFound = '';
+        // dd($bookings->toArray());
+        return view('admins.manager-booking', compact('bookings', 'noResultFound'));
       }
 
-      // return $comments with search query
-      return view('admins.manager-booking', compact('bookings'));
+      $totalResult = $bookings->total();
+
+      // return $bookings with search query and display total result
+      return view('admins.manager-booking', compact('bookings', 'totalResult'));
     }
     // Get bookings order by descending
-    $bookings = $this->model->orderBy('id', 'desc')->paginate(5);
+    $bookings = $this->model->with('bookingDetails')->orderBy('id', 'desc')->paginate(4);
 
     return view('admins.manager-booking', compact('bookings'));
   }
@@ -92,7 +96,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       ]);
 
     // Get current booking by id = $id
-    $data = $this->model->find($id)->toArray(); // convert to array
+    $data = $this->model->with('bookingDetails.room')->find($id)->toArray(); // convert to array
     // create Subject of mail
     if ($data['status'] == Booking::PENDING_STATUS) {
       $subject = 'Hiroto | Your booking status now is pending!';
@@ -103,6 +107,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     }
     $data['messager'] = $request->input('messager');
 
+ 
     // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data, $subject) {
       $message->to($data['email'])->subject($subject);
@@ -184,34 +189,24 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       'date_end' => $date_end
     ];
 
-    /* Checking booking detail with room id,
-    get room in booking detail table with $room_id
-    */
+
     // Check room from date_start to date_end
-    // If have booking with date_start and date_end but it is cancle booking then another user can booking
-    \DB::enableQueryLog();
-    // $bookingDetail = BookingDetail::with('booking')->where('room_id', $room_id)
-    //   ->whereBetWeen('date_start', [$date_start, $date_end])
-    //   ->orWhereBetween('date_end', [$date_start, $date_end])
-    //   ->whereHas('booking', function ($query) {
-    //     return $query->where('status', '<>', Booking::CANCEL_STATUS);
-    //   })->first();
-    $roomNotAvailable = Room::with('bookingDetails.booking')->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
-      return $query->whereBetween('date_start', [$date_start, $date_end])
-        ->orWhereBetween('date_end', [$date_start, $date_end]);
-    })->find($room_id);
-    // dd($roomNotAvailable->toArray());
-    $bookingNotCancelStatus = Booking::with('bookingDetails.room')
+    // If have booking with date_start and date_end or  it is cancle booking then another user can booking
+
+    // $roomNotAvailable = Room::with('bookingDetails.booking')->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
+    //   return $query->whereBetween('date_start', [$date_start, $date_end])
+    //     ->orWhereBetween('date_end', [$date_start, $date_end]);
+    // })->find($room_id);
+
+    // Get booking where in approve or pending status (not have cancel status)
+    $bookingIsNotCancelStatus = Booking::with('bookingDetails.room')
                           ->whereHas('bookingDetails', function ($query) use($date_start, $date_end, $room_id){
                             return $query->where('room_id', $room_id)
                             ->whereBetWeen('date_start', [$date_start, $date_end])
                             ->orWhereBetween('date_end', [$date_start, $date_end]);
                           })->whereIn('status', [Booking::PENDING_STATUS, Booking::APPROVE_STATUS])->get();
-    // dd($bookingNotCancelStatus->toArray());
-    // Check room with status cancel
-    // dd(\DB::getQueryLog());
-    // dd($roomNotAvailable);
-    if (empty($roomNotAvailable) || count($bookingNotCancelStatus) == 0) {
+    // If roomNotAvailable is null or booking approve or pending status is null then user can booking
+    if (count($bookingIsNotCancelStatus) == 0) {
       // With user login to system
       if (Auth::check()) { // Checking if user had login?
         $user_id = Auth::user()->id;

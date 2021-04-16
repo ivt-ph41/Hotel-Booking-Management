@@ -30,6 +30,8 @@
             <thead>
               <tr>
                 <th>Email</th>
+                <th>Date start</th>
+                <th>Date end</th>
                 <th>Details</th>
                 <th>Status</th>
               </tr>
@@ -37,11 +39,14 @@
             <tbody>
               @isset($bookings)
               @foreach($bookings as $booking)
+              @foreach($booking->bookingDetails as $bookingDetail)
               <tr>
                 <td class="text-bold text-success">{{ $booking->email }}</td>
+                <td>{{ $bookingDetail->date_start }}</td>
+                <td>{{ $bookingDetail->date_end }}</td>
                 <!-- Detail -->
                 <td>
-                <a class="btn btn-info" href="{{ route('admins.bookings.detail', $booking->id) }}">View</a>
+                  <a class="btn btn-info" href="{{ route('admins.bookings.detail', $booking->id) }}">View</a>
                 </td>
                 <!-- Cofirm change status -->
                 <td>
@@ -64,16 +69,16 @@
                     </div>
                     <!-- Message -->
                     <div class="form-check {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}">
-                    <input type="text" class="form-control" name="messager" placeholder="Messager">
+                      <input type="text" class="form-control" name="messager" placeholder="Messager">
                     </div>
                     <div class="form-check ml-5">
-                    <!-- If current booking status is cancel then display none -->
-                      <button class="btn btn-success {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}" >Confirm</button>
+                      <!-- If current booking status is cancel then display none -->
+                      <button class="btn btn-success {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}">Confirm</button>
                     </div>
                   </form>
                 </td>
-
               </tr>
+              @endforeach
               @endforeach
             </tbody>
             @endisset
@@ -141,7 +146,7 @@
 </script>
 @endif
 
-@if(session()->has('no result found'))
+@if(isset($noResultFound))
 <script>
   $(function() {
     toastr.options = {
@@ -162,6 +167,31 @@
       "hideMethod": "fadeOut"
     }
     toastr.info('No result found!', 'Notification');
+  });
+</script>
+@endif
+<!-- Search success -->
+@if(isset($totalResult))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success("{{$totalResult}} result has found!", 'Search success');
   });
 </script>
 @endif
