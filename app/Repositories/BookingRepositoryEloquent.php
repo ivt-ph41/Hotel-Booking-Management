@@ -101,7 +101,8 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     } else {
       $subject = 'Hiroto | Your booking status now is cancel!';
     }
-
+    $data['message'] = $request->input('message');
+    dd($data);
     // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data, $subject) {
       $message->to($data['email'])->subject($subject);
@@ -190,9 +191,10 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     // If have booking with date_start and date_end but it is cancle booking then another user can booking
     \DB::enableQueryLog();
     $roomNotAvailable = Room::whereHas('bookingDetails.booking', function (Builder $query) use ($date_start, $date_end) {
-      $query->whereBetween('date_start', [$date_start, $date_end])
-        ->orWhereBetween('date_end', [$date_start, $date_end])
-        ->where('status', '<>', Booking::CANCEL_STATUS);
+      $query->where('status', '<>', Booking::CANCEL_STATUS)
+      ->whereBetween('date_start', [$date_start, $date_end])
+        ->orWhereBetween('date_end', [$date_start, $date_end]);
+
     })->find($room_id);
     // Check room with status cancel
     // dd(\DB::getQueryLog());
