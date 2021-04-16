@@ -64,7 +64,7 @@
                     </div>
                     <!-- Message -->
                     <div class="form-check {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}">
-                    <input type="text" class="form-control" name="message" placeholder="Message">
+                    <input type="text" class="form-control" name="messager" placeholder="Messager">
                     </div>
                     <div class="form-check ml-5">
                     <!-- If current booking status is cancel then display none -->
