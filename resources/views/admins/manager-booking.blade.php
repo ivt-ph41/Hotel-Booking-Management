@@ -48,7 +48,8 @@
                   <form class="form-inline" method="POST" action="{{route('admins.update.status-booking', ['booking_id' => $booking->id])}}">
                     @csrf
                     @method('PUT')
-                    <div class="form-check">
+                    <!-- Select option status -->
+                    <div class="form-check mr-1">
                       <select name="status" class="form-control" {{-- if current status is cancel then disble form --}} {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'disabled' : null}}>
                         <option {{-- if current status is pending  then selected --}} {{\App\Entities\Booking::PENDING_STATUS == $booking->status? 'selected' : null}} value="{{\App\Entities\Booking::PENDING_STATUS}}">
                           {{__('Pending')}}
@@ -60,6 +61,10 @@
                           {{__('Cancel')}}
                         </option>
                       </select>
+                    </div>
+                    <!-- Message -->
+                    <div class="form-check {{\App\Entities\Booking::CANCEL_STATUS == $booking->status? 'd-none' : null}}">
+                    <input type="text" class="form-control" name="messager" placeholder="Messager">
                     </div>
                     <div class="form-check ml-5">
                     <!-- If current booking status is cancel then display none -->

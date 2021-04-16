@@ -10,5 +10,10 @@
 <h3>Sorry, your status booking now is  <b style="color: #dc3545;">cancel</b></h3>
 @endif
 
+<!-- if not empty messager -->
+@if(!empty($messager))
+<p style="color:hotpink">{{$messager}}</p>
+@endif
+
 <p>Thank you for choose our service.</p>
 <h1>Have a good day &#128155;</h1>

@@ -101,6 +101,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     } else {
       $subject = 'Hiroto | Your booking status now is cancel!';
     }
+    $data['messager'] = $request->input('messager');
 
     // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data, $subject) {
@@ -189,15 +190,28 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     // Check room from date_start to date_end
     // If have booking with date_start and date_end but it is cancle booking then another user can booking
     \DB::enableQueryLog();
-    $roomNotAvailable = Room::whereHas('bookingDetails.booking', function (Builder $query) use ($date_start, $date_end) {
-      $query->whereBetween('date_start', [$date_start, $date_end])
-        ->orWhereBetween('date_end', [$date_start, $date_end])
-        ->where('status', '<>', Booking::CANCEL_STATUS);
+    // $bookingDetail = BookingDetail::with('booking')->where('room_id', $room_id)
+    //   ->whereBetWeen('date_start', [$date_start, $date_end])
+    //   ->orWhereBetween('date_end', [$date_start, $date_end])
+    //   ->whereHas('booking', function ($query) {
+    //     return $query->where('status', '<>', Booking::CANCEL_STATUS);
+    //   })->first();
+    $roomNotAvailable = Room::with('bookingDetails.booking')->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
+      return $query->whereBetween('date_start', [$date_start, $date_end])
+        ->orWhereBetween('date_end', [$date_start, $date_end]);
     })->find($room_id);
+    // dd($roomNotAvailable->toArray());
+    $bookingNotCancelStatus = Booking::with('bookingDetails.room')
+                          ->whereHas('bookingDetails', function ($query) use($date_start, $date_end, $room_id){
+                            return $query->where('room_id', $room_id)
+                            ->whereBetWeen('date_start', [$date_start, $date_end])
+                            ->orWhereBetween('date_end', [$date_start, $date_end]);
+                          })->whereIn('status', [Booking::PENDING_STATUS, Booking::APPROVE_STATUS])->get();
+    // dd($bookingNotCancelStatus->toArray());
     // Check room with status cancel
     // dd(\DB::getQueryLog());
     // dd($roomNotAvailable);
-    if (empty($roomNotAvailable)) {
+    if (empty($roomNotAvailable) || count($bookingNotCancelStatus) == 0) {
       // With user login to system
       if (Auth::check()) { // Checking if user had login?
         $user_id = Auth::user()->id;
