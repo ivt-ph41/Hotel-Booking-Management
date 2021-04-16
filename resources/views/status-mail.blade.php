@@ -1,3 +1,4 @@
+
 <h1>Hiroto hotel</h1>
 <p>Dear {{$email}},</p>
 
@@ -12,8 +13,13 @@
 
 <!-- if not empty messager -->
 @if(!empty($messager))
-<p style="color:hotpink">{{$messager}}</p>
+<h4 style="color:hotpink">{{$messager}}</h4>
 @endif
+<h2>Detail</h2>
 
+@foreach($booking_details as $value)
+<p>Date booking from {{$value['date_start']}} to {{$value['date_end']}}</p>
+<p>At {{$value['room']['name']}}</p>
+@endforeach
 <p>Thank you for choose our service.</p>
 <h1>Have a good day &#128155;</h1>
