@@ -72,6 +72,20 @@ class AdminController extends Controller
     return $this->bookingRepository->managerBooking($request);
   }
 
+
+  /**
+   * Return view booking detail
+   *
+   * @param  int $id
+   * @return void
+   */
+  public function bookingDetail($id)
+  {
+    // Get booking with booking detail and room
+    $booking = $this->bookingRepository->with(['user', 'bookingDeTails.room'])->find($id);
+    // return view booking detail with $booking
+    return view('admins.bookings.detail', compact('booking'));
+  }
   /**
    * Update status of booking
    * @param $id (booking_id)
