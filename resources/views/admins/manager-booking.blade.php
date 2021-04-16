@@ -65,6 +65,9 @@
                     </div>
                   </form>
                 </td>
+                <td>
+                <a class="btn btn-info" href="{{ route('admins.bookings.detail', $booking->id) }}">Detail</a>
+                </td>
               </tr>
               @endforeach
             </tbody>
