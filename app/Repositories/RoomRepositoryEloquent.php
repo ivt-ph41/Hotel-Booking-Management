@@ -160,13 +160,23 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
   public function showViewManagerRoom(Request $request)
   {
     // If have search action from user
-    if ($request->has('search') && !empty($request->input('search'))) {
+    if ($request->has('search')) {
       $rooms = $this->model->where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);
 
       // Append to the query string of pagination links
       $rooms->appends(['search' => $request->input('search')]);
 
-      return view('admins.manager-rooms', compact('rooms'));
+     // if not have result
+     if (count($rooms) == 0) {
+      $noResultFound = '';
+      // dd($bookings->toArray());
+      return view('admins.manager-rooms', compact('rooms', 'noResultFound'));
+    }
+    // get total of result
+    $totalResult = $rooms->total();
+
+    // return $bookings with search query and display total result
+    return view('admins.manager-rooms', compact('rooms', 'totalResult'));
     }
     // Default: get all room
     $rooms = $this->model->orderBy('id', 'desc')->paginate(5);
