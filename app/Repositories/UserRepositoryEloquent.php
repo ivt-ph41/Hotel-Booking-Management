@@ -96,16 +96,26 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
   public function showViewManagerUser(Request $request)
   {
     // If have search action from user
-    if ($request->has('search') && !empty($request->input('search'))) {
-      // dd('aa');
-      $users = $this->model->with(['profile'])->where('role_id', Role::USER_ROLE)->where('email', 'LIKE', '%' . $request->input('search') . '%')->orderBy('email')->paginate(3);
+    if ($request->has('search')) {
+      $data = $request->input('search');
+      // search user with profile using relationship
+      $users = $this->model->with(['profile'])
+                    ->where('role_id', Role::USER_ROLE)
+                    ->where('email', 'LIKE', "%$data%")
+                    ->paginate(3);
       $users->appends(['search' => $request->input('search')]);
-      // if not have result or empty input search field then
-      if (count($users) == 0 || empty($request->input('search'))) {
-        return redirect()->back()->with(['no result found' => 'No Result Found!']);
+
+      // if not have result
+      if (count($users) == 0) {
+        $noResultFound = '';
+        // dd($bookings->toArray());
+        return view('admins.users.manager-users', compact('users', 'noResultFound'));
       }
-      // return $users with search query
-      return view('admins.users.manager-users', compact('users'));
+      // get total of result
+      $totalResult = $users->total();
+
+      // return $bookings with search query and display total result
+      return view('admins.users.manager-users', compact('users', 'totalResult'));
     }
     // Default: get all user paginate
     // $users = $this->model->with(['profile'])->select('users.*', 'profiles.*')->orderBy('profiles.name')->paginate(5);

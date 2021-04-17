@@ -145,7 +145,7 @@
   });
 </script>
 @endif
-
+<!-- If search no result found -->
 @if(isset($noResultFound))
 <script>
   $(function() {
@@ -166,7 +166,7 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.info('No result found!', 'Notification');
+    toastr.info('No result found!', 'Searching');
   });
 </script>
 @endif
@@ -191,7 +191,7 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.success("{{$totalResult}} result has found!", 'Search success');
+    toastr.success("{{$totalResult}} result has found!", 'Searching');
   });
 </script>
 @endif

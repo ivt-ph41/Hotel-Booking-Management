@@ -99,6 +99,7 @@
 @endsection
 
 @section('js')
+<!-- if update room success -->
 @if(session()->has('update success'))
 <script>
   $(function() {
@@ -123,7 +124,7 @@
   });
 </script>
 @endif
-
+<!-- if create room success -->
 @if(session()->has('create success'))
 <script>
   $(function() {
@@ -148,7 +149,7 @@
   });
 </script>
 @endif
-
+<!-- If delete success -->
 @if(session()->has('delete success'))
 <script>
   $(function() {
@@ -173,6 +174,7 @@
   });
 </script>
 @endif
+<!-- If delete fail -->
 @if(session()->has('delete fail'))
 <script>
   $(function() {
@@ -197,6 +199,7 @@
   });
 </script>
 @endif
+<!-- Something wrong -->
 @if(session()->has('something wrong'))
 <script>
   $(function() {
@@ -218,6 +221,57 @@
       "hideMethod": "fadeOut"
     }
     toastr.warning('Something went wrong!', 'Notification');
+  });
+</script>
+@endif
+
+<!-- If search no result found -->
+@if(isset($noResultFound))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.info('No result found!', 'Searching');
+  });
+</script>
+@endif
+<!-- Search success -->
+@if(isset($totalResult))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success("{{$totalResult}} result has found!", 'Searching');
   });
 </script>
 @endif

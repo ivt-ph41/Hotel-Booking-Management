@@ -97,7 +97,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
 
     // Get current booking by id = $id
     $data = $this->model->with('bookingDetails.room')->find($id)->toArray(); // convert to array
-    // create Subject of mail
+    // Create Subject of mail
     if ($data['status'] == Booking::PENDING_STATUS) {
       $subject = 'Hiroto | Your booking status now is pending!';
     } elseif ($data['status'] == Booking::APPROVE_STATUS) {
@@ -107,7 +107,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     }
     $data['messager'] = $request->input('messager');
 
- 
+
     // Send mail about update status to user via their email
     Mail::send('status-mail', $data, function ($message) use ($data, $subject) {
       $message->to($data['email'])->subject($subject);

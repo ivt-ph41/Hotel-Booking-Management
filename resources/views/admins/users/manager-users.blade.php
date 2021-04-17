@@ -12,7 +12,7 @@
 
             <form action="{{route('admins.user.manager')}}" method="get">
               <div class="input-group input-group-sm" style="width: 150px;">
-                <input type="text" name="search" class="form-control float-right" placeholder="Search">
+                <input type="text" name="search" value="{{ old('search') }}" class="form-control float-right" placeholder="Search">
 
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default">
@@ -183,6 +183,57 @@
       "hideMethod": "fadeOut"
     }
     toastr.info('No result found!', 'Notification');
+  });
+</script>
+@endif
+
+<!-- If search no result found -->
+@if(isset($noResultFound))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.info('No result found!', 'Searching');
+  });
+</script>
+@endif
+<!-- Search success -->
+@if(isset($totalResult))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success("{{$totalResult}} result has found!", 'Searching');
   });
 </script>
 @endif
