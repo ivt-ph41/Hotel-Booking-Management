@@ -193,10 +193,10 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     // Check room from date_start to date_end
     // If have booking with date_start and date_end or  it is cancle booking then another user can booking
 
-    $roomNotAvailable = Room::with('bookingDetails.booking')->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
-      return $query->whereBetween('date_start', [$date_start, $date_end])
-        ->orWhereBetween('date_end', [$date_start, $date_end]);
-    })->find($room_id);
+    // $roomNotAvailable = Room::with('bookingDetails.booking')->whereHas('bookingDetails', function (Builder $query) use ($date_start, $date_end) {
+    //   return $query->whereBetween('date_start', [$date_start, $date_end])
+    //     ->orWhereBetween('date_end', [$date_start, $date_end]);
+    // })->find($room_id);
 
     // Get booking where in approve or pending status (not have cancel status)
     $bookingIsNotCancelStatus = Booking::with('bookingDetails.room')
@@ -205,8 +205,9 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
                             ->whereBetWeen('date_start', [$date_start, $date_end])
                             ->orWhereBetween('date_end', [$date_start, $date_end]);
                           })->whereIn('status', [Booking::PENDING_STATUS, Booking::APPROVE_STATUS])->get();
+                          // dd($bookingIsNotCancelStatus->toArray());
     // If roomNotAvailable is null or booking approve or pending status is null then user can booking
-    if (empty($roomNotAvailable) || count($bookingIsNotCancelStatus) == 0) {
+    if (count($bookingIsNotCancelStatus) == 0) {
       // With user login to system
       if (Auth::check()) { // Checking if user had login?
         $user_id = Auth::user()->id;
