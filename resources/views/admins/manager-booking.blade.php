@@ -30,6 +30,7 @@
             <thead>
               <tr>
                 <th>Email</th>
+                <th>Room</th>
                 <th>Date start</th>
                 <th>Date end</th>
                 <th>Details</th>
@@ -42,6 +43,7 @@
               @foreach($booking->bookingDetails as $bookingDetail)
               <tr>
                 <td class="text-bold text-success">{{ $booking->email }}</td>
+                <td>{{ $bookingDetail->room->name }}</td>
                 <td>{{ $bookingDetail->date_start }}</td>
                 <td>{{ $bookingDetail->date_end }}</td>
                 <!-- Detail -->

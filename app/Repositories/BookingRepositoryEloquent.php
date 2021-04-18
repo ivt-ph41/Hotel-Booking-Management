@@ -56,7 +56,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     if ($request->has('search')) {
       $data = $request->input('search');
       // search booking by email of bookings table
-      $bookings = $this->model->with('bookingDetails')->where('email', 'like',  "%$data%")
+      $bookings = $this->model->with('bookingDetails.room')->where('email', 'like',  "%$data%")
         ->paginate(4);
       // Append to the query string of pagination links
       $bookings->appends([
@@ -75,7 +75,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
       return view('admins.manager-booking', compact('bookings', 'totalResult'));
     }
     // Get bookings order by descending
-    $bookings = $this->model->with('bookingDetails')->orderBy('id', 'desc')->paginate(4);
+    $bookings = $this->model->with('bookingDetails.room')->orderBy('id', 'desc')->paginate(4);
 
     return view('admins.manager-booking', compact('bookings'));
   }
