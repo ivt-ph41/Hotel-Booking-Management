@@ -14,21 +14,20 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Profile extends Model implements Transformable
 {
-    use TransformableTrait;
-    use SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'address', 'phone'];
+  use TransformableTrait;
+  use SoftDeletes;
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = ['name', 'address', 'phone'];
 
-    /*
+  /*
     ONE TO ONE PROFILE BELONG TO USER
     */
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
-
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
 }

@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\RoomRepository;
 use App\Repositories\PersonRoomRepository;
+use App\Repositories\CommentRepository;
 use PhpParser\Node\Expr\FuncCall;
 
 class RoomController extends Controller
 {
   protected $roomRepository;
   protected $personRoomRepository;
-  public function __construct(RoomRepository $roomRepository, PersonRoomRepository $personRoomRepository)
+  protected $commentRepo;
+  public function __construct(RoomRepository $roomRepository, PersonRoomRepository $personRoomRepository, CommentRepository $commentRepo)
   {
     $this->roomRepository = $roomRepository;
     $this->personRoomRepository = $personRoomRepository;
+    $this->commentRepo = $commentRepo;
   }
 
   public function index()
@@ -31,13 +34,11 @@ class RoomController extends Controller
   public function show($id)
   {
     // Get room by id with comment
-    $room = $this->roomRepository->with(['bed', 'images', 'type', 'comments.user', 'personRoom', 'comments' => function ($query) {
-      return $query->orderBy('id', 'desc');
-    }])->find($id);
+    $room = $this->roomRepository->with(['bed', 'images', 'type', 'personRoom'])->find($id);
 
+    $comments = $this->commentRepo->with('user')->where('room_id' , $id)->orderBy('id', 'desc')->paginate(3);
 
-    // dd($room->toArray());
-    return view('rooms.detail', compact('room'));
+    return view('rooms.detail', compact('room', 'comments'));
   }
 
   /**

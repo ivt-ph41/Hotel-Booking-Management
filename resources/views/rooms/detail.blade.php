@@ -50,16 +50,22 @@
           </div>
           <div class="room__details__title">
             <h2>Name:{{$room->name}} <small>(Type:{{$room->type->name}})</small></h2>
+
+            <!-- If user in system is user then show booking now -->
             @auth
             @if (\Auth::user()->role_id == \App\Entities\Role::USER_ROLE)
             <a href="{{ route('bookings.create', ['room_id' => $room->id ]) }}" class="primary-btn">Booking
               Now</a>
             @endif
             @endauth
+            <!-- End -->
+
+            <!-- Show Booking Now button if guest -->
             @guest
             <a href="{{ route('bookings.create', ['room_id' => $room->id ]) }}" class="primary-btn">Booking
               Now</a>
             @endguest
+            <!-- End -->
 
           </div>
           <div class="room__details__desc">
@@ -87,22 +93,38 @@
                 <button type=" submit" class="btn btn-danger">Send your comment</button>
               </form>
               @endauth
-              @foreach ($room->comments as $comment)
+              @foreach ($comments as $comment)
               @if ($comment->user->role_id == 1 )
               <p style="color: rgba(144, 9, 9, 0.644)">
                 Admin <small style="color: black">({{$comment->user->email}})</small>
               </p>
               @else
               <p style="color: #e9ad28">
-                User <small style="color: black">({{$comment->user->email}})</small>
+                User <small style="color: black">({{ $comment->user->email }})</small>
               </p>
               @endif
               <p>{{$comment->content}}</p>
+
+              <!-- IF curent user id == user id of comment -->
+              @if(\Auth::id() == $comment->user->id)
+              <form action="{{ route('comments.destroy' , ['id' => $room->id, 'commentId' => $comment->id]) }}" method="post">
+                @csrf
+                @method('DELETE')
+                <button class="btn" style="margin-left: 90%;" type="submit"><img src="{{ asset('images/utilities/remove.png') }}" alt="" width="30px"></button>
+              </form>
+              @endif()
+              <!-- END -->
+
               <div>
-                ..........................................................................................................................................................................................
+                .............................................................................................................................................................................
               </div>
               @endforeach
             </div>
+          </div>
+
+          <!-- Paginate -->
+          <div class="col">
+            {{ $comments->links() }}
           </div>
 
           <div class="row mt-5">
@@ -200,4 +222,35 @@
             })
         </script> --}}
 </section>
+@endsection
+
+<!-- JS -->
+@section('js')
+
+<!-- IF DELETE COMMENT SUCESS -->
+@if(session()->has('delete comment success'))
+<script>
+  $(function() {
+    toastr.options = {
+      "closeButton": true,
+      "debug": true,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "1000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success('Your comment delete success!', 'Notification');
+  });
+</script>
+@endif
+
 @endsection
