@@ -115,7 +115,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     });
 
     if ($result) { // success
-      return redirect()->back()->with(['success' => 'Update status success']);
+      return redirect()->route('admins.dashboards.booking')->with(['success' => 'Update status success']);
     }
     // fail
     return redirect()->back()->with(['update fail' => 'Update status fail']);
