@@ -50,7 +50,8 @@ Route::get('users/bookings', 'UserController@userBooking')->name('users.booking'
 Route::delete('users/bookings/{id}', 'BookingController@cancelBooking')->name('bookings.cancel');
 // User send comment
 Route::post('rooms/{id}/comment', 'CommentController@store')->name('comments.store');
-
+// User delete their comment
+Route::delete('rooms/{id}/comment/{commentId}}', 'CommentController@destroy')->name('comments.destroy');
 
 // User Profile
 Route::get('users/profile', 'UserController@profile')->name('users.profile');
