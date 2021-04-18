@@ -18,13 +18,13 @@
 </div>
 <!-- User has login -->
 @auth
-<h5 style="margin-bottom: 10px;">{{$user->email}}</h5>
+<h5 style="margin-bottom: 10px;">{{ $user->email }}</h5>
 <form action="{{ route('bookings.store', ['room_id' => $room->id]) }}" class="filter__form" style="border: solid #e9ad28; " method="post">
   @csrf
   <div class="filter__form__item">
     <p>Email</p>
     <div class="filter__form__datepicker">
-      <input style="padding-left: 0px" type="text" name="email" value="{{$user->email}}">
+      <input style="padding-left: 0px" type="text" name="email" value="{{ $user->email }}">
     </div>
     @if ($errors->has('email'))
     <p style="color: red">{{$errors->first('email')}}</p>
@@ -73,6 +73,7 @@
   <button style="right: -100px; outline: solid 3px #e9ad28;" type="submit">Booking</button>
 </form>
 @endauth
+
 <!-- Guest -->
 @guest
 

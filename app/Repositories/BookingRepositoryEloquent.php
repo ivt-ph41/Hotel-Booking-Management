@@ -89,6 +89,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function updateStatus($id, Request $request)
   {
+
     // update status where booking id = $id
     $result = $this->model->where('id', $id)
       ->update([
@@ -174,6 +175,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
    */
   public function booking($room_id, CreateBookingRequest $request)
   {
+
     // convert to date format
     $date_start = $request->input('date_start');
     $date_start = strtotime($date_start);
@@ -199,12 +201,15 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
     // })->find($room_id);
 
     // Get booking where in approve or pending status (not have cancel status)
-    $bookingIsNotCancelStatus = Booking::with('bookingDetails.room')
+    // dd($room_id);
+    \DB::enableQueryLog();
+    $bookingIsNotCancelStatus = Booking::with('bookingDetails')
                           ->whereHas('bookingDetails', function ($query) use($date_start, $date_end, $room_id){
-                            return $query->where('room_id', $room_id)
-                            ->whereBetWeen('date_start', [$date_start, $date_end])
-                            ->orWhereBetween('date_end', [$date_start, $date_end]);
+                            return $query->whereRaw('(date_start between ? and ? or date_end between ? and ?) ',[$date_start, $date_end,$date_start, $date_end])
+                            ->where('room_id', $room_id);
                           })->whereIn('status', [Booking::PENDING_STATUS, Booking::APPROVE_STATUS])->get();
+    dd(\DB::getQueryLog());
+    // dd($room_id);
                           // dd($bookingIsNotCancelStatus->toArray());
     // If roomNotAvailable is null or booking approve or pending status is null then user can booking
     if (count($bookingIsNotCancelStatus) == 0) {
