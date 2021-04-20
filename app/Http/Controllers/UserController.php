@@ -7,6 +7,7 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\EditProfileRequest;
 use App\Repositories\UserRepository;
 use App\Repositories\ProfileRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -36,7 +37,7 @@ class UserController extends Controller
   /**
    * Show view edit user profile
    */
-  public function edit()
+  public function edit(Request $request)
   {
     // Get current user has login by id
     $user = $this->userRepository->with('profile')->find(Auth::id());

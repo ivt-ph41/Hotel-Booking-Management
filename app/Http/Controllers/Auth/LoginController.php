@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Login Controller
     |--------------------------------------------------------------------------
@@ -20,42 +20,42 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+  use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
+  /**
+   * Where to redirect users after login.
+   *
+   * @var string
+   */
+  protected $redirectTo = '/';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('guest')->except('logout');
+  }
 
-    public function showLoginForm()
-    {
-        return view('login');
+  public function showLoginForm()
+  {
+    return view('login');
+  }
+  public function login(Request $request)
+  {
+    $data = $request->only('email', 'password');
+    if (Auth::attempt($data)) {
+      $request->session()->regenerate();
+      return redirect('/');
     }
-    public function login(Request $request)
-    {
-        $data = $request->only('email', 'password');
-        if (Auth::attempt($data)) {
-            $request->session()->regenerate();
-            return redirect('/');
-        }
-        return redirect()->back()->withInput()->with(['error' => 'Wrong email or password !']);
-    }
+    return redirect()->back()->withInput()->with(['error' => 'Wrong email or password !']);
+  }
 
-    public function logout(Request $request)
-    {
-        $this->guard()->logout();
-        return redirect('/');
-    }
+  public function logout(Request $request)
+  {
+    $this->guard()->logout();
+    return redirect('/');
+  }
 }
