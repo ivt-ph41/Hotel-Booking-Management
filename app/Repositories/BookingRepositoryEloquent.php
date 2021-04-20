@@ -208,7 +208,7 @@ class BookingRepositoryEloquent extends BaseRepository implements BookingReposit
                             return $query->whereRaw('(date_start between ? and ? or date_end between ? and ?) ',[$date_start, $date_end,$date_start, $date_end])
                             ->where('room_id', $room_id);
                           })->whereIn('status', [Booking::PENDING_STATUS, Booking::APPROVE_STATUS])->get();
-    dd(\DB::getQueryLog());
+    // dd(\DB::getQueryLog());
     // dd($room_id);
                           // dd($bookingIsNotCancelStatus->toArray());
     // If roomNotAvailable is null or booking approve or pending status is null then user can booking
