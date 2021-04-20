@@ -41,8 +41,11 @@ class ProfileRepositoryEloquent extends BaseRepository implements ProfileReposit
      */
     public function updateProfile(EditProfileRequest $request)
     {
-        $this->model->where('user_id', Auth::id())->update($request->except('_token', '_method'));
-        return redirect()->route('users.profile')->with(['profile-success' => 'Your current profile is update']);
+        $result = $this->model->where('user_id', Auth::id())->update($request->except('_token', '_method'));
+        if ($result) {
+          $request->session()->flash('profile-success', 'Your current profile is update');
+          return redirect()->route('users.profile');
+        }
     }
 
 }

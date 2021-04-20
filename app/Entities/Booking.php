@@ -54,13 +54,4 @@ class Booking extends Model implements Transformable
   {
     return $this->hasMany('App\Entities\BookingDetail');
   }
-
-/**
- * HAS ONE THOURHGT PROFILE
- *
- */
-  // public function userProfile()
-  // {
-  //   return $this->hasOneThrough('App\Entities\Profile', 'App\User');
-  // }
 }
