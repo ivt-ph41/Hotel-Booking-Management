@@ -10,6 +10,7 @@ use App\Validators\CommentValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Entities\Role;
 
 /**
  * Class CommentRepositoryEloquent.
@@ -61,7 +62,8 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
       $data = $request->input('search'); // Set value $data == input search field
       // get comment with user and room where like email of user or where has name of room via relationship
       $comments = $this->model->with(['user', 'room'])->whereHas('user', function (Builder $query) use ($data) {
-        return $query->where('email', 'LIKE', "%$data%");
+        return $query->where('role_id', Role::USER_ROLE)// where role  is user
+                     ->where('email', 'LIKE', "%$data%");
       })->orWhereHas('room', function (Builder $query) use ($data) {
         return $query->where('name', 'LIKE', "%$data%");
       })->paginate(5);
@@ -84,7 +86,9 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
       return view('admins.comments.manager', compact('comments', 'totalResult'));
     }
     // Default returl all comments order by descending and paginate 5 record/page
-    $comments = $this->model->with(['user', 'room'])->orderBy('id', 'desc')->paginate(5);
+    $comments = $this->model->with(['user', 'room'])->whereHas('user', function($query){
+      return $query->where('role_id', Role::USER_ROLE);
+    })->orderBy('id', 'desc')->paginate(5);
     return view('admins.comments.manager', compact('comments'));
   }
 }
