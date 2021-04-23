@@ -157,7 +157,7 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     }
-    toastr.success('Delete user fail!');
+    toastr.error('Delete user fail!');
   });
 </script>
 @endif
