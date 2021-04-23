@@ -166,17 +166,17 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       // Append to the query string of pagination links
       $rooms->appends(['search' => $request->input('search')]);
 
-     // if not have result
-     if (count($rooms) == 0) {
-      $noResultFound = '';
-      // dd($bookings->toArray());
-      return view('admins.manager-rooms', compact('rooms', 'noResultFound'));
-    }
-    // get total of result
-    $totalResult = $rooms->total();
+      // if not have result
+      if (count($rooms) == 0) {
+        $noResultFound = '';
+        // dd($bookings->toArray());
+        return view('admins.manager-rooms', compact('rooms', 'noResultFound'));
+      }
+      // get total of result
+      $totalResult = $rooms->total();
 
-    // return $bookings with search query and display total result
-    return view('admins.manager-rooms', compact('rooms', 'totalResult'));
+      // return $bookings with search query and display total result
+      return view('admins.manager-rooms', compact('rooms', 'totalResult'));
     }
     // Default: get all room
     $rooms = $this->model->orderBy('id', 'desc')->paginate(5);
@@ -208,18 +208,24 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
     $booking_details = BookingDetail::whereHas('booking', function (Builder $query) {
       $query->whereIn('status', [Booking::APPROVE_STATUS, Booking::PENDING_STATUS]);
     })->where('room_id', $id)->get();
-
+    // dd($booking_details);
     /* If $booking_detail == [] (not have booking with approve or pending)
     then can delete this room */
     if (count($booking_details) == 0) {
       DB::beginTransaction();
 
       try {
-        foreach ($booking_details as $booking_detail) {
-          // Delete booking detail
-          BookingDetail::destroy($booking_detail->id);
+        $bookings = Booking::with(['bookingDetails' => function ($query) use ($id) {
+          return $query->where('room_id', $id);
+        }])->get();
+        // dd($bookings->toArray());
+        foreach ($bookings as $booking) {
+          foreach ($booking->bookingDetails as $bookingDetail) {
+            // Delete booking detail
+            BookingDetail::destroy($bookingDetail->id);
+          }
           // Delete booking
-          Booking::destroy($booking_detail->booking_id);
+          Booking::destroy($booking->id);
         }
         // Delete images of room
         Image::where('room_id', $id)->delete();
