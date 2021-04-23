@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
+use App\Entities\Comment;
 
 /**
  * Class RoomRepositoryEloquent.
@@ -229,6 +230,8 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
         }
         // Delete images of room
         Image::where('room_id', $id)->delete();
+        // Delete comment of room
+        Comment::where('room_id', $id)->delete();
         // Delete room
         $this->model->where('id', $id)->delete();
 
