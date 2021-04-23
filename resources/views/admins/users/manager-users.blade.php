@@ -29,7 +29,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>{{__('Username')}}</th>
+                <!-- <th>{{__('Username')}}</th> -->
                 <th>{{__('Email')}}</th>
                 <th>{{__('Address')}}</th>
                 <th>{{__('Phone')}}</th>
@@ -41,7 +41,7 @@
 
               @foreach($users as $user)
               <tr>
-                <td>{{$user->profile->name}}</td>
+                <!-- <td>{{$user->profile->name}}</td> -->
                 <td class="text-danger">{{$user->email}}</td>
                 <td>{{$user->profile->address}}</td>
                 <td>{{{$user->profile->phone}}}</td>
