@@ -128,7 +128,7 @@ class RoomRepositoryEloquent extends BaseRepository implements RoomRepository
       if ($request->hasFile('images')) {
         foreach ($request->file('images') as $key => $image) {
           // Get file name inclue extention
-          $imageName = $image->getClientOriginalname();
+          $imageName = time() . $image->getClientOriginalname();
           // Declare target dir contain image in public/images/rooms forder
           $target_dir = 'images/rooms';
           // Move images to target dir
